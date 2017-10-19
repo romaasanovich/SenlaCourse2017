@@ -1,66 +1,45 @@
-	
+
 public class Disk {
-	public int generalSize=0;
-	public Type generalType;
-	
-	Composition compositions[]= new Composition[] {
-			new Composition(),new Composition(),new Composition(),new Composition()
-	};
-	
-	public void recordingOnDisk() {
-		System.out.println("Start Recording!!!");
-		generalSize = getSize();
-		generalType = getType();
-		System.out.println("Recording OK!!!");
+	private Composition[] tempArray;
+
+	public Disk(Composition[] arrayComposition) {
+		tempArray = new Composition[arrayComposition.length];
+		for (int i = 0; i < arrayComposition.length; i++) {
+			tempArray[i] = arrayComposition[i].getTrack();
+		}
 	}
-	
+
 	public int getSize() {
-		for(int i=0;i<compositions.length;i++) {
-			generalSize+=compositions[i].size;
+		int generalSize = 0;
+		for (int i = 0; i < tempArray.length; i++) {
+			generalSize += tempArray[i].size;
 		}
 		return generalSize;
 	}
 	
-		
-	public Type getType() {
-		int temp[]=new int[Type.values().length];
-		for(int i=0;i<Type.values().length;i++)
-		{
-			temp[i]=0;
-		}
-		
-		for(int i=0;i<compositions.length;i++) {
-			if(compositions[i].type==Type.ROCK) {
-				temp[Type.ROCK.ordinal()]++;
-			}
-			else if(compositions[i].type==Type.RAGGY) {
-				temp[Type.RAGGY.ordinal()]++;
-			}
-			else if(compositions[i].type==Type.CLUB) {
-				temp[Type.CLUB.ordinal()]++;
-			}else if(compositions[i].type==Type.POP) {
-				temp[Type.POP.ordinal()]++;
+	public String getType() {
+		Composition[] temp = tempArray.clone();
+		int maxIndex = 0, maxCount = 0;
+		for (int i = maxIndex; i < temp.length; i++) {
+			if (temp[i] == null)
+				continue;
+			int count = 0;
+			for (int j = i + 1; j < temp.length; j++) {
+				if (temp[j] != null)
+					if (temp[i].getClass().equals(temp[j].getClass())) {
+						count++;
+						temp[j] = null;
+					}
+				if (count > maxCount) {
+					maxCount = count;
+					maxIndex = i;
+				}
 			}
 		}
-		return Type.values()[maxIndex(temp)];
+		return tempArray[maxIndex].getClass().toString();
 	}
-	
-	
-	
-	public static int maxIndex(int[] arr){
-        int temp=0,index=0;
-        
-	    for(int i = 0; i < arr.length; i++){
-	    	
-	            if (arr[i] > temp) {
-	                temp = arr[i];
-	                index=i;
-	            }
-	   	    }
-	    return index;
-	}
-	
-	
-		
 	
 }
+
+
+

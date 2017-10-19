@@ -1,21 +1,29 @@
 
-public class Composition {
-	public int size=0;
-	Type type;
-		Composition( int size, Type  type){
-			this.size=size;
-			this.type=type;
-		}
-		Composition(){
-			size =8;
-			type=Type.POP;
-		}
-		
+public abstract class Composition {
+	protected int size;
+	protected String name;
+	
+	
+	public abstract Composition getTrack();
+	
+	public Composition(String name,int size) {
+		setName(name);
+		setSize(size);
+	}
+	
+	public void setName(String name) {
+		this.name=name;
+	}
+	public String getName() {
+		return name;
+	}
+	
+	public void setSize(int size) {
+		this.size=size;
+	}
+	public int getSize(){
+		return size;
+	}
+	
 }
-
-enum Type{
-	ROCK,
-	CLUB,
-	POP,
-	RAGGY
-}
+	

@@ -1,25 +1,32 @@
 
 public class Order {
-	Dish orderDishes[]= new Dish[] {
-			
-	};
+	private ADish[] orderDishes;
+	private int numOfTable;
 	
-	public void addDish(String name, Menu menu) {
-		Dish temp[]= new Dish[orderDishes.length+1];
-		for(int i =0;i<orderDishes.length;i++) {
-			temp[i]=orderDishes[i];
-		}
-		Dish newOrderDish= menu.choseDish(name);
-		temp[orderDishes.length]=newOrderDish;
-		orderDishes=temp;
+	public Order(int numOfTable,ADish[] list) {
+		orderDishes=list;
+		this.numOfTable=numOfTable;
 	}
 	
-	public void checkOut(Kitcheners kitcheners, Table table) {
-		for(int j=0, i=0;i<orderDishes.length;i++,j++) {
-			if(kitcheners.kitcheners[i].isCook==false) {
-				kitcheners.kitcheners[i].getOrder(orderDishes[j], table);
-				System.out.println("Kitchener "+kitcheners.kitcheners[i].name+" is cook "+orderDishes[j].name);
-			}
-		}
+	public int getNumOfTable() {
+		return numOfTable;
 	}
+	
+	public ADish getDish(int index) {
+		return orderDishes[index];
+	}
+	
+	public ADish[] getOrderDishes() {
+		return orderDishes.clone();
+	}
+	
+	public double getTotalPriceOfOrder() {
+		double sum=0;
+		for(int i = 0 ; i< orderDishes.length;i++) {
+			sum+=orderDishes[i].getPrice();
+		}
+		return sum;
+	}
+	
+
 }

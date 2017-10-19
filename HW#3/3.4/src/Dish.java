@@ -1,12 +1,6 @@
 
-public class Dish {
-	String name;
-	double price;
-	
-	Dish(String name, double price){
-		this.name=name;
-		this.price=price;
+public class Dish extends ADish {
+	Dish(String name,double price){
+		super(name,price);
 	}
-	
-	
 }
