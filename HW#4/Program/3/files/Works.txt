@@ -1,5 +1,0 @@
-0-service1-1.2
-1-service2-11.0
-2-service3-2.0
-3-service4-2.3
-4-service5-8.0
