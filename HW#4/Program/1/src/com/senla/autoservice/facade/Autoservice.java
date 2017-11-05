@@ -203,10 +203,10 @@ public class Autoservice {
 
 	///////////////////////////////////// File IO//////////////////////////////////
 
-	public void writeDataIntoFiles(String pathToCustomers, String pathToRooms, String pathToServices) {
-		TextFileWorker masterFileWorker = new TextFileWorker(pathToCustomers);
-		TextFileWorker placeFileWorker = new TextFileWorker(pathToRooms);
-		TextFileWorker workFileWorker = new TextFileWorker(pathToServices);
+	public void writeDataIntoFiles(String pathToMasters, String pathToPlaces, String pathToWork) {
+		TextFileWorker masterFileWorker = new TextFileWorker(pathToMasters);
+		TextFileWorker placeFileWorker = new TextFileWorker(pathToPlaces);
+		TextFileWorker workFileWorker = new TextFileWorker(pathToWork);
 
 		masterFileWorker.writeToFile(Convert.getEntityStringArray(masterManager.getMasters().getListOfMasters()));
 		placeFileWorker.writeToFile(Convert.getEntityStringArray(garageManager.getPlaces().getPlaces()));
