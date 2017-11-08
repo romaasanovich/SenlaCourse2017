@@ -8,6 +8,7 @@ import com.senla.autoservice.api.Entity;
 import com.senla.autoservice.api.StatusOrder;
 
 public class Order extends Entity {
+	private Master master;
 	private Work service;
 	private Place place;
 	private StatusOrder status;
@@ -15,8 +16,9 @@ public class Order extends Entity {
 	private Date dateOfPlannedStart;
 	private Date dateOfCompletion;
 	
-	public Order(int id, Work service,Place place, StatusOrder status,int fDay, int sDay) {
+	public Order(Master master, int id, Work service,Place place, StatusOrder status,int fDay, int sDay) {
 		super(id);
+		this.setMaster(master);
 		this.service=service;
 		this.place=place;
 		setStatus(status);
@@ -79,12 +81,32 @@ public class Order extends Entity {
 	public void setDateOfCompletion(Date dateOfCompletion) {
 		this.dateOfCompletion = dateOfCompletion;
 	}
+	
+	public Date getDateOfPlannedStart() {
+		return dateOfPlannedStart;
+	}
 
+	public void setDateOfPlannedStart(Date dateOfPlannedStart) {
+		this.dateOfPlannedStart = dateOfPlannedStart;
+	}
+
+	public Master getMaster() {
+		return master;
+	}
+
+	public void setMaster(Master master) {
+		this.master = master;
+	}
+
+
+	
 	
 	@Override
 
 	public String toString() {
 		StringBuilder strBuild = new StringBuilder();
+		strBuild.append("-");
+		strBuild.append(getId());
 		strBuild.append("-");
 		strBuild.append(getService().getId());
 		strBuild.append("-");
@@ -101,14 +123,6 @@ public class Order extends Entity {
 		return strBuild.toString();
 	}
 
-	public Date getDateOfPlannedStart() {
-		return dateOfPlannedStart;
-	}
-
-	public void setDateOfPlannedStart(Date dateOfPlannedStart) {
-		this.dateOfPlannedStart = dateOfPlannedStart;
-	}
-
-
+	
 
 }

@@ -21,6 +21,7 @@ import com.senla.autoservice.manager.MasterManager;
 import com.senla.autoservice.manager.OrderManager;
 import com.senla.autoservice.manager.WorkManager;
 import com.senla.autoservice.repository.GaragePlaces;
+import com.senla.autoservice.repository.OrderList;
 import com.senla.autoservice.repository.WorkList;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.Outputer;
@@ -56,7 +57,35 @@ public class Autoservice {
 			Outputer.printMessage(workManager.add((Work) entity));
 		}
 	}
-
+	/////add/////////
+	public void  addPlace(Place place) {
+		Outputer.printMessage(garageManager.add(place));
+	}
+	
+	public void  addMaster(Master master) {
+		Outputer.printMessage(masterManager.add(master));
+	}
+	
+	public void addOrderToMaster(int id, Order order) {
+		if(masterManager.getMasters().getMasterById(id) !=null) {
+		masterManager.getMasters().getMasterById(id).getOrders().add(order);
+		Outputer.printMessage(orderManager.add(order));
+		}
+		else {
+			Outputer.printMessage("Wrong Id");
+		}
+	}
+	public void addWorkToMaster(int id, Work work) {
+		if(masterManager.getMasters().getMasterById(id) !=null) {
+		masterManager.getMasters().getMasterById(id).getWorks().add(work);
+		Outputer.printMessage("Work is added");
+		}
+		else {
+			Outputer.printMessage("Wrong Id");
+		}
+				
+	}
+	
 	////// Show Places////////////////
 
 	public void showAllFreePlaces() {
@@ -80,79 +109,79 @@ public class Autoservice {
 
 	public void showOrdersByOrderDate() {
 
-		if (masterManager.getAllSortedOrder(new SortedByDateOfOrder()) == null
-				|| masterManager.getAllSortedOrder(new SortedByDateOfOrder()).getListOfOrders().length == 0) {
+		if (orderManager.getAllSortedOrder(new SortedByDateOfOrder()) == null
+				|| orderManager.getAllSortedOrder(new SortedByDateOfOrder()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByDateOfOrder()).getListOfOrders());
+			Outputer.printArray(orderManager.getAllSortedOrder(new SortedByDateOfOrder()).getListOfOrders());
 	}
 
 	public void showOrdersByDateOfCompletion() {
-		if (masterManager.getAllSortedOrder(new SortedByDateOfCompletion()) == null
-				|| masterManager.getAllSortedOrder(new SortedByDateOfCompletion()).getListOfOrders().length == 0) {
+		if (orderManager.getAllSortedOrder(new SortedByDateOfCompletion()) == null
+				|| orderManager.getAllSortedOrder(new SortedByDateOfCompletion()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByDateOfCompletion()).getListOfOrders());
+			Outputer.printArray(orderManager.getAllSortedOrder(new SortedByDateOfCompletion()).getListOfOrders());
 	}
 
 	public void showOrdersByDateOfStart() {
-		if (masterManager.getAllSortedOrder(new SortedByPlannedStarting()) == null
-				|| masterManager.getAllSortedOrder(new SortedByPlannedStarting()).getListOfOrders().length == 0) {
+		if (orderManager.getAllSortedOrder(new SortedByPlannedStarting()) == null
+				|| orderManager.getAllSortedOrder(new SortedByPlannedStarting()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByPlannedStarting()).getListOfOrders());
+			Outputer.printArray(orderManager.getAllSortedOrder(new SortedByPlannedStarting()).getListOfOrders());
 	}
 
 	public void showOrdersByPrice() {
-		if (masterManager.getAllSortedOrder(new SortedByPrice()) == null
-				|| masterManager.getAllSortedOrder(new SortedByPrice()).getListOfOrders().length == 0) {
+		if (orderManager.getAllSortedOrder(new SortedByPrice()) == null
+				|| orderManager.getAllSortedOrder(new SortedByPrice()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByPrice()).getListOfOrders());
+			Outputer.printArray(orderManager.getAllSortedOrder(new SortedByPrice()).getListOfOrders());
 	}
 
 	///// Show Current Orders////////////
 
 	public void showCurrentOrdersByDateOfOrder() {
 
-		if (masterManager.getCurrentOrders(new SortedByDateOfOrder()) == null
-				|| masterManager.getCurrentOrders(new SortedByDateOfOrder()).getListOfOrders().length == 0) {
+		if (orderManager.getCurrentOrders(new SortedByDateOfOrder()) == null
+				|| orderManager.getCurrentOrders(new SortedByDateOfOrder()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getCurrentOrders(new SortedByDateOfOrder()).getListOfOrders());
+			Outputer.printArray(orderManager.getCurrentOrders(new SortedByDateOfOrder()).getListOfOrders());
 	}
 
 	public void showCurrentOrdersByDateOfCompletion() {
-		if (masterManager.getCurrentOrders(new SortedByDateOfCompletion()) == null
-				|| masterManager.getCurrentOrders(new SortedByDateOfCompletion()).getListOfOrders().length == 0) {
+		if (orderManager.getCurrentOrders(new SortedByDateOfCompletion()) == null
+				|| orderManager.getCurrentOrders(new SortedByDateOfCompletion()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getCurrentOrders(new SortedByDateOfCompletion()).getListOfOrders());
+			Outputer.printArray(orderManager.getCurrentOrders(new SortedByDateOfCompletion()).getListOfOrders());
 	}
 
 	public void showCurrentOrdersPrice() {
-		if (masterManager.getCurrentOrders(new SortedByPrice()) == null
-				|| masterManager.getCurrentOrders(new SortedByPrice()).getListOfOrders().length == 0) {
+		if (orderManager.getCurrentOrders(new SortedByPrice()) == null
+				|| orderManager.getCurrentOrders(new SortedByPrice()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getCurrentOrders(new SortedByPrice()).getListOfOrders());
+			Outputer.printArray(orderManager.getCurrentOrders(new SortedByPrice()).getListOfOrders());
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void showOrderCarriedOutByMaster(Master master) {
-		if (masterManager.getOrderCarriedOutCurrentMaster(master) == null) {
+		if (orderManager.getOrderCarriedOutCurrentMaster(master) == null) {
 			Outputer.printMessage(NO_ANY_ORDER);
 		}
-		Outputer.printMessage(masterManager.getOrderCarriedOutCurrentMaster(master).toString());
+		Outputer.printMessage(orderManager.getOrderCarriedOutCurrentMaster(master).toString());
 	}
 
 	public void showOrdersForPeriodTime(StatusOrder status, Comparator<Order> comp, Date fDate, Date sDate) {
-		if (masterManager.getOdersForPeriodOfTime(status, fDate, sDate, comp) == null
-				|| masterManager.getOdersForPeriodOfTime(status, fDate, sDate, comp).getListOfOrders().length == 0) {
+		if (orderManager.getOdersForPeriodOfTime(status, fDate, sDate, comp) == null
+				|| orderManager.getOdersForPeriodOfTime(status, fDate, sDate, comp).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(masterManager.getOdersForPeriodOfTime(status, fDate, sDate, comp).getListOfOrders());
+			Outputer.printArray(orderManager.getOdersForPeriodOfTime(status, fDate, sDate, comp).getListOfOrders());
 	}
 
 	///////////// Show Masters///////////////////
@@ -209,9 +238,18 @@ public class Autoservice {
 		for (String line : workFileWorker.readFromFile()) {
 			add(new Work(line));
 		}
-		WorkList works = workManager.getWorks();
+		//WorkList works = workManager.getWorks();
 		for (String line : masterFileWorker.readFromFile()) {
-			add(Convert.formStringToMaster(line, garages, works));
+			add(Convert.formStringToMaster(line, garages));
+		}
+		
+		OrderList allOrd = masterManager.getAllOrders();
+		
+		for(Order ord: allOrd.getListOfOrders()) {
+			if(ord != null) {
+			add(ord);
+			}
 		}
 	}
+	
 }

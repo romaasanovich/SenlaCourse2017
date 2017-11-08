@@ -37,7 +37,7 @@ public class Convert {
 		return response;
 	}
 
-	public static Master formStringToMaster(String line, GaragePlaces placeList, WorkList workList) {
+	public static Master formStringToMaster(String line, GaragePlaces placeList) {
 		int pos = 0;
 		String[] temp = line.split("-");
 		int id = Integer.valueOf(temp[0]);
@@ -45,42 +45,10 @@ public class Convert {
 		Boolean isWork = Boolean.parseBoolean(temp[2]);
 		if (temp[3].equals("null")) {
 			WorkList works = new WorkList(null);
-			if (temp[4].equals("null")) {
-				OrderList orders = new OrderList(null);
-				Master master = new Master(id, name, works, orders);
-				return master;
-			} else {
-				pos = 4;
-				Order[] orders = new Order[Integer.parseInt(temp[pos++])];
-				for (int i = 0; i < Integer.parseInt(temp[pos - 1]); i++) {
-					Order ord = new Order();
-					ord.setService(workList.getService(Integer.parseInt(temp[pos++])));
-					ord.setPlace(placeList.getPlaceById(Integer.parseInt(temp[pos++])));
-					ord.setStatus(fromStrToStatus(temp[pos++]));
+			OrderList orders = new OrderList(null);
+			Master master = new Master(id, name, works, orders);
+			return master;
 
-					String[] tempDate = temp[pos++].split(",");
-					GregorianCalendar grCal = new GregorianCalendar(Integer.parseInt(tempDate[0]),
-							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
-					Date date = (Date) (grCal).getTime();
-					ord.setDateOfOrder(date);
-
-					tempDate = temp[pos++].split(",");
-					GregorianCalendar grCalDateStart = new GregorianCalendar(Integer.parseInt(tempDate[0]),
-							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
-					ord.setDateOfPlannedStart((grCalDateStart).getTime());
-
-					tempDate = temp[pos++].split(",");
-					GregorianCalendar grCalDateCompl = new GregorianCalendar(Integer.parseInt(tempDate[0]),
-							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
-					ord.setDateOfCompletion((grCalDateCompl).getTime());
-
-					orders[i] = ord;
-				}
-				OrderList ordersRep = new OrderList(orders);
-				Master master = new Master(id, name, works, ordersRep);
-				return master;
-
-			}
 		} else {
 			Work[] works = new Work[Integer.parseInt(temp[3])];
 			pos = 4;
@@ -89,7 +57,6 @@ public class Convert {
 				work.setId(Integer.parseInt(temp[pos++]));
 				work.setNameOfService(temp[pos++]);
 				work.setPrice(Double.parseDouble(temp[pos++]));
-
 				works[i] = work;
 			}
 			WorkList workRep = new WorkList(works);
@@ -97,7 +64,8 @@ public class Convert {
 				Order[] orders = new Order[Integer.parseInt(temp[pos++])];
 				for (int i = 0; i < orders.length; i++) {
 					Order ord = new Order();
-					ord.setService(workList.getService(Integer.parseInt(temp[pos++])));
+					ord.setId(Integer.parseInt(temp[pos++]));
+					ord.setService(workRep.getService(Integer.parseInt(temp[pos++])));
 					ord.setPlace(placeList.getPlaceById(Integer.parseInt(temp[pos++])));
 					ord.setStatus(Convert.fromStrToStatus(temp[pos++]));
 
@@ -120,11 +88,13 @@ public class Convert {
 					orders[i] = ord;
 				}
 
-				OrderList orderList = new OrderList(orders);
+				OrderList orderList = new OrderList(orders);				
 				Master master = new Master(id, name, workRep, orderList);
+				for(Order order : master.getOrders().getListOfOrders()) {
+					order.setMaster(master);
+				}
 				return master;
-			}
-			else {
+			} else {
 				OrderList orderList = new OrderList(null);
 				Master master = new Master(id, name, workRep, orderList);
 				return master;
