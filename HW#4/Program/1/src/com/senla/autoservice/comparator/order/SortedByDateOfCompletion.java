@@ -1,6 +1,6 @@
 package com.senla.autoservice.comparator.order;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Comparator;
 
 import com.senla.autoservice.bean.Order;

@@ -67,67 +67,21 @@ public class MasterManager {
 	
 	public OrderList getAllOrders() {
 		OrderList allOrders = new OrderList(1);
+		int count =0;
 		for (int i = 0; i < masters.getListOfMasters().length; i++) {
 			if (masters.getMasterById(i).getOrders().getListOfOrders() != null) {
 				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
-					allOrders.add(masters.getMasterById(i).getOrders().getOrderById(j));
+					Order temp = masters.getMasterById(i).getOrders().getListOfOrders()[j];
+					if(!temp.equals(null)) {
+					temp.setId(count++);
+					allOrders.add(temp);
+					}
 				}
 			}
 		}
 		return allOrders;
 	}
-
-	public OrderList getAllSortedOrder(Comparator<Order> comp) {
-		OrderList temp = getAllOrders();
-		if (temp != null) {
-			Arrays.sort(temp.getListOfOrders(), comp);
-			return temp;
-		}
-		return null;
-	}
-
-	public OrderList getCurrentOrders(Comparator<Order> comp) {
-		OrderList allOrders = getAllOrders();
-		OrderList temp = new OrderList(1);
-		for (Order order : allOrders.getListOfOrders()) {
-			if (ArrayChecker.getCountOfRecords(allOrders.getListOfOrders()) == 0) {
-				break;
-			} else if (order != null && order.getStatus().equals(StatusOrder.Opened)) {
-				temp.add(order);
-			}
-		}
-		if (ArrayChecker.getCountOfRecords(temp.getListOfOrders()) != 0) {
-			Arrays.sort(temp.getListOfOrders(), comp);
-			return temp;
-		}
-		return null;
-	}
-
-	public Order getOrderCarriedOutCurrentMaster(Master master) {
-		for (int i = 0; i < masters.getListOfMasters().length; i++) {
-			if (masters.getMasterById(i).equals(master)) {
-				return masters.getMasterById(i).getOrders().getOrderById(OrderList.getLastID());
-			}
-		}
-		return null;
-	}
-
-	public OrderList getOdersForPeriodOfTime(StatusOrder status, Date fDate, Date sDate, Comparator<Order> comp) {
-		OrderList temp = new OrderList(1);
-		for (int i = 0; i < masters.getListOfMasters().length; i++)
-			if (masters.getMasterById(i).getOrders() != null) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
-					if (masters.getMasterById(i).getOrders().getOrderById(j).getStatus() == status
-							&& masters.getMasterById(i).getOrders().getOrderById(j).getDateOfOrder().after(fDate)
-							&& masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion().before(sDate)) {
-						temp.add(masters.getMasterById(i).getOrders().getOrderById(j));
-					}
-				}
-			}
-		Arrays.sort(temp.getListOfOrders(), comp);
-		return temp;
-	}
-
+	
 	public Date getFreeDate() {
 		GregorianCalendar cl = new GregorianCalendar();
 		Date date = (Date) (cl).getTime();
@@ -140,7 +94,8 @@ public class MasterManager {
 			for (int i = 0; i < masters.getListOfMasters().length; i++) {
 				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
 					if (!masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion().after(date)
-							&& !masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion().before(date)) {
+							&& !masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion()
+									.before(date)) {
 						return date;
 					}
 				}
@@ -150,6 +105,7 @@ public class MasterManager {
 		}
 	}
 
+	
 	
 
 	public String add(Master master) {
