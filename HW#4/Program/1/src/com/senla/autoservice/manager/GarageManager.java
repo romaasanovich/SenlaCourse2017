@@ -51,23 +51,7 @@ public class GarageManager {
 		return temp;
 	}
 
-	public int getCountOfFreePlacesOnDate(Date date, MasterRepository masters) {
-		int count = 0;
-		for (int i = 0; i < masters.getListOfMasters().length; i++)
-			if (masters.getMasterById(i).getOrders()!= null ) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
-					if (!masters.getMasterById(i).getOrders().getOrderById(j).getDateOfPlannedStart().after(date)
-							&& !masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion().before(date)) {
-						count++;
-					}
-				}
-			}
-		if (count > getPlaces().getPlaces().length) {
-			return getPlaces().getPlaces().length;
-		} else {
-			return count;
-		}
-	}
+	
 	
 	public String add(Place place) {
 		String message;

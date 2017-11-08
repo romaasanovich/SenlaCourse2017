@@ -8,12 +8,13 @@ import com.senla.autoservice.utills.ArrayChecker;
 public class WorkList {
 	private Work[] serviceList;
 	static private int lastID;
+
 	public WorkList(int size) {
-		serviceList= new Work[size];
+		serviceList = new Work[size];
 	}
-	
+
 	public WorkList(Work[] list) {
-		serviceList= list;
+		serviceList = list;
 	}
 
 	public Work[] getListOfServices() {
@@ -24,8 +25,7 @@ public class WorkList {
 		return lastID;
 	}
 
-	
-	public  Work getService(int id) {
+	public Work getService(int id) {
 		for (int i = 0; i < serviceList.length; i++) {
 			if (serviceList[i].getId() == id) {
 				return serviceList[i];
@@ -51,12 +51,11 @@ public class WorkList {
 			return false;
 		}
 		if (!ArrayChecker.isEnoughtSpace(serviceList)) {
-			serviceList = Arrays.copyOf(ArrayChecker.resize(serviceList),
-					serviceList.length*2, Work[].class);
+			serviceList = Arrays.copyOf(ArrayChecker.resize(serviceList), serviceList.length * 2, Work[].class);
 		}
 		Integer position = ArrayChecker.getFreePosition(serviceList);
-		lastID=position;
+		lastID = position;
 		serviceList[position] = obj;
 		return true;
-	}	
+	}
 }

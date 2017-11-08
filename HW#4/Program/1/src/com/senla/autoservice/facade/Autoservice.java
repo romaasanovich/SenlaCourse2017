@@ -69,11 +69,10 @@ public class Autoservice {
 	}
 
 	public void showCountOfFreePlacesOnDate(Date date) {
-		if (garageManager.getCountOfFreePlacesOnDate(date, masterManager.getMasters()) == 0) {
+		if (masterManager.getCountOfFreePlacesOnDate(date) == 0) {
 			Outputer.printMessage(NO_ANY_PLACES);
 		} else {
-			Outputer.printMessage(
-					Integer.toString(garageManager.getCountOfFreePlacesOnDate(date, masterManager.getMasters())));
+			Outputer.printMessage(Integer.toString(masterManager.getCountOfFreePlacesOnDate(date)));
 		}
 	}
 
@@ -81,94 +80,79 @@ public class Autoservice {
 
 	public void showOrdersByOrderDate() {
 
-		if (orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByDateOfOrder()) == null
-				|| orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByDateOfOrder())
-						.getListOfOrders().length == 0) {
+		if (masterManager.getAllSortedOrder(new SortedByDateOfOrder()) == null
+				|| masterManager.getAllSortedOrder(new SortedByDateOfOrder()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByDateOfOrder())
-					.getListOfOrders());
+			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByDateOfOrder()).getListOfOrders());
 	}
 
 	public void showOrdersByDateOfCompletion() {
-		if (orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByDateOfCompletion()) == null
-				|| orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByDateOfCompletion())
-						.getListOfOrders().length == 0) {
+		if (masterManager.getAllSortedOrder(new SortedByDateOfCompletion()) == null
+				|| masterManager.getAllSortedOrder(new SortedByDateOfCompletion()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(orderManager
-					.getAllSortedOrder(masterManager.getMasters(), new SortedByDateOfCompletion()).getListOfOrders());
+			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByDateOfCompletion()).getListOfOrders());
 	}
 
 	public void showOrdersByDateOfStart() {
-		if (orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByPlannedStarting()) == null
-				|| orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByPlannedStarting())
-						.getListOfOrders().length == 0) {
+		if (masterManager.getAllSortedOrder(new SortedByPlannedStarting()) == null
+				|| masterManager.getAllSortedOrder(new SortedByPlannedStarting()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(orderManager
-					.getAllSortedOrder(masterManager.getMasters(), new SortedByPlannedStarting()).getListOfOrders());
+			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByPlannedStarting()).getListOfOrders());
 	}
 
 	public void showOrdersByPrice() {
-		if (orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByPrice()) == null || orderManager
-				.getAllSortedOrder(masterManager.getMasters(), new SortedByPrice()).getListOfOrders().length == 0) {
+		if (masterManager.getAllSortedOrder(new SortedByPrice()) == null
+				|| masterManager.getAllSortedOrder(new SortedByPrice()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(
-					orderManager.getAllSortedOrder(masterManager.getMasters(), new SortedByPrice()).getListOfOrders());
+			Outputer.printArray(masterManager.getAllSortedOrder(new SortedByPrice()).getListOfOrders());
 	}
 
 	///// Show Current Orders////////////
 
 	public void showCurrentOrdersByDateOfOrder() {
 
-		if (orderManager.getCurrentOrders(new SortedByDateOfOrder(), masterManager.getMasters()) == null
-				|| orderManager.getCurrentOrders(new SortedByDateOfOrder(), masterManager.getMasters())
-						.getListOfOrders().length == 0) {
+		if (masterManager.getCurrentOrders(new SortedByDateOfOrder()) == null
+				|| masterManager.getCurrentOrders(new SortedByDateOfOrder()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(orderManager.getCurrentOrders(new SortedByDateOfOrder(), masterManager.getMasters())
-					.getListOfOrders());
+			Outputer.printArray(masterManager.getCurrentOrders(new SortedByDateOfOrder()).getListOfOrders());
 	}
 
 	public void showCurrentOrdersByDateOfCompletion() {
-		if (orderManager.getCurrentOrders(new SortedByDateOfCompletion(), masterManager.getMasters()) == null
-				|| orderManager.getCurrentOrders(new SortedByDateOfCompletion(), masterManager.getMasters())
-						.getListOfOrders().length == 0) {
+		if (masterManager.getCurrentOrders(new SortedByDateOfCompletion()) == null
+				|| masterManager.getCurrentOrders(new SortedByDateOfCompletion()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(orderManager
-					.getCurrentOrders(new SortedByDateOfCompletion(), masterManager.getMasters()).getListOfOrders());
+			Outputer.printArray(masterManager.getCurrentOrders(new SortedByDateOfCompletion()).getListOfOrders());
 	}
 
 	public void showCurrentOrdersPrice() {
-		if (orderManager.getCurrentOrders(new SortedByPrice(), masterManager.getMasters()) == null || orderManager
-				.getCurrentOrders(new SortedByPrice(), masterManager.getMasters()).getListOfOrders().length == 0) {
+		if (masterManager.getCurrentOrders(new SortedByPrice()) == null
+				|| masterManager.getCurrentOrders(new SortedByPrice()).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(
-					orderManager.getCurrentOrders(new SortedByPrice(), masterManager.getMasters()).getListOfOrders());
+			Outputer.printArray(masterManager.getCurrentOrders(new SortedByPrice()).getListOfOrders());
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
 	public void showOrderCarriedOutByMaster(Master master) {
-		if (orderManager.getOrderCarriedOutCurrentMaster(master, masterManager.getMasters()) == null) {
+		if (masterManager.getOrderCarriedOutCurrentMaster(master) == null) {
 			Outputer.printMessage(NO_ANY_ORDER);
 		}
-		Outputer.printMessage(
-				orderManager.getOrderCarriedOutCurrentMaster(master, masterManager.getMasters()).toString());
+		Outputer.printMessage(masterManager.getOrderCarriedOutCurrentMaster(master).toString());
 	}
 
 	public void showOrdersForPeriodTime(StatusOrder status, Comparator<Order> comp, Date fDate, Date sDate) {
-		if (orderManager.getOdersForPeriodOfTime(status, fDate, sDate, masterManager.getMasters(), comp) == null
-				|| orderManager.getOdersForPeriodOfTime(status, fDate, sDate, masterManager.getMasters(), comp)
-						.getListOfOrders().length == 0) {
+		if (masterManager.getOdersForPeriodOfTime(status, fDate, sDate, comp) == null
+				|| masterManager.getOdersForPeriodOfTime(status, fDate, sDate, comp).getListOfOrders().length == 0) {
 			Outputer.printMessage(NO_ANY_ORDERS);
 		} else
-			Outputer.printArray(orderManager
-					.getOdersForPeriodOfTime(status, fDate, sDate, masterManager.getMasters(), comp).getListOfOrders());
+			Outputer.printArray(masterManager.getOdersForPeriodOfTime(status, fDate, sDate, comp).getListOfOrders());
 	}
 
 	///////////// Show Masters///////////////////
@@ -198,15 +182,15 @@ public class Autoservice {
 
 	////////////// Show Data////////////
 	public void showCloseFreeDate() {
-		Outputer.printMessage(orderManager.getFreeDate(masterManager.getMasters()).toString());
+		Outputer.printMessage(masterManager.getFreeDate().toString());
 	}
 
 	///////////////////////////////////// File IO//////////////////////////////////
 
-	public void writeDataIntoFiles(String pathToMasters, String pathToPlaces, String pathToWork) {
+	public void writeDataIntoFiles(String pathToMasters, String pathToPlaces, String pathToServices) {
 		TextFileWorker masterFileWorker = new TextFileWorker(pathToMasters);
 		TextFileWorker placeFileWorker = new TextFileWorker(pathToPlaces);
-		TextFileWorker workFileWorker = new TextFileWorker(pathToWork);
+		TextFileWorker workFileWorker = new TextFileWorker(pathToServices);
 
 		masterFileWorker.writeToFile(Convert.getEntityStringArray(masterManager.getMasters().getListOfMasters()));
 		placeFileWorker.writeToFile(Convert.getEntityStringArray(garageManager.getPlaces().getPlaces()));
@@ -227,7 +211,7 @@ public class Autoservice {
 		}
 		WorkList works = workManager.getWorks();
 		for (String line : masterFileWorker.readFromFile()) {
-			add(new Master(line, garages, works));
+			add(Convert.formStringToMaster(line, garages, works));
 		}
 	}
 }

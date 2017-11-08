@@ -1,67 +1,24 @@
 package com.senla.autoservice.bean;
 
-import java.util.Date;
-import java.util.GregorianCalendar;
-
 import com.senla.autoservice.api.Entity;
-import com.senla.autoservice.repository.GaragePlaces;
 import com.senla.autoservice.repository.OrderList;
 import com.senla.autoservice.repository.WorkList;
-import com.senla.autoservice.utills.Convert;
 
 public class Master extends Entity {
 	private boolean isWork;
 	private String name;
+	private WorkList works;
 	private OrderList orders;
 
-	public Master(Integer id, String name, OrderList orders) {
+	public Master(Integer id, String name, WorkList works, OrderList orders) {
 		super(id);
 		this.orders = orders;
+		this.works = works;
 		setName(name);
 		if (orders == null) {
 			setIsWork(false);
 		} else {
 			setIsWork(true);
-		}
-	}
-
-	public Master(String line, GaragePlaces placeList,WorkList workList) {
-		super(0);
-		String[] temp = line.split("-");
-		setId(Integer.valueOf(temp[0]));
-		this.name = temp[1];
-		this.isWork = Boolean.parseBoolean(temp[2]);
-		if (temp[3].equals("null")) {
-			this.orders = new OrderList(null);
-		}
-		else {
-			Order[] orders = new Order[Integer.parseInt(temp[3])];
-			int pos = 4;
-			for (int i = 0; i < Integer.parseInt(temp[3]); i++) {
-				Order ord= new Order();
-				ord.setService(workList.getService(Integer.parseInt(temp[pos++])));
-				ord.setPlace(placeList.getPlaceById(Integer.parseInt(temp[pos++])));
-				ord.setStatus(Convert.fromStrToStatus(temp[pos++]));
-
-				String[] tempDate = temp[pos++].split(",");
-				GregorianCalendar grCal = new GregorianCalendar(Integer.parseInt(tempDate[0]),
-						Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
-				Date date = (Date) (grCal).getTime();
-				ord.setDateOfOrder(date);
-
-				tempDate = temp[pos++].split(",");
-				GregorianCalendar grCalDateStart = new GregorianCalendar(Integer.parseInt(tempDate[0]),
-						Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
-				ord.setDateOfPlannedStart((grCalDateStart).getTime());
-				
-				tempDate = temp[pos++].split(",");
-				GregorianCalendar grCalDateCompl = new GregorianCalendar(Integer.parseInt(tempDate[0]),
-						Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
-				ord.setDateOfCompletion((grCalDateCompl).getTime());
-
-				orders[i]=ord;
-			}
-			this.orders = new OrderList(orders);
 		}
 	}
 
@@ -73,8 +30,6 @@ public class Master extends Entity {
 		this.name = name;
 	}
 
-	
-	
 	public void setIsWork(boolean isWork) {
 		this.isWork = isWork;
 	}
@@ -91,21 +46,40 @@ public class Master extends Entity {
 		this.orders = orders;
 	}
 
+	public WorkList getWorks() {
+		return works;
+	}
+
+	public void setWorks(WorkList works) {
+		this.works = works;
+	}
+
 	@Override
 
 	public String toString() {
 		String message;
-		message=getId()+"-"+getName()+"-"+getIsWork()+"-";
-		if(getOrders().getListOfOrders()!= null) {
-			message+=getOrders().getListOfOrders().length;
-			for(Order order : this.orders.getListOfOrders()) {
-				message+=order;
+		message = getId() + "-" + getName() + "-" + getIsWork() + "-";
+		if (getWorks().getListOfServices() != null) {
+			message += getWorks().getListOfServices().length;
+			for (Work work : this.works.getListOfServices()) {
+				message += work;
 			}
+		} else {
+			message += "null";
 		}
-		else {
-			message+="null";
+
+		message += "-";
+
+		if (getOrders().getListOfOrders() != null) {
+			message += getOrders().getListOfOrders().length;
+			for (Order order : this.orders.getListOfOrders()) {
+				message += order;
+			}
+		} else {
+			message += "null";
 		}
-		
+
 		return message;
 	}
+
 }
