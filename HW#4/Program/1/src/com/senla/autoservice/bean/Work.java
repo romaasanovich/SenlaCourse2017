@@ -14,11 +14,16 @@ public class Work extends Entity {
 	public Work (String line) {
 		super(0);
 		String[] temp = line.split("-");
-		setId(Integer.valueOf(temp[0]));
-		this.nameOfService = temp[1];
-		this.price = Double.valueOf(temp[2]);
+		setId(Integer.valueOf(temp[1]));
+		this.nameOfService = temp[2];
+		this.price = Double.valueOf(temp[3]);
 	}
 
+	
+	public Work() {
+		super(0);
+	}
+	
 	public String getNameOfService() {
 		return nameOfService;
 	}
@@ -39,6 +44,7 @@ public class Work extends Entity {
 
 	public String toString() {
 		StringBuilder strBuild = new StringBuilder();
+		strBuild.append("-");
 		strBuild.append(getId());
 		strBuild.append("-");
 		strBuild.append(getNameOfService());
