@@ -1,13 +1,9 @@
 package com.senla.autoservice;
 
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+
 
 import com.senla.autoservice.api.Constants;
-import com.senla.autoservice.api.StatusOrder;
-import com.senla.autoservice.bean.Order;
-import com.senla.autoservice.comparator.order.SortedByPrice;
 import com.senla.autoservice.facade.Autoservice;
 
 public class Program {

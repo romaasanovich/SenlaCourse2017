@@ -1,4 +1,5 @@
 package com.senla.autoservice.bean;
+
 import com.senla.autoservice.api.Entity;
 
 public class Work extends Entity {
@@ -39,6 +40,7 @@ public class Work extends Entity {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+	
 	
 	@Override
 
