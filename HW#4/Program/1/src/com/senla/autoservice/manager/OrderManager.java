@@ -2,15 +2,12 @@ package com.senla.autoservice.manager;
 
 import java.util.Date;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Comparator;
-import java.util.GregorianCalendar;
 
 import com.senla.autoservice.api.Constants;
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
-import com.senla.autoservice.repository.MasterRepository;
 import com.senla.autoservice.repository.OrderList;
 import com.senla.autoservice.utills.ArrayChecker;
 

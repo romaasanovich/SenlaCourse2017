@@ -12,7 +12,6 @@ import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
 import com.senla.autoservice.repository.MasterRepository;
 import com.senla.autoservice.repository.OrderList;
-import com.senla.autoservice.utills.ArrayChecker;
 
 public class MasterManager {
 
@@ -39,10 +38,10 @@ public class MasterManager {
 
 	public Master getMasterCarriedOutCurrentOrder(Order order) {
 		for (int i = 0; i < masters.getListOfMasters().length; i++) {
-			for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
+			for (int j = 0; j < masters.getMasterById(i).getOrders().length; j++) {
 				if (masters.getMasterById(i).getOrders() != null
-						&& masters.getMasterById(i).getOrders().getOrderById(j) == (order)
-						&& masters.getMasterById(i).getOrders().getOrderById(j).getStatus() == (StatusOrder.Opened)) {
+						&& masters.getMasterById(i).getOrders()[j] == (order)
+						&& masters.getMasterById(i).getOrders()[j].getStatus() == (StatusOrder.Opened)) {
 					return masters.getMasterById(i);
 				}
 			}
@@ -54,9 +53,9 @@ public class MasterManager {
 		int count = 0;
 		for (int i = 0; i < masters.getListOfMasters().length; i++)
 			if (masters.getMasterById(i).getOrders() != null) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
-					if (!masters.getMasterById(i).getOrders().getOrderById(j).getDateOfPlannedStart().after(date)
-							&& !masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion()
+				for (int j = 0; j < masters.getMasterById(i).getOrders().length; j++) {
+					if (!masters.getMasterById(i).getOrders()[j].getDateOfPlannedStart().after(date)
+							&& !masters.getMasterById(i).getOrders()[j].getDateOfCompletion()
 									.before(date)) {
 						count++;
 					}
@@ -69,9 +68,9 @@ public class MasterManager {
 		OrderList allOrders = new OrderList(1);
 		int count =0;
 		for (int i = 0; i < masters.getListOfMasters().length; i++) {
-			if (masters.getMasterById(i).getOrders().getListOfOrders() != null) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
-					Order temp = masters.getMasterById(i).getOrders().getListOfOrders()[j];
+			if (masters.getMasterById(i).getOrders() != null) {
+				for (int j = 0; j < masters.getMasterById(i).getOrders().length; j++) {
+					Order temp = masters.getMasterById(i).getOrders()[j];
 					if(!temp.equals(null)) {
 					temp.setId(count++);
 					allOrders.add(temp);
@@ -92,9 +91,9 @@ public class MasterManager {
 		}
 		for (;;) {
 			for (int i = 0; i < masters.getListOfMasters().length; i++) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().getListOfOrders().length; j++) {
-					if (!masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion().after(date)
-							&& !masters.getMasterById(i).getOrders().getOrderById(j).getDateOfCompletion()
+				for (int j = 0; j < masters.getMasterById(i).getOrders().length; j++) {
+					if (!masters.getMasterById(i).getOrders()[j].getDateOfCompletion().after(date)
+							&& !masters.getMasterById(i).getOrders()[j].getDateOfCompletion()
 									.before(date)) {
 						return date;
 					}

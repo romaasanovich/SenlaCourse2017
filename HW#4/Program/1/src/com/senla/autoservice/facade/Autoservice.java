@@ -22,7 +22,6 @@ import com.senla.autoservice.manager.OrderManager;
 import com.senla.autoservice.manager.WorkManager;
 import com.senla.autoservice.repository.GaragePlaces;
 import com.senla.autoservice.repository.OrderList;
-import com.senla.autoservice.repository.WorkList;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.Outputer;
 
@@ -57,35 +56,33 @@ public class Autoservice {
 			Outputer.printMessage(workManager.add((Work) entity));
 		}
 	}
-	/////add/////////
-	public void  addPlace(Place place) {
+
+	///// add/////////
+	public void addPlace(Place place) {
 		Outputer.printMessage(garageManager.add(place));
 	}
-	
-	public void  addMaster(Master master) {
+
+	public void addMaster(Master master) {
 		Outputer.printMessage(masterManager.add(master));
 	}
-	
+
 	public void addOrderToMaster(int id, Order order) {
-		if(masterManager.getMasters().getMasterById(id) !=null) {
-		masterManager.getMasters().getMasterById(id).getOrders().add(order);
-		Outputer.printMessage(orderManager.add(order));
-		}
-		else {
+		if (masterManager.getMasters().getMasterById(id).addOrder(order)) {
+			Outputer.printMessage(orderManager.add(order));
+		} else {
 			Outputer.printMessage("Wrong Id");
 		}
 	}
+
 	public void addWorkToMaster(int id, Work work) {
-		if(masterManager.getMasters().getMasterById(id) !=null) {
-		masterManager.getMasters().getMasterById(id).getWorks().add(work);
-		Outputer.printMessage("Work is added");
-		}
-		else {
+		if (masterManager.getMasters().getMasterById(id).addWork(work)) {
+			Outputer.printMessage("Work is added");
+		} else {
 			Outputer.printMessage("Wrong Id");
 		}
-				
+
 	}
-	
+
 	////// Show Places////////////////
 
 	public void showAllFreePlaces() {
@@ -238,18 +235,18 @@ public class Autoservice {
 		for (String line : workFileWorker.readFromFile()) {
 			add(new Work(line));
 		}
-		//WorkList works = workManager.getWorks();
+		// WorkList works = workManager.getWorks();
 		for (String line : masterFileWorker.readFromFile()) {
 			add(Convert.formStringToMaster(line, garages));
 		}
-		
+
 		OrderList allOrd = masterManager.getAllOrders();
-		
-		for(Order ord: allOrd.getListOfOrders()) {
-			if(ord != null) {
-			add(ord);
+
+		for (Order ord : allOrd.getListOfOrders()) {
+			if (ord != null) {
+				add(ord);
 			}
 		}
 	}
-	
+
 }
