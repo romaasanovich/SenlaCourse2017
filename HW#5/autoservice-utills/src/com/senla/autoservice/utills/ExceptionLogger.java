@@ -10,12 +10,13 @@ import com.senla.autoservice.api.Constants;
 
 public final class ExceptionLogger {
 
-	private static final Logger logger = Logger.getLogger("Logger");
+	private static Logger logger = Logger.getLogger("Logger");
 	private static Handler fileHandler;
 
-	public static void write(final Exception ex) {
+	public void write(String message, final Exception ex) {
 		try {
 			fileHandler = new FileHandler(Constants.LOG_PATH);
+			logger= Logger.getLogger(message);
 			logger.setUseParentHandlers(false);
 			logger.addHandler(fileHandler);
 			logger.log(Level.SEVERE, "Exception", ex);

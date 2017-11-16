@@ -22,29 +22,22 @@ public class MasterManager {
 		masters = MasterRepository.getInstance();
 	}
 
-	public void setMasters(MasterRepository masters) {
-		this.masters = masters;
-	}
-
 	public MasterRepository getMasters() {
 		return masters;
 	}
 
-	public ArrayList<Master> getSortedMasters(Comparator<Master> comp) {
-		try {
+	public ArrayList<Master> getSortedMasters(Comparator<Master> comp) throws NullPointerException{
+
 			Collections.sort(masters.getListOfMasters(), comp);
 			return masters.getListOfMasters();
-		} catch (NullPointerException ex) {
-			return null;
-		}
 	}
 
-	public Master getMasterCarriedOutCurrentOrder(Order order) {
+	public Master getMasterCarriedOutCurrentOrder(Order order) throws NullPointerException {
 		for (int i = 0; i < masters.getListOfMasters().size(); i++) {
 			for (int j = 0; j < masters.getListOfMasters().get(i).getOrders().size(); j++) {
 				Master master = masters.getListOfMasters().get(i);
 				if (master.getOrders() != null && master.getOrders().get(j).equals(order)
-						&& master.getOrders().get(j).getStatus() .equals(StatusOrder.Opened)) {
+						&& master.getOrders().get(j).getStatus().equals(StatusOrder.Opened)) {
 					return master;
 				}
 			}
@@ -52,7 +45,7 @@ public class MasterManager {
 		return null;
 	}
 
-	public int getCountOfFreePlacesOnDate(Date date) {
+	public int getCountOfFreePlacesOnDate(Date date) throws NullPointerException{
 		int count = 0;
 		for (int i = 0; i < masters.getListOfMasters().size(); i++) {
 			Master master = masters.getListOfMasters().get(i);
@@ -68,13 +61,13 @@ public class MasterManager {
 		return count;
 	}
 
-	public ArrayList<Order> getAllOrders() {
+	public ArrayList<Order> getAllOrders() throws NullPointerException {
 		ArrayList<Order> allOrders = new ArrayList<Order>(1);
 		int count = 0;
 		for (int i = 0; i < masters.getListOfMasters().size(); i++) {
 			Master master = masters.getListOfMasters().get(i);
 			if (master.getOrders() != null) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().size(); j++) {
+				for (int j = 0; j < masters.getListOfMasters().get(i).getOrders().size(); j++) {
 					Order temp = master.getOrders().get(j);
 					if (!temp.equals(null)) {
 						temp.setId(count++);
@@ -83,17 +76,14 @@ public class MasterManager {
 				}
 			}
 		}
-		try {
-			return allOrders;
-		} catch (NullPointerException e) {
-			return null;
-		}
+		return allOrders;
 	}
 
 	public Date getFreeDate() {
 		GregorianCalendar cl = new GregorianCalendar();
 		Date date = (Date) (cl).getTime();
-		for (int i = 0; i < masters.getListOfMasters().size(); i++) {
+		for (int i = 0; i < MasterRepository.getLastID(); i++) {
+			
 			if (masters.getMasterById(i).getOrders() == null) {
 				return date;
 			}

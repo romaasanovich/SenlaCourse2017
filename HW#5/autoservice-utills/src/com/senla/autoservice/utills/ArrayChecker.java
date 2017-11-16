@@ -1,53 +1,12 @@
 package com.senla.autoservice.utills;
 
+import java.util.ArrayList;
+
 import com.senla.autoservice.api.Entity;
 
 public final class ArrayChecker {
 
-	public static Boolean isEnoughtSpace(Entity[] array) {
-		return array[array.length - 1] == null;
-	}
-
-	public static boolean checkSize(Entity[] arr) {
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i] == null) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public static Entity[] resize(Entity[] source) {
-		Integer newSize = source.length * 2;
-		Entity[] temp = new Entity[newSize];
-		System.arraycopy(source, 0, temp, 0, source.length);
-		return temp;
-	}
-
-	public static Integer getFreePosition(Entity[] arr) {
-		Integer pos = null;
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i] == null) {
-				pos = i;
-				break;
-			}
-		}
-		return pos;
-	}
-
-	public static Integer getCountOfFreePosition(Entity[] arr) {
-		Integer count = 0;
-		for (int i = 0; i < arr.length; i++) {
-			if (arr[i] == null) {
-				count++;
-			} else {
-				break;
-			}
-		}
-		return count;
-	}
-	
-	public static Integer getCountOfRecords(Object[] array) {
+	public static <T extends Entity> int getCountOfRecords(ArrayList<T> array) {
 		int count = 0;
 		for (Object item : array) {
 			if (item != null) {
@@ -59,11 +18,11 @@ public final class ArrayChecker {
 		return count;
 	}
 	
-	public static Boolean isFreeId(Integer id, Entity[] arr) {
+	public static <T extends Entity>  Boolean isFreeId(Integer id, ArrayList<T> arr) {
 		Integer countOfRecords = getCountOfRecords(arr);
 		if (countOfRecords > 0) {
 			for (int i = 0; i < countOfRecords; i++) {
-				if (arr[i].getId() == id) {
+				if (arr.get(i).getId() == id) {
 					return false;
 				}
 			}

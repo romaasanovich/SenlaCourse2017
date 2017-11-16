@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import com.senla.autoservice.bean.Work;
 
 public class WorkRepository {
-	private ArrayList<Work> serviceList;
+	private ArrayList<Work> serviceRepository;
 	private static WorkRepository instance;
 	static private int lastID;
 
 	public WorkRepository() {
-		serviceList = new ArrayList<Work>();
+		serviceRepository = new ArrayList<Work>();
 	}
 
 	public static WorkRepository getInstance() {
@@ -21,7 +21,7 @@ public class WorkRepository {
 	}
 
 	public ArrayList<Work> getListOfServices() {
-		return serviceList;
+		return serviceRepository;
 	}
 
 	static public int getLastID() {
@@ -29,16 +29,16 @@ public class WorkRepository {
 	}
 
 	public Work getService(int id) {
-		for (int i = 0; i < serviceList.size(); i++) {
-			if (serviceList.get(i).getId() == id) {
-				return serviceList.get(i);
+		for (int i = 0; i < serviceRepository.size(); i++) {
+			if (serviceRepository.get(i).getId() == id) {
+				return serviceRepository.get(i);
 			}
 		}
 		return null;
 	}
 
 	public Work findById(Integer id) {
-		for (Work entity : serviceList) {
+		for (Work entity : serviceRepository) {
 			if (entity == null) {
 				break;
 			}
@@ -50,7 +50,7 @@ public class WorkRepository {
 	}
 
 	public void add(Work obj) {
-		serviceList.add(obj);
-		lastID = serviceList.size() - 1;
+		serviceRepository.add(obj);
+		lastID = serviceRepository.size() - 1;
 	}
 }

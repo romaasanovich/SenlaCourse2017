@@ -19,10 +19,6 @@ public class OrderManager {
 		orders = OrderRepository.getInstance();
 	}
 
-	public void setOrderList(OrderRepository orderList) {
-		this.orders = orderList;
-	}
-
 	public OrderRepository getOrders() {
 		return orders;
 	}
@@ -31,12 +27,12 @@ public class OrderManager {
 		orders.getListOfOrders().get(id).setStatus(status);
 	}
 
-	public ArrayList<Order> getSortedOrder(Comparator<Order> comp) {
+	public ArrayList<Order> getSortedOrder(Comparator<Order> comp) throws NullPointerException {
 		Collections.sort(orders.getListOfOrders(), comp);
 		return orders.getListOfOrders();
 	}
 
-	public ArrayList<Order> getAllSortedOrder(Comparator<Order> comp) {
+	public ArrayList<Order> getAllSortedOrder(Comparator<Order> comp) throws NullPointerException {
 		if (orders != null) {
 			Collections.sort(orders.getListOfOrders(), comp);
 			return orders.getListOfOrders();
@@ -44,12 +40,12 @@ public class OrderManager {
 		return null;
 	}
 
-	public ArrayList<Order> getCurrentOrders(Comparator<Order> comp) {
+	public ArrayList<Order> getCurrentOrders(Comparator<Order> comp) throws NullPointerException {
 		ArrayList<Order> temp = new ArrayList<Order>(1);
 		for (Order order : orders.getListOfOrders()) {
 			if (orders.getListOfOrders().isEmpty()) {
 				break;
-			} else if (order != null && order.getStatus()==StatusOrder.Opened) {
+			} else if (order != null && order.getStatus() == StatusOrder.Opened) {
 				temp.add(order);
 			}
 		}
@@ -60,9 +56,9 @@ public class OrderManager {
 		return null;
 	}
 
-	public Order getOrderCarriedOutCurrentMaster(Master master) {
+	public Order getOrderCarriedOutCurrentMaster(Master master) throws NullPointerException {
 		for (int i = 0; i < orders.getListOfOrders().size(); i++) {
-			if (!orders.getListOfOrders().equals(null)) {
+			if (orders.getListOfOrders() != null) {
 				if (orders.getListOfOrders().get(i).getMaster().equals(master)
 						&& orders.getListOfOrders().get(i).getStatus().equals(StatusOrder.Opened)) {
 					return orders.getListOfOrders().get(i);
@@ -72,7 +68,7 @@ public class OrderManager {
 		return null;
 	}
 
-	public ArrayList<Order> getOdersForPeriodOfTime(StatusOrder status, Date fDate, Date sDate) {
+	public ArrayList<Order> getOdersForPeriodOfTime(StatusOrder status, Date fDate, Date sDate) throws NullPointerException  {
 		ArrayList<Order> temp = new ArrayList<Order>();
 		ArrayList<Order> a = orders.getListOfOrders();
 		for (int i = 0; i < a.size(); i++) {

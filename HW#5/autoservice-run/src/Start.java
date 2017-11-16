@@ -2,8 +2,7 @@
 
 import com.senla.autoservice.api.Constants;
 import com.senla.autoservice.facade.Autoservice;
-
-import Menu.MenuController;
+import com.senla.autoservice.ui.MenuController;
 
 public final class Start {
 
