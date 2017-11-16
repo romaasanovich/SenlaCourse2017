@@ -21,16 +21,13 @@ public class GarageManager {
 		return places;
 	}
 
-	public void setGarage(GarageRepository garage) {
-		this.places = garage;
-	}
 
-	public ArrayList<Place> getSortedPlaces(Comparator<Place> comp)throws Exception {
+	public ArrayList<Place> getSortedPlaces(Comparator<Place> comp)throws NullPointerException{
 		Collections.sort(places.getPlaces(), comp);
 		return places.getPlaces();
 	}
 
-	public ArrayList<Place> getFreePlaces(){
+	public ArrayList<Place> getFreePlaces() throws NullPointerException{
 		ArrayList<Place> temp = new ArrayList<Place>(places.getPlaces().size());
 		for (Place place : places.getPlaces()) {
 			if (place == null) {
@@ -43,7 +40,7 @@ public class GarageManager {
 		return temp;
 	}
 
-	public ArrayList<Place> getSortedFreePlaces(Comparator<Place> comp) throws Exception {
+	public ArrayList<Place> getSortedFreePlaces(Comparator<Place> comp) throws NullPointerException{
 		ArrayList<Place> temp = getFreePlaces();
 		Collections.sort(temp, comp);
 		return temp;

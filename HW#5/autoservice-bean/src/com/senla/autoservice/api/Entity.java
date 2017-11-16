@@ -1,6 +1,6 @@
 package com.senla.autoservice.api;
 
-public  class Entity {
+public class Entity {
 	private int id;
 	
 	public Entity(Integer id) {
