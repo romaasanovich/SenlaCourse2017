@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.senla.autoservice.api.Constants;
 import com.senla.autoservice.bean.Order;
 import com.senla.autoservice.facade.Autoservice;
-import com.senla.autoservice.ui.IAction;
+import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Printer;
 import com.senla.autoservice.utills.Reader;
 

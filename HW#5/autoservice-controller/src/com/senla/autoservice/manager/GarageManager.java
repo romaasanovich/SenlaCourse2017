@@ -17,7 +17,7 @@ public class GarageManager {
 		places = GarageRepository.getInstance();
 	}
 
-	public GarageRepository getPlaces() {
+	public GarageRepository getPlaces()  {
 		return places;
 	}
 

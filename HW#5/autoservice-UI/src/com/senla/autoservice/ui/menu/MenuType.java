@@ -1,4 +1,4 @@
-package com.senla.autoservice.ui;
+package com.senla.autoservice.ui.menu;
 
 public enum MenuType {
 	Root,

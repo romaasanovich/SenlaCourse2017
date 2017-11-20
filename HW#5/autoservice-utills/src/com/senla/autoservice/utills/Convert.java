@@ -29,9 +29,8 @@ public class Convert {
 	}
 
 	public final static <T extends Entity> String[] getEntityStringArray(ArrayList<T> array) {
-		int countOfRecords = ArrayChecker.getCountOfRecords(array);
-		String[] response = new String[countOfRecords];
-		for (int i = 0; i < countOfRecords; i++) {
+		String[] response = new String[array.size()];
+		for (int i = 0; i < array.size(); i++) {
 			response[i] = array.get(i).toString();
 		}
 		return response;
