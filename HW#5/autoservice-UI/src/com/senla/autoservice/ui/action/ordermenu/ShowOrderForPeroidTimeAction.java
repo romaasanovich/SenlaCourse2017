@@ -1,6 +1,6 @@
 package com.senla.autoservice.ui.action.ordermenu;
 
-import com.senla.autoservice.ui.IAction;
+import com.senla.autoservice.ui.action.IAction;
 
 public class ShowOrderForPeroidTimeAction implements IAction {
 

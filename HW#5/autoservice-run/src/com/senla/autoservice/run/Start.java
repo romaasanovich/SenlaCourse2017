@@ -1,8 +1,9 @@
+package com.senla.autoservice.run;
 
 
 import com.senla.autoservice.api.Constants;
 import com.senla.autoservice.facade.Autoservice;
-import com.senla.autoservice.ui.MenuController;
+import com.senla.autoservice.ui.menu.MenuController;
 
 public final class Start {
 

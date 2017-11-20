@@ -1,5 +1,7 @@
 package com.senla.autoservice.facade;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -24,6 +26,7 @@ import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.ExceptionLogger;
 import com.senla.autoservice.utills.FileIO;
 import com.senla.autoservice.utills.IdGenerator;
+import com.senla.autoservice.utills.Printer;
 
 public class Autoservice {
 
@@ -32,6 +35,7 @@ public class Autoservice {
 	private static final String NO_ANY_ORDER = "Error. There is no any order\n";
 	private static final String NO_ANY_MASTERS = "Error. There is no any masters\n";
 	private static final String NO_ANY_MASTER = "Error. There is no any master\n";
+	private static final String FILE_NOT_FOUND = "Error. File not found\n";
 
 	GarageManager garageManager;
 	MasterManager masterManager;
@@ -94,8 +98,7 @@ public class Autoservice {
 		try {
 			places = garageManager.getFreePlaces();
 			return (Convert.getEntityStringFromArray(places));
-		}
-		catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			log.write(NO_ANY_PLACES, e);
 			return (NO_ANY_PLACES);
 		}
@@ -248,39 +251,41 @@ public class Autoservice {
 	///////////////////////////////////// File IO//////////////////////////////////
 
 	public void writeDataIntoFiles(String pathToMasters, String pathToPlaces) {
-		/*
-		 * TextFileWorker masterFileWorker = new TextFileWorker(pathToMasters);
-		 * TextFileWorker placeFileWorker = new TextFileWorker(pathToPlaces);
-		 * TextFileWorker workFileWorker = new TextFileWorker(pathToServices);
-		 */
-
 		ArrayList<Master> master = masterManager.getMasters().getListOfMasters();
 		ArrayList<Place> place = garageManager.getPlaces().getPlaces();
+		try {
+			FileIO.writeToFile(pathToMasters, Convert.getEntityStringArray(master));
+			FileIO.writeToFile(pathToPlaces, Convert.getEntityStringArray(place));
+		} catch (FileNotFoundException ex) {
+			log.write(FILE_NOT_FOUND, ex);
+			Printer.printMessage(FILE_NOT_FOUND);
+		}
 
-		FileIO.writeToFile(pathToMasters, Convert.getEntityStringArray(master));
-		FileIO.writeToFile(pathToPlaces, Convert.getEntityStringArray(place));
 	}
 
 	public void readDataFromFiles(String pathToMasters, String pathToPlaces) {
-		TextFileWorker garageFileWorker = new TextFileWorker(pathToPlaces);
-		TextFileWorker masterFileWorker = new TextFileWorker(pathToMasters);
+		try {
+			String[] garageArray = FileIO.readFrom(pathToPlaces);
+			String[] masterArray = FileIO.readFrom(pathToMasters);
 
-		for (String line : garageFileWorker.readFromFile()) {
-			addPlaceFromFile(Convert.fromStrToPlace(line));
-		}
-		GarageRepository garages = garageManager.getPlaces();
-		for (String line : masterFileWorker.readFromFile()) {
-			addMasterFromFile(Convert.formStringToMaster(line, garages));
-		}
-
-		ArrayList<Order> allOrd = masterManager.getAllOrders();
-
-		for (Order ord : allOrd) {
-			if (ord != null) {
-				orderManager.add(ord);
+			for (String line : garageArray) {
+				addPlaceFromFile(Convert.fromStrToPlace(line));
 			}
-		}
+			GarageRepository garages = garageManager.getPlaces();
+			for (String line : masterArray) {
+				addMasterFromFile(Convert.formStringToMaster(line, garages));
+			}
+			ArrayList<Order> allOrd = masterManager.getAllOrders();
 
+			for (Order ord : allOrd) {
+				if (ord != null) {
+					orderManager.add(ord);
+				}
+			}
+		} catch (FileNotFoundException ex) {
+			Printer.printMessage(FILE_NOT_FOUND);
+			log.write(FILE_NOT_FOUND, ex);
+		}
 	}
 
 	private void addPlaceFromFile(Place place) {
