@@ -1,0 +1,5 @@
+toAddPlaces: true
+toShiftDate:flase
+toDeleteOrders:false
+masterPath:../autoservice-data/src/masterSer.txt
+placePath:../autoservice-data/src/placeSer.txt
