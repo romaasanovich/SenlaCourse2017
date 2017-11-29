@@ -4,9 +4,30 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.senla.autoservice.facade.Autoservice;
-import com.senla.autoservice.ui.action.mastermenu.*;
-import com.senla.autoservice.ui.action.ordermenu.*;
-import com.senla.autoservice.ui.action.placemenu.*;
+import com.senla.autoservice.ui.action.mastermenu.AddMasterAction;
+import com.senla.autoservice.ui.action.mastermenu.ByAlphaAction;
+import com.senla.autoservice.ui.action.mastermenu.ByBusyingAction;
+import com.senla.autoservice.ui.action.mastermenu.ShowCloseFreeDateAction;
+import com.senla.autoservice.ui.action.mastermenu.ShowMasterCarrOutOnMasterAction;
+import com.senla.autoservice.ui.action.mastermenu.ShowMastersAction;
+import com.senla.autoservice.ui.action.ordermenu.ByDateOfCompletionAction;
+import com.senla.autoservice.ui.action.ordermenu.ByOrderDateAction;
+import com.senla.autoservice.ui.action.ordermenu.ByPriceAction;
+import com.senla.autoservice.ui.action.ordermenu.ByStartDateAction;
+import com.senla.autoservice.ui.action.ordermenu.CurrByDateOfCompletionAction;
+import com.senla.autoservice.ui.action.ordermenu.CurrByOrderDateAction;
+import com.senla.autoservice.ui.action.ordermenu.CurrByPriceAction;
+import com.senla.autoservice.ui.action.ordermenu.ShowCurrentOrderAction;
+import com.senla.autoservice.ui.action.ordermenu.ShowOrderCarriedOutOnMasterAction;
+import com.senla.autoservice.ui.action.ordermenu.ShowOrderForPeroidTimeAction;
+import com.senla.autoservice.ui.action.ordermenu.ShowOrdersAction;
+import com.senla.autoservice.ui.action.ordermenu.StatusBronedAction;
+import com.senla.autoservice.ui.action.ordermenu.StatusClosedAction;
+import com.senla.autoservice.ui.action.ordermenu.StatusDeletedAction;
+import com.senla.autoservice.ui.action.ordermenu.StatusOpenedAction;
+import com.senla.autoservice.ui.action.placemenu.AddPlace;
+import com.senla.autoservice.ui.action.placemenu.CountOfFreePlacesAction;
+import com.senla.autoservice.ui.action.placemenu.ShowFreePlacesAction;
 
 class Builder {
 	private Menu rootMenu;

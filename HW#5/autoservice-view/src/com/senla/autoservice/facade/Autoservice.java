@@ -1,11 +1,15 @@
 package com.senla.autoservice.facade;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import com.danco.training.TextFileWorker;
+import com.senla.autoservice.api.Constants;
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
@@ -20,10 +24,8 @@ import com.senla.autoservice.comparator.order.SortedByPrice;
 import com.senla.autoservice.manager.GarageManager;
 import com.senla.autoservice.manager.MasterManager;
 import com.senla.autoservice.manager.OrderManager;
-import com.senla.autoservice.manager.WorkManager;
 import com.senla.autoservice.repository.GarageRepository;
 import com.senla.autoservice.utills.Convert;
-import com.senla.autoservice.utills.ExceptionLogger;
 import com.senla.autoservice.utills.FileIO;
 import com.senla.autoservice.utills.IdGenerator;
 import com.senla.autoservice.utills.Printer;
@@ -36,20 +38,29 @@ public class Autoservice {
 	private static final String NO_ANY_MASTERS = "Error. There is no any masters\n";
 	private static final String NO_ANY_MASTER = "Error. There is no any master\n";
 	private static final String FILE_NOT_FOUND = "Error. File not found\n";
+	private static final String LOGGER_MSG = "Exception";
+	private static final String NO_LOGGER_FILE = "Cant find logger file";
 
-	GarageManager garageManager;
-	MasterManager masterManager;
-	OrderManager orderManager;
-	WorkManager workManager;
-	ExceptionLogger log = new ExceptionLogger();
+	private GarageManager garageManager;
+	private MasterManager masterManager;
+	private OrderManager orderManager;
+	private static final Logger logger = Logger.getLogger(Autoservice.class.getName());
 
 	private static Autoservice instance;
 
 	private Autoservice() {
+		try {
+			final Handler fileHandler = new FileHandler(Constants.LOG_PATH);
+			logger.setUseParentHandlers(false);
+			logger.addHandler(fileHandler);
+		} catch (final IOException e) {
+			Printer.printMessage(NO_LOGGER_FILE);
+			logger.log(Level.SEVERE, LOGGER_MSG, e);
+		}
+
 		garageManager = new GarageManager();
 		masterManager = new MasterManager();
 		orderManager = new OrderManager();
-		workManager = new WorkManager();
 	}
 
 	public static Autoservice getInstance() {
@@ -70,182 +81,167 @@ public class Autoservice {
 	///// add/////////
 	public String addPlace(String name) {
 		int id = IdGenerator.getFreeID(garageManager.getPlaces().getPlaces());
-		return (garageManager.add(new Place(id, name)));
+		return garageManager.add(new Place(id, name));
 	}
 
 	public String addMaster(String name) {
 		int id = IdGenerator.getFreeID(masterManager.getMasters().getListOfMasters());
-		return (masterManager.add(new Master(id, name, null, null)));
+		return masterManager.add(new Master(id, name, null, null));
 	}
 
 	public String addOrderToMaster(int id, Order order) {
 		if (masterManager.getMasters().getMasterById(id).addOrder(order)) {
-			return (orderManager.add(order));
+			return orderManager.add(order);
 		} else {
-			return ("Error!!!");
+			return "Error!!!";
 		}
 	}
 
 	public String addWorkToMaster(int id, Work work) {
 		masterManager.getMasters().getMasterById(id).addWork(work);
-		return ("Work is added");
+		return "Work is added";
 	}
 
-	////// Show Places////////////////
+	////// Get Places////////////////
 
-	public String showAllFreePlaces() {
+	public String getAllFreePlaces() {
 		ArrayList<Place> places = new ArrayList<>();
-		try {
-			places = garageManager.getFreePlaces();
-			return (Convert.getEntityStringFromArray(places));
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_PLACES, e);
-			return (NO_ANY_PLACES);
-		}
-
+		places = garageManager.getFreePlaces();
+		if (places != null) {
+			return Convert.getEntityStringFromArray(places);
+		} else
+			return NO_ANY_PLACES;
 	}
 
-	public String showCountOfFreePlacesOnDate(Date date) {
+	public String getCountOfFreePlacesOnDate(Date date) {
 		int count = masterManager.getCountOfFreePlacesOnDate(date);
 		if (count == 0) {
-			return (NO_ANY_PLACES);
+			return NO_ANY_PLACES;
 		} else {
-			return ("Count " + count);
+			return "Count " + count;
 		}
 	}
 
-	////////// Show Orders////////////
+	////////// Get Orders////////////
 
-	public String showOrdersByOrderDate() {
+	public String getOrdersByOrderDate() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByDateOfOrder());
-		try {
-			return (Convert.getEntityStringFromArray(orders));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 
 	}
 
-	public String showOrdersByDateOfCompletion() {
+	public String getOrdersByDateOfCompletion() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByDateOfCompletion());
-		try {
-			return (Convert.getEntityStringFromArray(orders));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showOrdersByDateOfStart() {
+	public String getOrdersByDateOfStart() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByPlannedStarting());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showOrdersByPrice() {
+	public String getOrdersByPrice() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByPrice());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	///// Show Current Orders////////////
+	///// Get Current Orders////////////
 
-	public String showCurrentOrdersByDateOfOrder() {
+	public String getCurrentOrdersByDateOfOrder() {
 		ArrayList<Order> orders = orderManager.getCurrentOrders(new SortedByDateOfOrder());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showCurrentOrdersByDateOfCompletion() {
+	public String getCurrentOrdersByDateOfCompletion() {
 		ArrayList<Order> orders = orderManager.getCurrentOrders(new SortedByDateOfCompletion());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showCurrentOrdersPrice() {
+	public String getCurrentOrdersPrice() {
 		ArrayList<Order> orders = orderManager.getCurrentOrders(new SortedByPrice());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public String showOrderCarriedOutByMaster(Master master) {
+	public String getOrderCarriedOutByMaster(Master master) {
 		Order order = orderManager.getOrderCarriedOutCurrentMaster(master);
-		try {
-			return (order.toString());
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDER, ex);
-			return (NO_ANY_ORDER);
+		if (order != null) {
+			return order.toString();
+		} else {
+			return NO_ANY_ORDER;
 		}
 	}
 
-	public String showOrdersForPeriodTime(StatusOrder status, Date fDate, Date sDate) {
+	public String getOrdersForPeriodTime(StatusOrder status, Date fDate, Date sDate) {
 		ArrayList<Order> orders = orderManager.getOdersForPeriodOfTime(status, fDate, sDate);
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	///////////// Show Masters///////////////////
+	///////////// Get Masters///////////////////
 
-	public String showMastersByBusying() {
+	public String getMastersByBusying() {
 		ArrayList<Master> masters = masterManager.getSortedMasters(new SortedByBusing());
-		try {
-			return ((Convert.getEntityStringFromArray(masters)));
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_MASTERS, e);
-			return (NO_ANY_MASTERS);
+		if (masters != null) {
+			return Convert.getEntityStringFromArray(masters);
+		} else {
+			return NO_ANY_MASTERS;
 		}
 	}
 
-	public String showMastersByAlpha() {
+	public String getMastersByAlpha() {
 		ArrayList<Master> masters = masterManager.getSortedMasters(new SortedByAlphabet());
-		try {
-			return ((Convert.getEntityStringFromArray(masters)));
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_MASTERS, e);
-			return (NO_ANY_MASTERS);
+		if (masters != null) {
+			return Convert.getEntityStringFromArray(masters);
+		} else {
+			return NO_ANY_MASTERS;
 		}
 	}
 
-	public String showMasterCarriedOutOrder(Order order) {
+	public String getMasterCarriedOutOrder(Order order) {
 		Master master = masterManager.getMasterCarriedOutCurrentOrder(order);
-		try {
-			return (master.toString());
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_MASTER, e);
-			return (NO_ANY_MASTER);
+		if (master != null) {
+			return master.toString();
+		} else {
+			return NO_ANY_MASTER;
 		}
 	}
 
-	////////////// Show Data////////////
-	public String showCloseFreeDate() {
-		return (masterManager.getFreeDate().toString());
+	////////////// get Data////////////
+	public String getCloseFreeDate() {
+		return masterManager.getFreeDate().toString();
 	}
 
 	///////////////////////////////////// File IO//////////////////////////////////
@@ -257,7 +253,7 @@ public class Autoservice {
 			FileIO.writeToFile(pathToMasters, Convert.getEntityStringArray(master));
 			FileIO.writeToFile(pathToPlaces, Convert.getEntityStringArray(place));
 		} catch (FileNotFoundException ex) {
-			log.write(FILE_NOT_FOUND, ex);
+			logger.log(Level.SEVERE, LOGGER_MSG, ex);
 			Printer.printMessage(FILE_NOT_FOUND);
 		}
 
@@ -265,8 +261,8 @@ public class Autoservice {
 
 	public void readDataFromFiles(String pathToMasters, String pathToPlaces) {
 		try {
-			String[] garageArray = FileIO.readFrom(pathToPlaces);
 			String[] masterArray = FileIO.readFrom(pathToMasters);
+			String[] garageArray = FileIO.readFrom(pathToPlaces);
 
 			for (String line : garageArray) {
 				addPlaceFromFile(Convert.fromStrToPlace(line));
@@ -284,7 +280,7 @@ public class Autoservice {
 			}
 		} catch (FileNotFoundException ex) {
 			Printer.printMessage(FILE_NOT_FOUND);
-			log.write(FILE_NOT_FOUND, ex);
+			logger.log(Level.SEVERE, LOGGER_MSG, ex);
 		}
 	}
 
