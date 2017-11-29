@@ -10,7 +10,7 @@ import com.senla.autoservice.utills.Reader;
 
 public class AddPlace implements IAction {
 
-	Autoservice autoservice = Autoservice.getInstance();
+	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
 	public void excute() {

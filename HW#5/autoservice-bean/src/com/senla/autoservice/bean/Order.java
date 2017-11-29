@@ -1,7 +1,7 @@
 package com.senla.autoservice.bean;
-import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 import com.senla.autoservice.api.Entity;

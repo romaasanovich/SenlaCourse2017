@@ -9,20 +9,11 @@ public final class Start {
 
     public static void main(final String[] args) {
 
-    	String pathToMasters;
-		String pathToPlaces;
-		
-		if (args.length > 0) {
-			pathToMasters = args[0];
-			pathToPlaces = args[1];
-		} else {
-			pathToMasters = Constants.PATH_TO_MASTERS;
-			pathToPlaces = Constants.PATH_TO_PLACES;
-		}
-        Autoservice.getInstance().readDataFromFiles(pathToMasters,pathToPlaces);
+    	
+        Autoservice.getInstance().readDataFromFiles(Constants.PATH_TO_MASTERS,Constants.PATH_TO_PLACES);
         final MenuController mc = new MenuController();
         mc.run();
-        Autoservice.getInstance().writeDataIntoFiles(pathToMasters,pathToPlaces);
+        Autoservice.getInstance().writeDataIntoFiles(Constants.PATH_TO_MASTERS,Constants.PATH_TO_PLACES);
 
     }
 }

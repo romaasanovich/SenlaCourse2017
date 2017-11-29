@@ -47,7 +47,8 @@ public class Convert {
 	
 	public final static Place fromStrToPlace(String line) {
 		String[] temp = line.split("-");
-		Place place = new Place(Integer.parseInt(temp[0]),temp[1]);
+		int id =Integer.parseInt(temp[0]);
+		Place place = new Place(id,temp[1]);
 		return place;
 	}
 	

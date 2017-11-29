@@ -1,10 +1,9 @@
 package com.senla.autoservice.comparator.order;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import com.senla.autoservice.bean.Order;
-
-import java.util.Comparator;
 
 public class SortedByPlannedStarting implements Comparator<Order>{
 	public int compare(Order obj1, Order obj2) {

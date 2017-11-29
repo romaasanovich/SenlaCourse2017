@@ -12,7 +12,7 @@ import com.senla.autoservice.utills.Printer;
 import com.senla.autoservice.utills.Reader;
 
 public class StatusDeletedAction implements IAction {
-	Autoservice autoservice = Autoservice.getInstance();
+	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
 	public void excute() {
@@ -21,7 +21,7 @@ public class StatusDeletedAction implements IAction {
 			Date fDate = Convert.fromStrToDate(date);
 			date = Reader.readline();
 			Date sDate = Convert.fromStrToDate(date);
-			Printer.printMessage(autoservice.showOrdersForPeriodTime(StatusOrder.Deleted, fDate, sDate));
+			Printer.printMessage(autoservice.getOrdersForPeriodTime(StatusOrder.Deleted, fDate, sDate));
 		} catch (final IOException e) {
 			Printer.printMessage(Constants.ERROR_WRONG_INPUT);
 		}
