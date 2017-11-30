@@ -6,10 +6,10 @@ import com.senla.autoservice.utills.Printer;
 
 public class ShowCloseFreeDateAction implements IAction {
 
-	Autoservice autoservice = Autoservice.getInstance();
+	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
 	public void excute() {
-		Printer.printMessage(autoservice.showCloseFreeDate());
+		Printer.printMessage(autoservice.getCloseFreeDate());
 	}
 }

@@ -68,8 +68,7 @@ public class OrderManager {
 		return null;
 	}
 
-	public ArrayList<Order> getOdersForPeriodOfTime(StatusOrder status, Date fDate, Date sDate)
-			throws NullPointerException {
+	public ArrayList<Order> getOdersForPeriodOfTime(StatusOrder status, Date fDate, Date sDate) throws NullPointerException  {
 		ArrayList<Order> temp = new ArrayList<Order>();
 		ArrayList<Order> a = orders.getListOfOrders();
 		for (int i = 0; i < a.size(); i++) {
@@ -82,13 +81,15 @@ public class OrderManager {
 		}
 
 		return temp;
+
 	}
 
 	public Order cloneOrder(int id) throws CloneNotSupportedException {
-		Order ord =(orders.getOrderById(id)).clone();
+		Order ord =(Order) (orders.getOrderById(id)).clone();
 		return ord;
 	}
 
+	
 	public String add(Order order) {
 		String message;
 		orders.add(order);

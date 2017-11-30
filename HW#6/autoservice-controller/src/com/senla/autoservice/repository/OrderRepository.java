@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.senla.autoservice.bean.Order;
 
-public class OrderRepository {
+public class OrderRepository extends ARepository {
 	private ArrayList<Order> orders;
 	private static OrderRepository instance;
 	static private int lastID;
