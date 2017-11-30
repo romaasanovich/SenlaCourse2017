@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import com.senla.autoservice.api.Entity;
 
-public class Master extends Entity {
+public class Master extends Entity  {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -590065500974890221L;
 	private boolean isWork;
 	private String name;
 	private ArrayList<Work> works;
@@ -71,11 +75,18 @@ public class Master extends Entity {
 
 	}
 	
+	public void update(Master master) {
+		this.name=master.getName();
+		this.isWork=master.getIsWork();
+		this.orders=master.getOrders();
+		this.works=master.getWorks();
+	}
+	
+	
 	@Override
-
 	public String toString() {
 		String message;
-		message = getId() + "-" + getName() + "-" + getIsWork() + "-";
+		message = getId() + ";" + getName() + ";" + getIsWork() + ";";
 		if (getWorks() != null) {
 			message += getWorks().size();
 			for (Work work : this.works) {
@@ -85,10 +96,11 @@ public class Master extends Entity {
 			message += "null";
 		}
 
-		message += "-";
+		message += ";";
 
 		if (getOrders() != null) {
 			message += getOrders().size();
+			message += ";";	
 			for (Order order : this.orders) {
 				message += order;
 			}
@@ -96,7 +108,7 @@ public class Master extends Entity {
 			message += "null";
 		}
 
+		message += ";";
 		return message;
 	}
-
 }

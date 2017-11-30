@@ -10,11 +10,11 @@ public class Menu {
 		this.name = name;
 	}
 
-	public ArrayList<MenuItem> getMenuItems() {
+	ArrayList<MenuItem> getMenuItems() {
 		return menuItems;
 	}
 
-	public String getName() {
+	String getName() {
 		return name;
 	}
 
@@ -25,16 +25,15 @@ public class Menu {
 	MenuItem getItem(final Integer index) {
 		return menuItems.get(index);
 	}
-	
+
 	@Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("-->").append(name).append("\n");
-        for(int i = 0; i < menuItems.size(); i++){
-            sb.append(String.format("%1$-3d %2$s \n", i+1, menuItems.get(i)));
-        }
-        return sb.toString();
-    }
-	
-	
+	public String toString() {
+		final StringBuilder sb = new StringBuilder();
+		sb.append("-->").append(name).append("\n");
+		for (int i = 0; i < menuItems.size(); i++) {
+			sb.append(String.format("%1$-3d %2$s \n", i + 1, menuItems.get(i)));
+		}
+		return sb.toString();
+	}
+
 }

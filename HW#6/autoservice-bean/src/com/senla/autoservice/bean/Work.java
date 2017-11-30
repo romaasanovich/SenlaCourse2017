@@ -3,6 +3,10 @@ package com.senla.autoservice.bean;
 import com.senla.autoservice.api.Entity;
 
 public class Work extends Entity {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2007601645810201382L;
 	private String nameOfService;
 	private double price;
 
@@ -29,7 +33,7 @@ public class Work extends Entity {
 		return nameOfService;
 	}
 
-	public void setNameOfService(String nameOfService) {
+	public void setNameOfService(String nameOfService){
 		this.nameOfService = nameOfService;
 	}
 
@@ -46,14 +50,13 @@ public class Work extends Entity {
 
 	public String toString() {
 		StringBuilder strBuild = new StringBuilder();
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(getId());
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(getNameOfService());
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(getPrice());
 		return strBuild.toString();
 	}
-
 
 }

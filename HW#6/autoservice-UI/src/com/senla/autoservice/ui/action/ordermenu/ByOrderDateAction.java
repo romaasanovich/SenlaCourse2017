@@ -5,10 +5,10 @@ import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Printer;
 
 public class ByOrderDateAction implements IAction {
-	Autoservice autoservice = Autoservice.getInstance();
+	private Autoservice autoservice = Autoservice.getInstance();
 	@Override
 	public void excute() {
-		Printer.printMessage(autoservice.showOrdersByOrderDate());
+		Printer.printMessage(autoservice.getOrdersByOrderDate());
 	}
 
 }

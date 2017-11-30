@@ -26,8 +26,8 @@ public class IdGenerator {
 		}
 		return count;
 	}
-
-	private static <T extends Entity> Boolean isFreeId(Integer id, ArrayList<T> arr) {
+	
+	private static <T extends Entity>  Boolean isFreeId(Integer id, ArrayList<T> arr) {
 		Integer countOfRecords = getCountOfRecords(arr);
 		if (countOfRecords > 0) {
 			for (int i = 0; i < countOfRecords; i++) {
@@ -39,4 +39,6 @@ public class IdGenerator {
 		return true;
 	}
 
+	
+	
 }

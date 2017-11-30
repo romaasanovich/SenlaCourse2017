@@ -4,7 +4,11 @@ import java.util.ArrayList;
 
 import com.senla.autoservice.bean.Master;
 
-public class MasterRepository {
+public class MasterRepository extends ARepository {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -5247493779773385231L;
 	private ArrayList<Master> masters;
 	private static MasterRepository instance;
 
@@ -25,6 +29,15 @@ public class MasterRepository {
 		return lastID;
 	}
 
+	public boolean isFreeId(final Integer id) {
+        for (final Master master : masters) {
+            if (id == master.getId()) {
+                return false;
+            }
+        }
+        return true;
+    }
+	
 	public ArrayList<Master> getListOfMasters() {
 		return masters;
 	}
@@ -38,6 +51,16 @@ public class MasterRepository {
 		return null;
 	}
 
+	public boolean update(final Master master) {
+        try{
+            final Master target = (Master) getMasterById(Integer.valueOf(master.getId()));
+            target.update(master);
+            return true;
+        } catch (final NumberFormatException e){
+            return false;
+        }
+    }
+	
 	public void add(Master obj) {
 		masters.add(obj);
 	}

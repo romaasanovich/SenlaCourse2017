@@ -6,10 +6,10 @@ import com.senla.autoservice.utills.Printer;
 
 public class ShowFreePlacesAction implements IAction {
 
-	Autoservice autoservice = Autoservice.getInstance();
+	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
 	public void excute() {
-		Printer.printMessage(autoservice.showAllFreePlaces());
+		Printer.printMessage(autoservice.getAllFreePlaces());
 	}
 }

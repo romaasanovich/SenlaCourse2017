@@ -11,16 +11,16 @@ import com.senla.autoservice.utills.Reader;
 
 public class ShowMasterCarrOutOnMasterAction implements IAction {
 
-	Autoservice autoservice = Autoservice.getInstance();
+	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
 	public void excute() {
 		try {
-			Printer.printMessage(autoservice.showOrdersByPrice());
+			Printer.printMessage(autoservice.getOrdersByPrice());
 			Printer.printMessage("Choose order");
 			int id = Reader.readInt();
 			Order ord = autoservice.getCurrentOrder(id);
-			autoservice.showMasterCarriedOutOrder(ord);
+			autoservice.getMasterCarriedOutOrder(ord);
 		} catch (final IOException e) {
 			Printer.printMessage(Constants.ERROR_WRONG_INPUT);
 		}

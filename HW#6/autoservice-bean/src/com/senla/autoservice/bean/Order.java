@@ -7,7 +7,11 @@ import java.util.GregorianCalendar;
 import com.senla.autoservice.api.Entity;
 import com.senla.autoservice.api.StatusOrder;
 
-public class Order extends Entity implements Cloneable {
+public class Order extends Entity implements Cloneable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3079190535246104538L;
 	private Master master;
 	private Work service;
 	private Place place;
@@ -35,6 +39,10 @@ public class Order extends Entity implements Cloneable {
 		super(0);
 	}
 	
+	public Order clone() throws CloneNotSupportedException{    
+        return (Order) super.clone();
+    }
+	
 	
 	public void setPlace(Place place) {
 		this.place=place;
@@ -56,11 +64,6 @@ public class Order extends Entity implements Cloneable {
 		return status;
 	}
 
-	public Order clone() throws CloneNotSupportedException{
-	     
-        return (Order) super.clone();
-    }
-	
 	public void setStatus(StatusOrder status) {
 		this.status = status;
 		if(status==StatusOrder.Broned||status==StatusOrder.Deleted||status==StatusOrder.Canceled || status==StatusOrder.Closed) {
@@ -110,20 +113,19 @@ public class Order extends Entity implements Cloneable {
 
 	public String toString() {
 		StringBuilder strBuild = new StringBuilder();
-		strBuild.append("-");
 		strBuild.append(getId());
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(getService().getId());
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(place.getId());
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(status.toString());
-		strBuild.append("-");
+		strBuild.append(";");
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy,MM,dd");
 		strBuild.append(dateFormat.format(dateOfOrder));
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(dateFormat.format(dateOfPlannedStart));
-		strBuild.append("-");
+		strBuild.append(";");
 		strBuild.append(dateFormat.format(dateOfCompletion));
 		return strBuild.toString();
 	}

@@ -26,10 +26,10 @@ public class MasterManager {
 		return masters;
 	}
 
-	public ArrayList<Master> getSortedMasters(Comparator<Master> comp) throws NullPointerException{
+	public ArrayList<Master> getSortedMasters(Comparator<Master> comp) throws NullPointerException {
 
-			Collections.sort(masters.getListOfMasters(), comp);
-			return masters.getListOfMasters();
+		Collections.sort(masters.getListOfMasters(), comp);
+		return masters.getListOfMasters();
 	}
 
 	public Master getMasterCarriedOutCurrentOrder(Order order) throws NullPointerException {
@@ -45,7 +45,7 @@ public class MasterManager {
 		return null;
 	}
 
-	public int getCountOfFreePlacesOnDate(Date date) throws NullPointerException{
+	public int getCountOfFreePlacesOnDate(Date date) throws NullPointerException {
 		int count = 0;
 		for (int i = 0; i < masters.getListOfMasters().size(); i++) {
 			Master master = masters.getListOfMasters().get(i);
@@ -83,23 +83,30 @@ public class MasterManager {
 		GregorianCalendar cl = new GregorianCalendar();
 		Date date = (Date) (cl).getTime();
 		for (int i = 0; i < MasterRepository.getLastID(); i++) {
-			
+
 			if (masters.getMasterById(i).getOrders() == null) {
 				return date;
 			}
 		}
 		for (;;) {
 			for (int i = 0; i < masters.getListOfMasters().size(); i++) {
-				for (int j = 0; j < masters.getMasterById(i).getOrders().size(); j++) {
-					if (!masters.getMasterById(i).getOrders().get(j).getDateOfCompletion().after(date)
-							&& !masters.getMasterById(i).getOrders().get(j).getDateOfCompletion().before(date)) {
-						return date;
+				if (masters.getListOfMasters().size() != 0) {
+					ArrayList<Order> orders = masters.getListOfMasters().get(i).getOrders();
+					if (orders != null) {
+						for (int j = 0; j < masters.getListOfMasters().get(i).getOrders().size(); j++) {
+							if (!masters.getMasterById(i).getOrders().get(j).getDateOfCompletion().after(date)
+									&& !masters.getMasterById(i).getOrders().get(j).getDateOfCompletion()
+											.before(date)) {
+								return date;
+							}
+						}
 					}
 				}
+				cl.add(Calendar.DAY_OF_YEAR, +1);
+				date = (Date) (cl).getTime();
 			}
-			cl.add(Calendar.DAY_OF_YEAR, +1);
-			date = (Date) (cl).getTime();
 		}
+
 	}
 
 	public String add(Master master) {

@@ -1,0 +1,7 @@
+toAddPlaces: true
+toDeleteOrders:false
+masterPath:../autoservice-view/src/com/senla/autoservice/facade/res/masterSer.txt
+placePath:../autoservice-view/src/com/senla/autoservice/facade/res/placeSer.txt
+masterCsvPath:../autoservice-view/src/com/senla/autoservice/facade/res/masters.csv
+placeCsvPath:../autoservice-view/src/com/senla/autoservice/facade/res/places.csv
+orderCsvPath:../autoservice-view/src/com/senla/autoservice/facade/res/orders.csv

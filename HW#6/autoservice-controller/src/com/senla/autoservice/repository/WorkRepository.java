@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import com.senla.autoservice.bean.Work;
 
-public class WorkRepository {
+public class WorkRepository extends ARepository{
 	private ArrayList<Work> serviceRepository;
 	private static WorkRepository instance;
 	static private int lastID;

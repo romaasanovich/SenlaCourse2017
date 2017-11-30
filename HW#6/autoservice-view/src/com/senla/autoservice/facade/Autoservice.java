@@ -1,12 +1,18 @@
 package com.senla.autoservice.facade;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.senla.autoservice.api.Constants;
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
@@ -21,10 +27,12 @@ import com.senla.autoservice.comparator.order.SortedByPrice;
 import com.senla.autoservice.manager.GarageManager;
 import com.senla.autoservice.manager.MasterManager;
 import com.senla.autoservice.manager.OrderManager;
-import com.senla.autoservice.manager.WorkManager;
+import com.senla.autoservice.repository.GarageRepository;
+import com.senla.autoservice.repository.MasterRepository;
 import com.senla.autoservice.utills.Convert;
-import com.senla.autoservice.utills.ExceptionLogger;
 import com.senla.autoservice.utills.IdGenerator;
+import com.senla.autoservice.utills.Printer;
+import com.senla.autoservice.utills.Serializer;
 import com.senla.autoservie.properties.Prop;
 
 public class Autoservice {
@@ -34,25 +42,35 @@ public class Autoservice {
 	private static final String NO_ANY_ORDER = "Error. There is no any order\n";
 	private static final String NO_ANY_MASTERS = "Error. There is no any masters\n";
 	private static final String NO_ANY_MASTER = "Error. There is no any master\n";
+	private static final String FILE_NOT_FOUND = "Error. File not found\n";
 	private static final String UNV_FUNCTION = "Error. This function is unvailable\n";
 	private static final String SCS_CHANGE = "Successful changed\n";
+	private static final String LOGGER_MSG = "Exception";
+	private static final String IMPORT_DONE = "Import Done \n";
+	private static final String SER_DONE = "Ser. Done \n";
+	private static final String DESER_DONE = "Deser. Done \n";
 
-	GarageManager garageManager;
-	MasterManager masterManager;
-	OrderManager orderManager;
-	WorkManager workManager;
-	ExceptionLogger log = new ExceptionLogger();
-	Prop prop = new Prop();
+	private GarageManager garageManager;
+	private MasterManager masterManager;
+	private OrderManager orderManager;
+	private Prop prop;
+	private static final Logger logger = Logger.getLogger(Autoservice.class.getName());
 
 	private static Autoservice instance;
 
 	private Autoservice() {
+		try {
+			final Handler fileHandler = new FileHandler(Constants.LOG_PATH);
+			logger.setUseParentHandlers(false);
+			logger.addHandler(fileHandler);
+		} catch (final IOException e) {
+			Printer.printMessage(Constants.NO_LOGGER_FILE);
+			logger.log(Level.SEVERE, Constants.LOGGER_MSG, e);
+		}
+		prop = new Prop();
 		garageManager = new GarageManager();
 		masterManager = new MasterManager();
 		orderManager = new OrderManager();
-		workManager = new WorkManager();
-
-		prop.getProp();
 	}
 
 	public static Autoservice getInstance() {
@@ -70,18 +88,13 @@ public class Autoservice {
 		return masterManager.getMasters().getListOfMasters().get(id);
 	}
 
-	public Place getCurPlace(int id) {
-		return garageManager.getPlaces().getPlaceById(id);
-	}
-
 	///// add/////////
-
 	public String addPlace(String name) {
-		String temp = prop.getProp().getProperty("toAddPlaces");
+		String temp = prop.getProp("toAddPlaces");
 		Boolean flag = Boolean.parseBoolean(temp);
 		if (flag) {
 			int id = IdGenerator.getFreeID(garageManager.getPlaces().getPlaces());
-			return (garageManager.add(new Place(id, name)));
+			return garageManager.add(new Place(id, name));
 		} else {
 			return UNV_FUNCTION;
 		}
@@ -89,230 +102,205 @@ public class Autoservice {
 
 	public String addMaster(String name) {
 		int id = IdGenerator.getFreeID(masterManager.getMasters().getListOfMasters());
-		return (masterManager.add(new Master(id, name, null, null)));
+		return masterManager.add(new Master(id, name, null, null));
 	}
 
 	public String addOrderToMaster(int id, Order order) {
 		if (masterManager.getMasters().getMasterById(id).addOrder(order)) {
-			return (orderManager.add(order));
+			return orderManager.add(order);
 		} else {
-			return ("Error!!!");
+			return "Error!!!";
 		}
 	}
 
 	public String addWorkToMaster(int id, Work work) {
 		masterManager.getMasters().getMasterById(id).addWork(work);
-		return ("Work is added");
+		return "Work is added";
 	}
 
-	////// Show Places////////////////
+	////// Get Places////////////////
 
-	public String showAllFreePlaces() {
+	public String getAllFreePlaces() {
 		ArrayList<Place> places = new ArrayList<>();
-		try {
-			places = garageManager.getFreePlaces();
-			return (Convert.getEntityStringFromArray(places));
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_PLACES, e);
-			return (NO_ANY_PLACES);
-		}
-
+		places = garageManager.getFreePlaces();
+		if (places != null) {
+			return Convert.getEntityStringFromArray(places);
+		} else
+			return NO_ANY_PLACES;
 	}
 
-	public String showCountOfFreePlacesOnDate(Date date) {
+	public String getCountOfFreePlacesOnDate(Date date) {
 		int count = masterManager.getCountOfFreePlacesOnDate(date);
 		if (count == 0) {
-			return (NO_ANY_PLACES);
+			return NO_ANY_PLACES;
 		} else {
-			return ("Count " + count);
+			return "Count " + count;
 		}
 	}
 
-	////////// Show Orders////////////
+	////////// Get Orders////////////
 
-	public String showOrdersByOrderDate() {
+	public String getOrdersByOrderDate() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByDateOfOrder());
-		try {
-			return (Convert.getEntityStringFromArray(orders));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 
 	}
 
-	public String showOrdersByDateOfCompletion() {
+	public String getOrdersByDateOfCompletion() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByDateOfCompletion());
-		try {
-			return (Convert.getEntityStringFromArray(orders));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showOrdersByDateOfStart() {
+	public String getOrdersByDateOfStart() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByPlannedStarting());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showOrdersByPrice() {
+	public String getOrdersByPrice() {
 		ArrayList<Order> orders = orderManager.getAllSortedOrder(new SortedByPrice());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	///// Show Current Orders////////////
+	///// Get Current Orders////////////
 
-	public String showCurrentOrdersByDateOfOrder() {
+	public String getCurrentOrdersByDateOfOrder() {
 		ArrayList<Order> orders = orderManager.getCurrentOrders(new SortedByDateOfOrder());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showCurrentOrdersByDateOfCompletion() {
+	public String getCurrentOrdersByDateOfCompletion() {
 		ArrayList<Order> orders = orderManager.getCurrentOrders(new SortedByDateOfCompletion());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
-	public String showCurrentOrdersPrice() {
+	public String getCurrentOrdersPrice() {
 		ArrayList<Order> orders = orderManager.getCurrentOrders(new SortedByPrice());
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 
-	public String showOrderCarriedOutByMaster(Master master) {
+	public String getOrderCarriedOutByMaster(Master master) {
 		Order order = orderManager.getOrderCarriedOutCurrentMaster(master);
-		try {
-			return (order.toString());
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDER, ex);
-			return (NO_ANY_ORDER);
+		if (order != null) {
+			return order.toString();
+		} else {
+			return NO_ANY_ORDER;
 		}
 	}
 
-	public String showOrdersForPeriodTime(StatusOrder status, Date fDate, Date sDate) {
+	public String getOrdersForPeriodTime(StatusOrder status, Date fDate, Date sDate) {
 		ArrayList<Order> orders = orderManager.getOdersForPeriodOfTime(status, fDate, sDate);
-		try {
-			return ((Convert.getEntityStringFromArray(orders)));
-		} catch (NullPointerException ex) {
-			log.write(NO_ANY_ORDERS, ex);
-			return (NO_ANY_ORDERS);
-		}
-	}
-
-	///////////// Show Masters///////////////////
-
-	public String showMastersByBusying() {
-		ArrayList<Master> masters = masterManager.getSortedMasters(new SortedByBusing());
-		try {
-			return ((Convert.getEntityStringFromArray(masters)));
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_MASTERS, e);
-			return (NO_ANY_MASTERS);
-		}
-	}
-
-	public String showMastersByAlpha() {
-		ArrayList<Master> masters = masterManager.getSortedMasters(new SortedByAlphabet());
-		try {
-			return ((Convert.getEntityStringFromArray(masters)));
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_MASTERS, e);
-			return (NO_ANY_MASTERS);
-		}
-	}
-
-	public String showMasterCarriedOutOrder(Order order) {
-		Master master = masterManager.getMasterCarriedOutCurrentOrder(order);
-		try {
-			return (master.toString());
-		} catch (NullPointerException e) {
-			log.write(NO_ANY_MASTER, e);
-			return (NO_ANY_MASTER);
+		if (orders != null) {
+			return Convert.getEntityStringFromArray(orders);
+		} else {
+			return NO_ANY_ORDERS;
 		}
 	}
 
 	////////////////// Clone Order/////////////////
 
-	public Order cloneOrder(int id) throws CloneNotSupportedException {
+	public Order cloneOrder(int id) {
 		Order ord = null;
-		ord = orderManager.cloneOrder(id);
-		return ord;
+		try {
+			ord = orderManager.cloneOrder(id);
+			return ord;
+		} catch (CloneNotSupportedException ex) {
+			logger.log(Level.SEVERE, Constants.LOGGER_MSG, ex);
+			return null;
+		}
+
 	}
 
-	/////// ChangeStatus///////////
-	public String changeStatusOpened(int id) {
-		orderManager.changeStatusOfOrder(id, StatusOrder.Opened);
-		return SCS_CHANGE;
-	}
+	///////////// Get Masters///////////////////
 
-	public String changeStatusClosed(int id) {
-		orderManager.changeStatusOfOrder(id, StatusOrder.Closed);
-		return SCS_CHANGE;
-	}
-
-	public String changeStatusBroned(int id) {
-		orderManager.changeStatusOfOrder(id, StatusOrder.Broned);
-		return SCS_CHANGE;
-	}
-
-	public String changeStatusDeleted(int id) {
-		String temp = prop.getProp().getProperty("toDeleteOrders");
-		Boolean flag = Boolean.parseBoolean(temp);
-		if (flag) {
-			orderManager.changeStatusOfOrder(id, StatusOrder.Deleted);
-			return SCS_CHANGE;
-		} else
-			return UNV_FUNCTION;
-	}
-
-	////////////// Show Date////////////
-	public String showCloseFreeDate() {
-
-		return (masterManager.getFreeDate().toString());
-	}
-
-	///////////////////////////////////// File IO//////////////////////////////////
-	public void serialMaster() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(
-				new FileOutputStream(prop.getProp().getProperty("masterPath")))) {
-			oos.writeObject(masterManager.getMasters().getListOfMasters());
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+	public String getMastersByBusying() {
+		ArrayList<Master> masters = masterManager.getSortedMasters(new SortedByBusing());
+		if (masters != null) {
+			return Convert.getEntityStringFromArray(masters);
+		} else {
+			return NO_ANY_MASTERS;
 		}
 	}
 
-	public void deserialMaster() {
-		ArrayList<Master> newMaster;
-		try (ObjectInputStream ois = new ObjectInputStream(
-				new FileInputStream(prop.getProp().getProperty("masterPath")))) {
-			newMaster = (ArrayList<Master>) ois.readObject();
-			for (Master master : newMaster) {
+	public String getMastersByAlpha() {
+		ArrayList<Master> masters = masterManager.getSortedMasters(new SortedByAlphabet());
+		if (masters != null) {
+			return Convert.getEntityStringFromArray(masters);
+		} else {
+			return NO_ANY_MASTERS;
+		}
+	}
+
+	public String getMasterCarriedOutOrder(Order order) {
+		Master master = masterManager.getMasterCarriedOutCurrentOrder(order);
+		if (master != null) {
+			return master.toString();
+		} else {
+			return NO_ANY_MASTER;
+		}
+	}
+
+	/////// ChangeStatus///////////
+	public String changeStatus(int id, StatusOrder status) {
+		Boolean flag = true;
+		if (status == StatusOrder.Deleted) {
+			String temp = prop.getProp("toDeleteOrders");
+			flag = Boolean.parseBoolean(temp);
+		}
+		if (flag) {
+			orderManager.changeStatusOfOrder(id,status);
+			return SCS_CHANGE;
+		} else
+			return UNV_FUNCTION;
+
+	}
+	////////////// get Data////////////
+	public String getCloseFreeDate() {
+		return masterManager.getFreeDate().toString();
+	}
+
+	///////////////////////////////////// File IO//////////////////////////////////
+
+	public void Serialize() {
+		Serializer.serialize(masterManager.getMasters(), prop.getProp("masterPath"));
+		Serializer.serialize(garageManager.getPlaces(), prop.getProp("placePath"));
+	}
+
+	public String Deserialize() {
+		MasterRepository newMaster = Serializer.deserialMaster(prop.getProp("masterPath"));
+		if (newMaster == null) {
+			return FILE_NOT_FOUND;
+		} else {
+			for (Master master : newMaster.getListOfMasters()) {
 				masterManager.add(master);
 			}
 			ArrayList<Order> allOrd = masterManager.getAllOrders();
@@ -321,32 +309,209 @@ public class Autoservice {
 					orderManager.add(ord);
 				}
 			}
+		}
+		GarageRepository newPlaces = Serializer.deserialPlaces(prop.getProp("placePath"));
+		if (newPlaces == null) {
+			return FILE_NOT_FOUND;
+		}
+		for (Place place : newPlaces.getPlaces()) {
+			garageManager.add(place);
+		}
+		return DESER_DONE;
+	}
 
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+	public String exportMaster() {
+		String pathMaster = prop.getProp("masterCsvPath");
+		ArrayList<Master> masters = masterManager.getMasters().getListOfMasters();
+		try (FileWriter writer = new FileWriter(pathMaster, false)) {
+			writer.write(Convert.getEntityStringFromArray(masters));
+			return IMPORT_DONE;
+		} catch (IOException io) {
+			logger.log(Level.SEVERE, Constants.LOGGER_MSG, io);
+			return FILE_NOT_FOUND;
 		}
 	}
 
-	public void serialPlaces() {
-		try (ObjectOutputStream oos = new ObjectOutputStream(
-				new FileOutputStream(prop.getProp().getProperty("placePath")))) {
-			oos.writeObject(garageManager.getPlaces().getPlaces());
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+	public String exportPlaces() {
+		String pathPlace = prop.getProp("placeCsvPath");
+		ArrayList<Place> places = garageManager.getPlaces().getPlaces();
+		try (FileWriter writer = new FileWriter(pathPlace, false)) {
+			writer.write(Convert.getEntityStringFromArray(places));
+			return IMPORT_DONE;
+		} catch (IOException io) {
+			logger.log(Level.SEVERE, Constants.LOGGER_MSG, io);
+			return FILE_NOT_FOUND;
 		}
 	}
 
-	public void deserialPlaces() {
-		ArrayList<Place> newPlaces;
-		try (ObjectInputStream ois = new ObjectInputStream(
-				new FileInputStream(prop.getProp().getProperty("placePath")))) {
-			newPlaces = (ArrayList<Place>) ois.readObject();
-			for (Place place : newPlaces) {
-				garageManager.add(place);
+	public void importPlaces() {
+		String pathPlace = prop.getProp("placeCsvPath");
+		try (BufferedReader br = new BufferedReader(new FileReader(pathPlace))) {
+			String line;
+			Boolean flag = true;
+			while ((line = br.readLine()) != null) {
+				if (flag) {
+					flag = false;
+					continue;
+				}
+				try {
+					final String[] fields = line.split(";");
+					if (garageManager.getPlaces().isFreeId(Integer.valueOf(fields[0]))) {
+						garageManager.getPlaces().add(fields);
+					} else {
+						garageManager.getPlaces().update(fields);
+					}
+				} catch (final NumberFormatException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+		} catch (IOException ex) {
+			logger.log(Level.SEVERE, Constants.LOGGER_MSG, ex);
 		}
 	}
+
+	public void importMasters() {
+		String pathPlace = prop.getProp("masterCsvPath");
+		try (BufferedReader br = new BufferedReader(new FileReader(pathPlace))) {
+			String line;
+			Boolean flag = true;
+			while ((line = br.readLine()) != null) {
+				if (flag) {
+					flag = false;
+					continue;
+				}
+				try {
+					final String[] fields = line.split(";");
+					if (masterManager.getMasters().isFreeId(Integer.valueOf(fields[0]))) {
+						masterManager.getMasters().add(fromStringToMaster(fields, garageManager.getPlaces()));
+					} else {
+						masterManager.getMasters().update(fromStringToMaster(fields, garageManager.getPlaces()));
+					}
+				} catch (final NumberFormatException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException ex) {
+			logger.log(Level.SEVERE, Constants.LOGGER_MSG, ex);
+		}
+
+	}
+
+	private static Master fromStringToMaster(String temp[], GarageRepository placeList) {
+		int pos = 0;
+		// String[] temp = line.split(";");
+		int id = Integer.valueOf(temp[0]);
+		String name = temp[1];
+		if (temp[3].equals("null")) {
+			Master master = new Master(id, name, null, null);
+			return master;
+
+		} else {
+			ArrayList<Work> works = new ArrayList<Work>(Integer.parseInt(temp[3]));
+			pos = 4;
+			for (int i = 0; i < Integer.parseInt(temp[3]); i++) {
+				Work work = new Work();
+				work.setId(Integer.parseInt(temp[pos++]));
+				work.setNameOfService(temp[pos++]);
+				work.setPrice(Double.parseDouble(temp[pos++]));
+				works.add(work);
+			}
+			if (temp[4] != "null") {
+				int size = Integer.parseInt(temp[pos++]);
+				ArrayList<Order> orders = new ArrayList<Order>(size);
+				// pos++;
+				for (int i = 0; i < size; i++) {
+					Order ord = new Order();
+					ord.setId(Integer.parseInt(temp[pos++]));
+					ord.setService(works.get(Integer.parseInt(temp[pos++])));
+					ord.setPlace(placeList.getPlaceById(Integer.parseInt(temp[pos++])));
+					ord.setStatus(Convert.fromStrToStatus(temp[pos++]));
+					String[] tempDate = temp[pos++].split(",");
+					GregorianCalendar grCal = new GregorianCalendar(Integer.parseInt(tempDate[0]),
+							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
+					Date date = (Date) (grCal).getTime();
+					ord.setDateOfOrder(date);
+					tempDate = temp[pos++].split(",");
+					GregorianCalendar grCalDateStart = new GregorianCalendar(Integer.parseInt(tempDate[0]),
+							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
+					ord.setDateOfPlannedStart((grCalDateStart).getTime());
+
+					tempDate = temp[pos++].split(",");
+					GregorianCalendar grCalDateCompl = new GregorianCalendar(Integer.parseInt(tempDate[0]),
+							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
+					ord.setDateOfCompletion((grCalDateCompl).getTime());
+					orders.add(ord);
+				}
+				Master master = new Master(id, name, works, orders);
+				for (Order order : master.getOrders()) {
+					order.setMaster(master);
+				}
+				return master;
+			} else {
+				Master master = new Master(id, name, works, null);
+				return master;
+			}
+		}
+
+	}
+
+	private static Master fromStringToMaster(String line, GarageRepository placeList) {
+		int pos = 0;
+		String[] temp = line.split(";");
+		int id = Integer.valueOf(temp[0]);
+		String name = temp[1];
+		if (temp[3].equals("null")) {
+			Master master = new Master(id, name, null, null);
+			return master;
+
+		} else {
+			ArrayList<Work> works = new ArrayList<Work>(Integer.parseInt(temp[3]));
+			pos = 4;
+			for (int i = 0; i < Integer.parseInt(temp[3]); i++) {
+				Work work = new Work();
+				work.setId(Integer.parseInt(temp[pos++]));
+				work.setNameOfService(temp[pos++]);
+				work.setPrice(Double.parseDouble(temp[pos++]));
+				works.add(work);
+			}
+			if (temp[4] != "null") {
+				int size = Integer.parseInt(temp[pos++]);
+				ArrayList<Order> orders = new ArrayList<Order>(size);
+				// pos++;
+				for (int i = 0; i < size; i++) {
+					Order ord = new Order();
+					ord.setId(Integer.parseInt(temp[pos++]));
+					ord.setService(works.get(Integer.parseInt(temp[pos++])));
+					ord.setPlace(placeList.getPlaceById(Integer.parseInt(temp[pos++])));
+					ord.setStatus(Convert.fromStrToStatus(temp[pos++]));
+					String[] tempDate = temp[pos++].split(",");
+					GregorianCalendar grCal = new GregorianCalendar(Integer.parseInt(tempDate[0]),
+							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
+					Date date = (Date) (grCal).getTime();
+					ord.setDateOfOrder(date);
+					tempDate = temp[pos++].split(",");
+					GregorianCalendar grCalDateStart = new GregorianCalendar(Integer.parseInt(tempDate[0]),
+							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
+					ord.setDateOfPlannedStart((grCalDateStart).getTime());
+
+					tempDate = temp[pos++].split(",");
+					GregorianCalendar grCalDateCompl = new GregorianCalendar(Integer.parseInt(tempDate[0]),
+							Integer.parseInt(tempDate[1]), Integer.parseInt(tempDate[2]));
+					ord.setDateOfCompletion((grCalDateCompl).getTime());
+					orders.add(ord);
+				}
+				Master master = new Master(id, name, works, orders);
+				for (Order order : master.getOrders()) {
+					order.setMaster(master);
+				}
+				return master;
+			} else {
+				Master master = new Master(id, name, works, null);
+				return master;
+			}
+		}
+
+	}
+
 
 }

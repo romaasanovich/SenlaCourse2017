@@ -17,18 +17,10 @@ public class GarageManager {
 		places = GarageRepository.getInstance();
 	}
 
-	public GarageRepository getPlaces() {
+	public GarageRepository getPlaces()  {
 		return places;
 	}
-	
-	public Place getFreePlace() {
-		for(Place pl: places.getPlaces()) {
-			if(pl.isBusy()==false) {
-				return pl; 
-			}
-		}
-		return null;
-	}
+
 
 	public ArrayList<Place> getSortedPlaces(Comparator<Place> comp)throws NullPointerException{
 		Collections.sort(places.getPlaces(), comp);

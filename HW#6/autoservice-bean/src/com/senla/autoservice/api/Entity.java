@@ -2,7 +2,7 @@ package com.senla.autoservice.api;
 
 import java.io.Serializable;
 
-public class Entity implements Serializable	{
+public class Entity implements Serializable {
 	private int id;
 	
 	public Entity(Integer id) {
