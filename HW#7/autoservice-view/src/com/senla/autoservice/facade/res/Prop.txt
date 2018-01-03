@@ -1,0 +1,11 @@
+toAddPlaces: true
+toDeleteOrders:false
+masterPath:../autoservice-view/src/com/senla/autoservice/facade/res/masterSer.txt
+placePath:../autoservice-view/src/com/senla/autoservice/facade/res/placeSer.txt
+masterCsvPath:../autoservice-view/src/com/senla/autoservice/facade/res/masters.csv
+placeCsvPath:../autoservice-view/src/com/senla/autoservice/facade/res/places.csv
+orderCsvPath:../autoservice-view/src/com/senla/autoservice/facade/res/orders.csv
+csvFolderPath:../autoservice-view/src/com/senla/autoservice/facade/res/
+com.senla.autoservice.api.IGarageManager:com.senla.autoservice.manager.GarageManager
+com.senla.autoservice.api.IMasterManager:com.senla.autoservice.manager.MasterManager
+com.senla.autoservice.api.IOrderManager:com.senla.autoservice.manager.OrderManager
