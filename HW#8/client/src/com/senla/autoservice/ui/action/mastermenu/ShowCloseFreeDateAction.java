@@ -1,0 +1,18 @@
+package com.senla.autoservice.ui.action.mastermenu;
+
+import com.senla.autoservice.api.constants.MethodsName;
+import com.senla.autoservice.ui.action.IAction;
+import com.senla.autoservice.utills.Printer;
+import com.senla.autoservice.utills.request.RequestBuilder;
+import com.senla.autoservice.utills.response.Response;
+
+public class ShowCloseFreeDateAction implements IAction {
+
+
+	@Override
+	public void excute() {
+		client.sendRequest(new RequestBuilder().setMethod(MethodsName.GET_CLOSE_DATE).create());
+		final Response resp = client.getResponce();
+		Printer.printMessage(resp.getOutput());
+	}
+}
