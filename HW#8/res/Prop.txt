@@ -1,0 +1,11 @@
+toAddPlaces: true
+toDeleteOrders:false
+masterPath:../res/masterSer.txt
+placePath:../res/placeSer.txt
+masterCsvPath:../res/masters.csv
+placeCsvPath:../res/places.csv
+orderCsvPath:../res/orders.csv
+csvFolderPath:../res/
+com.senla.autoservice.api.IGarageManager:com.senla.autoservice.manager.GarageManager
+com.senla.autoservice.api.IMasterManager:com.senla.autoservice.manager.MasterManager
+com.senla.autoservice.api.IOrderManager:com.senla.autoservice.manager.OrderManager
