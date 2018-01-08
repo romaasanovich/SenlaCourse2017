@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.api.constants.MethodsName;
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Printer;
 import com.senla.autoservice.utills.Reader;
@@ -14,7 +15,7 @@ public class AddMasterAction implements IAction {
 
 
 	@Override
-	public void excute() {
+	public void excute(Client client) {
 		try {
 			String name = Reader.readline();
 			client.sendRequest(new RequestBuilder().setMethod(MethodsName.ADD_MASTER)

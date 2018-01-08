@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import com.senla.autoservice.api.ARepository;
 import com.senla.autoservice.repository.GarageRepository;
 import com.senla.autoservice.repository.MasterRepository;
+import com.senla.autoservice.repository.OrderRepository;
 
 public class Serializer {
 
@@ -18,19 +19,6 @@ public class Serializer {
 	private static final String FILE_DOEST_EXISTS = "File doesn't exists";
 	private static final String CLASS_IS_NOT_SERIALIZABLE = "Class is not serializable";
 
-/*	public static <T extends ARepository> T deserialize(final String path) {
-		T result = null;
-		try (FileInputStream fileStream = new FileInputStream(path);
-				ObjectInputStream objectStream = new ObjectInputStream(fileStream)) {
-			result = (T) objectStream.readObject();
-		} catch (final IOException e) {
-			logger.log(Level.SEVERE, FILE_DOEST_EXISTS, e);
-		} catch (final ClassNotFoundException e) {
-			logger.log(Level.SEVERE, CLASS_IS_NOT_SERIALIZABLE, e);
-		}
-		return result;
-	}*/
-	
 	public static <T extends ARepository> void serialize(final T repository, final String path) {
 		try (FileOutputStream fileStream = new FileOutputStream(path);
 				ObjectOutputStream objectStream = new ObjectOutputStream(fileStream)) {
@@ -45,22 +33,29 @@ public class Serializer {
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
 			newMaster = (MasterRepository) ois.readObject();
 			return newMaster;
-		}
-		catch(Exception ex)
-		{
+		} catch (Exception ex) {
 			logger.log(Level.SEVERE, FILE_DOEST_EXISTS, ex);
 			return null;
 		}
 	}
-	
+
+	public static OrderRepository deserialOrder(String path) {
+		OrderRepository newOrder;
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
+			newOrder = (OrderRepository) ois.readObject();
+			return newOrder;
+		} catch (Exception ex) {
+			logger.log(Level.SEVERE, FILE_DOEST_EXISTS, ex);
+			return null;
+		}
+	}
+
 	public static GarageRepository deserialPlaces(String path) {
 		GarageRepository newPlace;
 		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path))) {
 			newPlace = (GarageRepository) ois.readObject();
 			return newPlace;
-		}
-		catch(Exception ex)
-		{
+		} catch (Exception ex) {
 			logger.log(Level.SEVERE, FILE_DOEST_EXISTS, ex);
 			return null;
 		}

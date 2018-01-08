@@ -60,6 +60,9 @@ public class Work extends AEntity {
 
 	@Override
 	public void update(AEntity entity) {
-		}
+		
+		
+	}
+
 
 }

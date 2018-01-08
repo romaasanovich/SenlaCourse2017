@@ -1,7 +1,5 @@
 package com.senla.autoservice.manager;
 
-import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -15,14 +13,25 @@ import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.constants.PropConstants;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
+import com.senla.autoservice.bean.Place;
+import com.senla.autoservice.bean.Work;
+import com.senla.autoservice.csvimporexport.CsvExportImport;
 import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.repository.MasterRepository;
+import com.senla.autoservice.utills.IdGenerator;
+import com.senla.autoservice.utills.Serializer;
 
-public class MasterManager implements IManager{
+public class MasterManager implements IManager {
 
 	private static final String MASTER_WAS_SUCCESFUL_ADDED = "Master was succesful added";
-
+	private static final String ORDER_WAS_SUCCESFUL_ADDED = "Order was succesful added";
+	private static final String WORK_WAS_SUCCESFUL_ADDED = "Work was succesful added";
+	private static final String DESER_DONE = "Deser. Done \n";
+	private static final String FILE_NOT_FOUND = "Error. File not found\n";
+	
+	
 	private MasterRepository masters;
+	CsvExportImport<Master> importerExporterPlaces = new CsvExportImport<Master>();
 
 	public MasterManager() {
 		masters = MasterRepository.getInstance();
@@ -115,21 +124,51 @@ public class MasterManager implements IManager{
 
 	}
 
+	public String deserializeMasters() {
+		MasterRepository newMaster = Serializer.deserialMaster(Prop.getProp("masterPath"));
+		if (newMaster == null) {
+			return FILE_NOT_FOUND;
+		} else {
+			for (Master master : newMaster.getListOfMasters()) {
+				add(master);
+			}
+			return DESER_DONE;
+		}
+	}
+
+	public String addOrderToMaster(int id, Order order) {
+		String message;
+		order.setId(IdGenerator.getFreeID(((Master) getMasters().findById(id)).getOrders()));
+		((Master) getMasters().findById(id)).getOrders().add(order);
+		message = ORDER_WAS_SUCCESFUL_ADDED;
+		return message;
+	}
+
+	public String addWorkToMaster(int id, Work work) {
+		String message;
+		work.setId(IdGenerator.getFreeID(((Master) getMasters().findById(id)).getWorks()));
+		((Master) getMasters().findById(id)).getWorks().add(work);
+		message = WORK_WAS_SUCCESFUL_ADDED;
+		return message;
+	}
+
 	public String add(Master master) {
 		String message;
+		int id = IdGenerator.getFreeID(getMasters().getListOfMasters());
+		master.setId(id);
 		masters.add(master);
 		message = MASTER_WAS_SUCCESFUL_ADDED;
 		return message;
 	}
-	
-	
+
 	@Override
-	public void exportToCSV() throws IOException,NoSuchFieldException, IllegalAccessException {
-		masters.csvExport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER));
+	public void exportToCSV() throws Exception {
+		
+		importerExporterPlaces.csvExport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER),masters.getListOfMasters());
 	}
 
 	@Override
-    public void importFromCSV() throws IOException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
-		masters.csvImport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), Master.class);
+    public void importFromCSV() throws Exception {
+		importerExporterPlaces.csvImport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), Place.class);
     }
 }

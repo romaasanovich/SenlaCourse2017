@@ -38,20 +38,10 @@ public class WorkRepository extends ARepository{
 		return null;
 	}
 
-	/*public Work findById(Integer id) {
-		for (Work entity : serviceRepository) {
-			if (entity == null) {
-				break;
-			}
-			if (entity.getId() == id) {
-				return entity;
-			}
-		}
-		return null;
-	}*/
+	
 
-	/*public void add(AEntity obj) {
-		serviceRepository.add((Work) obj);
-		lastID = serviceRepository.size() - 1;
-	}*/
+	public void add(AEntity obj) {
+		repository.add((Work) obj);
+		lastID = repository.size() - 1;
+	}
 }
