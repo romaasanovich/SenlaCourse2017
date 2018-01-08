@@ -5,6 +5,7 @@ import java.io.IOException;
 import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.api.constants.MethodsName;
 import com.senla.autoservice.bean.Master;
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.facade.Autoservice;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Printer;
@@ -16,7 +17,7 @@ public class ShowOrderCarriedOutOnMasterAction implements IAction {
 	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
-	public void excute() {
+	public void excute(Client client) {
 		try {
 			Printer.printMessage(autoservice.getMastersByAlpha());
 			Printer.printMessage("Choose order");

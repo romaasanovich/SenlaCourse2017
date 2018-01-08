@@ -2,6 +2,7 @@ package com.senla.autoservice.repository;
 
 import java.util.ArrayList;
 
+import com.senla.autoservice.api.AEntity;
 import com.senla.autoservice.api.ARepository;
 import com.senla.autoservice.bean.Order;
 
@@ -32,17 +33,9 @@ public class OrderRepository extends ARepository {
 		return (ArrayList<Order>) repository;
 	}
 
-	/*public Order getOrderById(int id) {
-		for (int i = 0; i < orders.size(); i++) {
-			if (orders.get(i).getId() == id) {
-				return orders.get(i);
-			}
-		}
-		return null;
+
+	public void add(AEntity obj) {
+		repository.add((Order) obj);
+		lastID = repository.size() - 1;
 	}
-*/
-	/*public void add(AEntity obj) {
-		orders.add((Order) obj);
-		lastID = orders.size() - 1;
-	}*/
 }

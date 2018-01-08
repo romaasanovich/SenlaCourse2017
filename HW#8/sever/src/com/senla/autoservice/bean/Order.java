@@ -1,4 +1,5 @@
 package com.senla.autoservice.bean;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -7,7 +8,7 @@ import java.util.GregorianCalendar;
 import com.senla.autoservice.api.AEntity;
 import com.senla.autoservice.api.StatusOrder;
 
-public class Order extends AEntity{
+public class Order extends AEntity {
 	/**
 	 * 
 	 */
@@ -19,35 +20,30 @@ public class Order extends AEntity{
 	private Date dateOfOrder;
 	private Date dateOfPlannedStart;
 	private Date dateOfCompletion;
-	
-	public Order(Master master, int id, Work service,Place place, StatusOrder status,int fDay, int sDay) {
+
+	public Order(Master master, int id, Work service, Place place, StatusOrder status, int fDay, int sDay) {
 		super(id);
 		this.setMaster(master);
-		this.service=service;
-		this.place=place;
+		this.service = service;
+		this.place = place;
 		setStatus(status);
-		dateOfOrder=(Date) (new GregorianCalendar()).getTime();
+		dateOfOrder = (Date) (new GregorianCalendar()).getTime();
 		GregorianCalendar grCalDateStart = new GregorianCalendar();
-		grCalDateStart.add(Calendar.DAY_OF_YEAR,fDay);
-		dateOfCompletion=(Date)(grCalDateStart).getTime();
+		grCalDateStart.add(Calendar.DAY_OF_YEAR, fDay);
+		dateOfCompletion = (Date) (grCalDateStart).getTime();
 		GregorianCalendar grCalDateCompl = new GregorianCalendar();
-		grCalDateCompl.add(Calendar.DAY_OF_YEAR,sDay);
-		dateOfCompletion=(Date)(grCalDateCompl).getTime();	
+		grCalDateCompl.add(Calendar.DAY_OF_YEAR, sDay);
+		dateOfCompletion = (Date) (grCalDateCompl).getTime();
 	}
-	
+
 	public Order() {
 		super(0);
 	}
-	
-	public Order clone() throws CloneNotSupportedException{    
-        return (Order) super.clone();
-    }
-	
-	
+
 	public void setPlace(Place place) {
-		this.place=place;
+		this.place = place;
 	}
-	
+
 	public Work getService() {
 		return service;
 	}
@@ -59,17 +55,17 @@ public class Order extends AEntity{
 	public Place getPlace() {
 		return place;
 	}
-		
+
 	public StatusOrder getStatus() {
 		return status;
 	}
 
 	public void setStatus(StatusOrder status) {
 		this.status = status;
-		if(status==StatusOrder.Broned||status==StatusOrder.Deleted||status==StatusOrder.Canceled || status==StatusOrder.Closed) {
+		if (status == StatusOrder.Broned || status == StatusOrder.Deleted || status == StatusOrder.Canceled
+				|| status == StatusOrder.Closed) {
 			getPlace().setBusy(false);
-		}
-		else if(status==StatusOrder.Opened) {
+		} else if (status == StatusOrder.Opened) {
 			getPlace().setBusy(true);
 		}
 	}
@@ -89,7 +85,7 @@ public class Order extends AEntity{
 	public void setDateOfCompletion(Date dateOfCompletion) {
 		this.dateOfCompletion = dateOfCompletion;
 	}
-	
+
 	public Date getDateOfPlannedStart() {
 		return dateOfPlannedStart;
 	}
@@ -106,9 +102,6 @@ public class Order extends AEntity{
 		this.master = master;
 	}
 
-
-	
-	
 	@Override
 
 	public String toString() {
@@ -130,10 +123,14 @@ public class Order extends AEntity{
 		return strBuild.toString();
 	}
 
-	@Override
-	public void update(AEntity entity) {	
+	// @Override
+	public Order cloneOrder() throws CloneNotSupportedException {
+		return (Order) this.clone();
 	}
 
-	
+	@Override
+	public void update(AEntity entity) {
+
+	}
 
 }

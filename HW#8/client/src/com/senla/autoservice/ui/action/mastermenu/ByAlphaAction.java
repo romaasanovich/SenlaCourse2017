@@ -1,6 +1,7 @@
 package com.senla.autoservice.ui.action.mastermenu;
 
 import com.senla.autoservice.api.constants.MethodsName;
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.facade.Autoservice;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Printer;
@@ -12,7 +13,7 @@ public class ByAlphaAction implements IAction {
 	private Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
-	public void excute() {
+	public void excute(Client client) {
 		Printer.printMessage(autoservice.getMastersByBusying());
 		client.sendRequest(new RequestBuilder().setMethod(MethodsName.GET_MASTER_ALPHA).create());
 		final Response resp = client.getResponce();

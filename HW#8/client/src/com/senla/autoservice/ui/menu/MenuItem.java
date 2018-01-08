@@ -1,5 +1,6 @@
 package com.senla.autoservice.ui.menu;
 
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
 
 public class MenuItem {
@@ -13,8 +14,8 @@ public class MenuItem {
 		this.action = action;
 	}
 
-	void doAction() {
-		action.excute();
+	void doAction(Client client) {
+		action.excute(client);
 	}
 
 	Menu getNextMenu() {

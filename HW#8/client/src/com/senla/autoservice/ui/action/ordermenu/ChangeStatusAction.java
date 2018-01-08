@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.constants.MethodsName;
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.facade.Autoservice;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Convert;
@@ -16,7 +17,7 @@ public class ChangeStatusAction implements IAction {
 	Autoservice autoservice = Autoservice.getInstance();
 
 	@Override
-	public void excute() {
+	public void excute(Client client) {
 		int id = 0;
 		Printer.printMessage(autoservice.getOrdersByPrice() + "\n");
 		Printer.printMessage("Choose order");

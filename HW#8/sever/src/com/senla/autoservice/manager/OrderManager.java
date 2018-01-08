@@ -5,16 +5,25 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import com.senla.autoservice.api.IManager;
 import com.senla.autoservice.api.StatusOrder;
+import com.senla.autoservice.api.constants.PropConstants;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
+import com.senla.autoservice.csvimporexport.CsvExportImport;
+import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.repository.OrderRepository;
+import com.senla.autoservice.utills.Serializer;
 
-public class OrderManager {
+public class OrderManager implements IManager {
 	private OrderRepository orders;
 
 	private static final String ORDER_WAS_SUCCESFUL_ADDED = "Order was succesful added";
-
+	private static final String DESER_DONE = "Deser. Done \n";
+	private static final String FILE_NOT_FOUND = "Error. File not found\n";
+	
+	CsvExportImport<Order> importerExporterPlaces = new CsvExportImport<Order>();
+	
 	public OrderManager() {
 		orders = OrderRepository.getInstance();
 	}
@@ -83,10 +92,22 @@ public class OrderManager {
 		return temp;
 
 	}
+	
+	public String deserealizeOrders() {
+		OrderRepository newOrder = Serializer.deserialOrder(Prop.getProp("orderPath"));
+		if (newOrder == null) {
+			return FILE_NOT_FOUND;
+		} else {
+			for (Order order : newOrder.getListOfOrders()) {
+				add(order);
+			}
+			return DESER_DONE;
+		}
+	}
 
 	public Order cloneOrder(int id)  throws CloneNotSupportedException {
-		//Order ord =(Order) orders.findById(id).clone();
-		return new Order();
+		Order ord =((Order) orders.findById(id)).cloneOrder();
+		return ord;
 	}
 
 	
@@ -96,4 +117,17 @@ public class OrderManager {
 		message = ORDER_WAS_SUCCESFUL_ADDED;
 		return message;
 	}
+	
+
+	@Override
+	public void exportToCSV() throws Exception {
+		
+		importerExporterPlaces.csvExport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER),orders.getListOfOrders());
+	}
+
+	@Override
+    public void importFromCSV() throws Exception {
+		importerExporterPlaces.csvImport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), Order.class);
+    }
+	
 }

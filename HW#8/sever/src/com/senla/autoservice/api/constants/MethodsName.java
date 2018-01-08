@@ -23,6 +23,11 @@ public class MethodsName {
 	public static final String  GET_MASTER_BY_ORDER= "getMasterCarriedOutOrder";
 	public static final String  CHANGE_STATUS= "changeStatus";
 	public static final String  GET_CLOSE_DATE= "getCloseFreeDate";
-	public static final String EXPORT_TO_CSV = "exportToCSV";
-    public static final String IMPORT_FROM_CSV = "importFromCSV";
+	public static final String EXPORT_MASTER_CSV = "exportMasterCSV";
+	public static final String EXPORT_ORDER_CSV = "exportOrderCSV";
+	public static final String EXPORT_PLACE_CSV = "exportPlaceCSV";
+    public static final String IMPORT_PLACE_CSV = "importPlaceCSV";
+    public static final String IMPORT_ORDER_CSV = "importOrderCSV";
+    public static final String IMPORT_MASTER_CSV = "importMasterCSV";
+    public static final String EXIT = "exit";
 }

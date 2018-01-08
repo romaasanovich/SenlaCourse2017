@@ -47,7 +47,8 @@ public class Place extends AEntity {
 		this.isBusy = isBusy;
 	}
 
-	public void update(final String [] fields) {
+	public void update(String line) {
+		String [] fields = line.split(";");
 		this.name=fields[1];
 	}
 	

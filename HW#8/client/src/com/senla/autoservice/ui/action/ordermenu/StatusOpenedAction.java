@@ -6,6 +6,7 @@ import java.util.Date;
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.api.constants.MethodsName;
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.Printer;
@@ -16,7 +17,7 @@ import com.senla.autoservice.utills.response.Response;
 public class StatusOpenedAction implements IAction {
 
 	@Override
-	public void excute() {
+	public void excute(Client client) {
 		try {
 			String date = Reader.readline();
 			Date fDate = Convert.fromStrToDate(date);

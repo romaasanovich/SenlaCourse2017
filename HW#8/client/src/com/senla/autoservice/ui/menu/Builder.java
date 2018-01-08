@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.senla.autoservice.facade.Autoservice;
+import com.senla.autoservice.ui.action.ExitAction;
+import com.senla.autoservice.ui.action.NoAction;
 import com.senla.autoservice.ui.action.mastermenu.AddMasterAction;
 import com.senla.autoservice.ui.action.mastermenu.ByAlphaAction;
 import com.senla.autoservice.ui.action.mastermenu.ByBusyingAction;
@@ -115,12 +117,10 @@ class Builder {
 	}
 
 	private void rootMenuInit(final Menu placeMenu, final Menu orderMenu, final Menu masterMenu) {
-		rootMenu.addItem(new MenuItem("Place Menu", placeMenu, () -> {
-		}));
-		rootMenu.addItem(new MenuItem("Order Menu", orderMenu, () -> {
-		}));
-		rootMenu.addItem(new MenuItem("Master Menu", masterMenu, () -> {
-		}));
+		rootMenu.addItem(new MenuItem("Place Menu", placeMenu, new NoAction()));
+		rootMenu.addItem(new MenuItem("Order Menu", orderMenu, new NoAction()));
+		rootMenu.addItem(new MenuItem("Master Menu", masterMenu, new NoAction()));
+		rootMenu.addItem(new MenuItem("Exit", rootMenu, new ExitAction()));
 	}
 
 }

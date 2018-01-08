@@ -5,6 +5,7 @@ import java.util.Date;
 
 import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.api.constants.MethodsName;
+import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.Printer;
@@ -16,7 +17,7 @@ public class CountOfFreePlacesAction implements IAction {
 
 
 	@Override
-	public void excute() {
+	public void excute(Client client) {
 		try {
 			String date = Reader.readline();
 			Date curDate = Convert.fromStrToDate(date);
