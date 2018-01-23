@@ -12,7 +12,7 @@ public abstract class AEntity implements Serializable,Cloneable {
 	}
 
 
-	public void setId(int i) {
+	public void setId(Integer i) {
 		this.id=i;
 	}
 

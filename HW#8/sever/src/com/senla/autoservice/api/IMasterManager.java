@@ -20,7 +20,7 @@ public interface IMasterManager extends IManager {
 	public String addOrderToMaster(int id, Order order);
 	public String addWorkToMaster(int id, Work work);
 	public void importFromCSV() throws Exception;
-	public void exportFromCSV() throws Exception;
+	public void exportToCSV() throws Exception;
 	public String deserializeMasters();
 }
 

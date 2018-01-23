@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.Date;
 
 import com.senla.autoservice.api.IManager;
+import com.senla.autoservice.api.IOrderManager;
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.constants.PropConstants;
 import com.senla.autoservice.bean.Master;
@@ -15,7 +16,7 @@ import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.repository.OrderRepository;
 import com.senla.autoservice.utills.Serializer;
 
-public class OrderManager implements IManager {
+public class OrderManager implements IOrderManager {
 	private OrderRepository orders;
 
 	private static final String ORDER_WAS_SUCCESFUL_ADDED = "Order was succesful added";
@@ -93,7 +94,7 @@ public class OrderManager implements IManager {
 
 	}
 	
-	public String deserealizeOrders() {
+	public String deserializeOrders() {
 		OrderRepository newOrder = Serializer.deserialOrder(Prop.getProp("orderPath"));
 		if (newOrder == null) {
 			return FILE_NOT_FOUND;

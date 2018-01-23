@@ -9,6 +9,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import com.senla.autoservice.api.IManager;
+import com.senla.autoservice.api.IMasterManager;
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.constants.PropConstants;
 import com.senla.autoservice.bean.Master;
@@ -21,15 +22,14 @@ import com.senla.autoservice.repository.MasterRepository;
 import com.senla.autoservice.utills.IdGenerator;
 import com.senla.autoservice.utills.Serializer;
 
-public class MasterManager implements IManager {
+public class MasterManager implements IMasterManager{
 
 	private static final String MASTER_WAS_SUCCESFUL_ADDED = "Master was succesful added";
-	private static final String ORDER_WAS_SUCCESFUL_ADDED = "Order was succesful added";
+
 	private static final String WORK_WAS_SUCCESFUL_ADDED = "Work was succesful added";
 	private static final String DESER_DONE = "Deser. Done \n";
 	private static final String FILE_NOT_FOUND = "Error. File not found\n";
-	
-	
+
 	private MasterRepository masters;
 	CsvExportImport<Master> importerExporterPlaces = new CsvExportImport<Master>();
 
@@ -137,10 +137,7 @@ public class MasterManager implements IManager {
 	}
 
 	public String addOrderToMaster(int id, Order order) {
-		String message;
-		order.setId(IdGenerator.getFreeID(((Master) getMasters().findById(id)).getOrders()));
-		((Master) getMasters().findById(id)).getOrders().add(order);
-		message = ORDER_WAS_SUCCESFUL_ADDED;
+		String message = masters.addOrderToMaster(id, order);
 		return message;
 	}
 
@@ -163,12 +160,12 @@ public class MasterManager implements IManager {
 
 	@Override
 	public void exportToCSV() throws Exception {
-		
-		importerExporterPlaces.csvExport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER),masters.getListOfMasters());
+
+		importerExporterPlaces.csvExport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), masters.getListOfMasters());
 	}
 
 	@Override
-    public void importFromCSV() throws Exception {
+	public void importFromCSV() throws Exception {
 		importerExporterPlaces.csvImport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), Place.class);
-    }
+	}
 }

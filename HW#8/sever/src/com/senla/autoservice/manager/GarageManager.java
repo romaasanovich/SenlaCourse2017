@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import com.senla.autoservice.api.IGarageManager;
 import com.senla.autoservice.api.IManager;
 import com.senla.autoservice.api.constants.PropConstants;
 import com.senla.autoservice.bean.Place;
@@ -14,7 +15,7 @@ import com.senla.autoservice.repository.GarageRepository;
 import com.senla.autoservice.utills.IdGenerator;
 import com.senla.autoservice.utills.Serializer;
 
-public class GarageManager implements IManager {
+public class GarageManager implements IGarageManager {
 	
 	private static final String PLACE_WAS_SUCCESFUL_ADDED = "Place was succesful added";
 	private static final String DESER_DONE = "Deser. Done \n";
@@ -68,7 +69,7 @@ public class GarageManager implements IManager {
 		return message;
 	}
 	
-	public String deserealizePlaces() {
+	public String deserializePlaces() {
 		GarageRepository newPlaces = Serializer.deserialPlaces(Prop.getProp("placePath"));
 		if (newPlaces == null) {
 			return FILE_NOT_FOUND;

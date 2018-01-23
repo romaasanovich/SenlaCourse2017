@@ -20,6 +20,6 @@ public interface IOrderManager extends IManager {
 	public Order cloneOrder(int id) throws CloneNotSupportedException;
 	public String add(Order order);
 	public void importFromCSV() throws Exception;
-	public void exportFromCSV() throws Exception;
+	public void exportToCSV() throws Exception;
 	public String deserializeOrders();
 }
