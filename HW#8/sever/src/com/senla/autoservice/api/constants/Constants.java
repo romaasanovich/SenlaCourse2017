@@ -8,9 +8,9 @@ public class Constants {
 	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
 	public static final String ERROR_NO_SUCH_RECORD = "Error. No such record";
 	public static final String ERROR_WRONG_INPUT = "Error.Wrong input!!";
-	public static final String PATH_TO_PROP = "..\\sever\\src\\com\\senla\\autoservice\\facade\\Prop.txt";
+	public static final String PATH_TO_PROP = "..\\data\\Prop.txt";
 	public static final String ERROR_FILE_NOT_FOUND = "Error.File not found !!!";
-	public static final String LOG_PATH = "..\\sever\\src\\com\\senla\\autoservice\\facade\\Log.txt";
+	public static final String LOG_PATH = "..\\data\\Log.txt";
 	public static final String CLONED_IMPOSSIBLE = "Error.CLoned is imposible\n";
 	public static final String NO_LOGGER_FILE = "Cant find logger file";
 	public static final String LOGGER_MSG = "Exception";

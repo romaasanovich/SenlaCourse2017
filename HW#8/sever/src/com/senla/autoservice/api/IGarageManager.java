@@ -13,6 +13,6 @@ public interface IGarageManager extends IManager{
 	public ArrayList<Place> getSortedFreePlaces(Comparator<Place> comp);
 	public String add(Place place) ;
 	public void importFromCSV() throws Exception;
-	public void exportFromCSV() throws Exception;
+	public void exportToCSV() throws Exception;
 	public String deserializePlaces();
 }

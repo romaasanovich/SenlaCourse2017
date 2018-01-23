@@ -50,9 +50,12 @@ public class Autoservice {
 			Printer.printMessage(Constants.NO_LOGGER_FILE);
 			logger.log(Level.SEVERE, Constants.LOGGER_MSG, e);
 		}
-		orderManager = DependencyInjector.getInstance(IOrderManager.class);
-		garageManager = DependencyInjector.getInstance(IGarageManager.class);
-		masterManager = DependencyInjector.getInstance(IMasterManager.class);
+		orderManager = DependencyInjector.getInstance(OrderManager.class);
+		garageManager = DependencyInjector.getInstance(GarageManager.class);
+		masterManager = DependencyInjector.getInstance(MasterManager.class);
+		/*orderManager =  new OrderManager();
+		garageManager =new GarageManager();
+		masterManager = new MasterManager();*/
 		deserialize();
 	}
 
