@@ -53,9 +53,6 @@ public class Autoservice {
 		orderManager = DependencyInjector.getInstance(OrderManager.class);
 		garageManager = DependencyInjector.getInstance(GarageManager.class);
 		masterManager = DependencyInjector.getInstance(MasterManager.class);
-		/*orderManager =  new OrderManager();
-		garageManager =new GarageManager();
-		masterManager = new MasterManager();*/
 		deserialize();
 	}
 
