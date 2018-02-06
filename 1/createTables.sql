@@ -15,7 +15,6 @@ CREATE TABLE `test`.`laptop` (
   `screen` TINYINT NULL,
   PRIMARY KEY (`code`));
   
-  
 ALTER TABLE `test`.`laptop` 
 ADD CONSTRAINT `LaptopModelPK`
   FOREIGN KEY (`model`)
@@ -45,7 +44,7 @@ CREATE TABLE `test`.`pc` (
     ON UPDATE NO ACTION);
     
     
-CREATE TABLE `senla_firstprinter`.`printer` (
+CREATE TABLE `test`.`printer` (
   `code` INT NOT NULL,
   `model` VARCHAR(50) NULL,
   `color` VARCHAR(1) NULL,

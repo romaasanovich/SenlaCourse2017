@@ -51,7 +51,7 @@ WHERE
         WHERE
             type = 'Laptop')
         AND type = 'PC';
-        
+
 #9
 SELECT DISTINCT product.maker 
 FROM pc 
@@ -96,7 +96,7 @@ FROM
     pc p1, pc p2
 WHERE
     p1.speed = p2.speed AND p1.ram = p2.ram AND p1.model > p2.model;
-    
+  
 #17 	
 select distinct p.type,p.model,l.speed  
 from laptop l join product p on l.model=p.model
@@ -183,7 +183,6 @@ WHERE price = (
   FROM Printer 
   ) t2 
  )	;
-
 
 #25
 SELECT DISTINCT maker 
