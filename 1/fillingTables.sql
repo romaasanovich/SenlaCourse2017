@@ -1,4 +1,3 @@
-CREATE SCHEMA `test`;
 insert into `test`.`product`(maker,model,type) values('1corp','laptop1','laptop');
 insert into `test`.`product`(maker,model,type) values('1corp','laptop2','laptop');
 insert into `test`.`product`(maker,model,type) values('1corp','laptop3','laptop');

@@ -1,3 +1,4 @@
+CREATE SCHEMA `test`;
 CREATE TABLE `test`.`product` (
   `maker` VARCHAR(10) NULL,
   `model` VARCHAR(50) NOT NULL,
