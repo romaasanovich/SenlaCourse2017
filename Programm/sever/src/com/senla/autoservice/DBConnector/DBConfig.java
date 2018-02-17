@@ -1,4 +1,4 @@
-package com.senla.autoservice.DBConnection;
+package com.senla.autoservice.DBConnector;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

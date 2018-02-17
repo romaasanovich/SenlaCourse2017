@@ -3,7 +3,6 @@ package com.senla.autoservice.ui.action.ordermenu;
 import java.io.IOException;
 import java.util.Date;
 
-import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.api.constants.MethodsName;
 import com.senla.autoservice.client.Client;

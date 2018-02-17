@@ -1,18 +1,13 @@
 package com.senla.autoservice.bean;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import com.senla.autoservice.api.AEntity;
 import com.senla.autoservice.api.StatusOrder;
 
 public class Order extends AEntity {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3079190535246104538L;
+
 	private Master master;
 	private Work service;
 	private Place place;
@@ -21,19 +16,15 @@ public class Order extends AEntity {
 	private Date dateOfPlannedStart;
 	private Date dateOfCompletion;
 
-	public Order(Master master, int id, Work service, Place place, StatusOrder status, int fDay, int sDay) {
+	public Order(int id, Master master,  Work service, Place place, StatusOrder status,Date orderDate,Date plannedDate, Date dateOfCompl) {
 		super(id);
 		this.setMaster(master);
 		this.service = service;
 		this.place = place;
 		setStatus(status);
-		dateOfOrder = (Date) (new GregorianCalendar()).getTime();
-		GregorianCalendar grCalDateStart = new GregorianCalendar();
-		grCalDateStart.add(Calendar.DAY_OF_YEAR, fDay);
-		dateOfCompletion = (Date) (grCalDateStart).getTime();
-		GregorianCalendar grCalDateCompl = new GregorianCalendar();
-		grCalDateCompl.add(Calendar.DAY_OF_YEAR, sDay);
-		dateOfCompletion = (Date) (grCalDateCompl).getTime();
+		dateOfOrder = orderDate;
+		dateOfPlannedStart=plannedDate;
+		dateOfCompletion = dateOfCompl;
 	}
 
 	public Order() {
@@ -107,18 +98,18 @@ public class Order extends AEntity {
 	public String toString() {
 		StringBuilder strBuild = new StringBuilder();
 		strBuild.append(getId());
-		strBuild.append(";");
+		strBuild.append(",");
 		strBuild.append(getService().getId());
-		strBuild.append(";");
+		strBuild.append(",");
 		strBuild.append(place.getId());
-		strBuild.append(";");
+		strBuild.append(",");
 		strBuild.append(status.toString());
-		strBuild.append(";");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy,MM,dd");
+		strBuild.append(",");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		strBuild.append(dateFormat.format(dateOfOrder));
-		strBuild.append(";");
+		strBuild.append(",");
 		strBuild.append(dateFormat.format(dateOfPlannedStart));
-		strBuild.append(";");
+		strBuild.append(",");
 		strBuild.append(dateFormat.format(dateOfCompletion));
 		return strBuild.toString();
 	}

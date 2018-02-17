@@ -1,49 +1,47 @@
 package com.senla.autoservice.manager;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
+import com.senla.autoservice.DBConnector.DBConnector;
 import com.senla.autoservice.api.IMasterManager;
-import com.senla.autoservice.api.constants.PropConstants;
 import com.senla.autoservice.bean.Master;
-import com.senla.autoservice.bean.Place;
-import com.senla.autoservice.csvimporexport.CsvExportImport;
 import com.senla.autoservice.dao.MasterDao;
-import com.senla.autoservice.properties.Prop;
 
 public class MasterManager implements IMasterManager {
 
-
-
 	private MasterDao masters;
-	CsvExportImport<Master> importerExporterPlaces = new CsvExportImport<Master>();
+	private DBConnector con;
 
 	public MasterManager() {
 		masters = MasterDao.getInstance();
+		con = DBConnector.getInstance();
 	}
 
-	public String getSortedMasters(String comp) throws NullPointerException, SQLException {
-		return masters.getListOfMasters(comp);
+	public ArrayList<Master> getSortedMasters(String comp) throws SQLException {
+		return masters.getListOfMasters(comp, con.getConnnection());
 	}
 
-	public String getMasterCarriedOutCurrentOrder(int idOrder) throws NullPointerException, SQLException {
-		return masters.getMasterCarriedOutOrder(idOrder);
+	public Master getMasterCarriedOutCurrentOrder(int idOrder) throws SQLException {
+		return masters.getMasterCarriedOutOrder(idOrder, con.getConnnection());
 	}
-
 
 	public String add(String name) throws SQLException {
-		return masters.add(name);
+		return masters.add(name, con.getConnnection());
 	}
-
-	@Override
-	public void exportToCSV() throws Exception {
-
-		importerExporterPlaces.csvExport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), masters.getListOfMasters());
-	}
-
-	@Override
-	public void importFromCSV() throws Exception {
-		importerExporterPlaces.csvImport(Prop.getProp(PropConstants.PATH_TO_CSV_FOLDER), Place.class);
-	}
-
 	
+	public void changeBusying(int id) throws SQLException {
+		masters.changeBusying(con.getConnnection(), false, id);
+	}
+
+	@Override
+	public void exportFromCSV() throws Exception {
+
+	}
+
+	@Override
+	public void importToCSV() throws Exception {
+		masters.importMastersToCSV(con.getConnnection());
+	}
+
 }

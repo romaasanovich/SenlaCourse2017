@@ -1,13 +1,11 @@
 package com.senla.autoservice.ui.action.placemenu;
 
 import java.io.IOException;
-import java.util.Date;
 
 import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.api.constants.MethodsName;
 import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
-import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.Printer;
 import com.senla.autoservice.utills.Reader;
 import com.senla.autoservice.utills.request.RequestBuilder;

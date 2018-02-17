@@ -3,8 +3,8 @@ package com.senla.autoservice.api;
 public interface IManager  {
 
 
-    void exportToCSV() throws Exception;
+    void exportFromCSV() throws Exception;
 
-    void importFromCSV() throws Exception;
+    void importToCSV() throws Exception;
 
 }

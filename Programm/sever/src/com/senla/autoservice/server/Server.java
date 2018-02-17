@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import org.apache.log4j.BasicConfigurator;
-
 import com.senla.autoservice.api.constants.Constants;
 
 public class Server {
@@ -13,7 +11,6 @@ public class Server {
 	public static void main(final String[] args) throws IOException {
 
 		System.out.println("Server started!!!");
-		BasicConfigurator.configure();
 		try (ServerSocket server = new ServerSocket(Constants.SERVER_PORT)) {
 			while (true) {
 				final Socket socket = server.accept();

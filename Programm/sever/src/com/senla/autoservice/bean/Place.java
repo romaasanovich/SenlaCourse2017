@@ -10,8 +10,6 @@ import com.senla.autoservice.api.AEntity;
 
 public class Place extends AEntity {
 	
-	private static final long serialVersionUID = 905979503861186645L;
-	
 	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber=1)
 	private String name;
 	
@@ -23,9 +21,16 @@ public class Place extends AEntity {
 		isBusy = false;
 	}
 
+	public Place(Integer id, String name, boolean isBusy) {
+		super(id);
+		this.name = name;
+		this.isBusy = isBusy;
+	}
+
+	
 	public Place(String line) {
 		super(0);
-		String [] temp= line.split(";");
+		String [] temp= line.split(",");
 		setId(Integer.valueOf(temp[0]));
 		this.name=temp[1];
 		isBusy = false;
@@ -39,7 +44,7 @@ public class Place extends AEntity {
 		return this.name;
 	}
 
-	public boolean isBusy() {
+	public boolean getIsBusy() {
 		return isBusy;
 	}
 
@@ -48,15 +53,14 @@ public class Place extends AEntity {
 	}
 
 	public void update(String line) {
-		String [] fields = line.split(";");
+		String [] fields = line.split(",");
 		this.name=fields[1];
 	}
 	
 	@Override
-	
 	public String toString() {
 		String s;
-		s=getId()+";"+getName();
+		s=getId()+","+getName()+","+getIsBusy();
 		return s;
 	}
 

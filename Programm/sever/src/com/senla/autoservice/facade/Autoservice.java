@@ -2,11 +2,11 @@ package com.senla.autoservice.facade;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.sql.Savepoint;
 
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import com.senla.autoservice.DBConnection.DBConnection;
+import com.senla.autoservice.DBConnector.DBConnector;
 import com.senla.autoservice.api.IGarageManager;
 import com.senla.autoservice.api.IMasterManager;
 import com.senla.autoservice.api.IOrderManager;
@@ -18,6 +18,7 @@ import com.senla.autoservice.manager.MasterManager;
 import com.senla.autoservice.manager.OrderManager;
 import com.senla.autoservice.manager.WorkManager;
 import com.senla.autoservice.properties.Prop;
+import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.DependencyInjector;
 
 public class Autoservice {
@@ -26,8 +27,8 @@ public class Autoservice {
 	private IMasterManager masterManager;
 	private IOrderManager orderManager;
 	private IWorkManager workManager;
-	private static final Logger logger = Logger.getLogger(Autoservice.class.getName());
-	com.senla.autoservice.DBConnection.DBConnection sqlConnection;
+	private static final Logger logger =  LogManager.getRootLogger();
+	DBConnector sqlConnection;
 
 	private static Autoservice instance;
 
@@ -114,7 +115,7 @@ public class Autoservice {
 	public String getAllFreePlaces() {
 		try {
 			String result = "";
-			result = garageManager.getSortedPlaces();
+			result = Convert.getEntityStringFromArray( garageManager.getFreePlaces());
 			if (!result.equals("")) {
 				return result;
 			} else
@@ -142,7 +143,7 @@ public class Autoservice {
 	public String getOrdersByOrderDate() {
 		try {
 			String result = "";
-			result = orderManager.getSortedOrder("orderDate");
+			result = Convert.getEntityStringFromArray(orderManager.getSortedOrder("orderDate"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -159,7 +160,7 @@ public class Autoservice {
 	public String getOrdersByDateOfCompletion() {
 		try {
 			String result = "";
-			result = orderManager.getSortedOrder("completionDate");
+			result = Convert.getEntityStringFromArray(orderManager.getSortedOrder("completionDate"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -176,7 +177,7 @@ public class Autoservice {
 	public String getOrdersByDateOfStart() {
 		try {
 			String result = "";
-			result = orderManager.getSortedOrder("plannedStartDate");
+			result = Convert.getEntityStringFromArray(orderManager.getSortedOrder("plannedStartDate"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -193,7 +194,7 @@ public class Autoservice {
 	public String getOrdersByPrice() {
 		try {
 			String result = "";
-			result = orderManager.getSortedOrder("price");
+			result = Convert.getEntityStringFromArray(orderManager.getSortedOrder("price"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -210,7 +211,7 @@ public class Autoservice {
 	public String getCurrentOrdersByDateOfOrder() {
 		try {
 			String result = "";
-			result = orderManager.getCurrentOrders("orderDate");
+			result = Convert.getEntityStringFromArray(orderManager.getCurrentOrders("orderDate"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -227,7 +228,7 @@ public class Autoservice {
 	public String getCurrentOrdersByDateOfCompletion() {
 		try {
 			String result = "";
-			result = orderManager.getCurrentOrders("completionDate");
+			result = Convert.getEntityStringFromArray(orderManager.getCurrentOrders("completionDate"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -244,7 +245,7 @@ public class Autoservice {
 	public String getCurrentOrdersPrice() {
 		try {
 			String result = "";
-			result = orderManager.getCurrentOrders("price");
+			result = Convert.getEntityStringFromArray(orderManager.getCurrentOrders("price"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -261,7 +262,7 @@ public class Autoservice {
 	public String getOrderCarriedOutByMaster(int idMaster) {
 		try {
 			String result = "";
-			result = orderManager.getOrderCarriedOutCurrentMaster(idMaster);
+			result = orderManager.getOrderCarriedOutCurrentMaster(idMaster).toString();
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -276,7 +277,7 @@ public class Autoservice {
 	public String getOrdersForPeriodTime(String fDate, String sDate) {
 		try {
 			String result = "";
-			result = orderManager.getOdersForPeriodOfTime(fDate, sDate);
+			result = Convert.getEntityStringFromArray(orderManager.getOdersForPeriodOfTime(fDate, sDate));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -307,7 +308,7 @@ public class Autoservice {
 	public String getMastersByBusying() {
 		try {
 			String result = "";
-			result = masterManager.getSortedMasters("isWork");
+			result = Convert.getEntityStringFromArray(masterManager.getSortedMasters("isWork"));
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -322,14 +323,14 @@ public class Autoservice {
 	public String getMastersByAlpha() {
 		try {
 			String result = "";
-			result = masterManager.getSortedMasters("name");
+			result = Convert.getEntityStringFromArray(masterManager.getSortedMasters("nameMaster"));
 			if (!result.equals("")) {
 				return result;
 			} else {
 				return FacadeMessage.NO_ANY_MASTERS;
 			}
 		} catch (SQLException e) {
-			logger.error(FacadeMessage.LOGGER_MSG, e);
+			logger.error(FacadeMessage.LOGGER_MSG, e);	
 			return "";
 		}
 	}
@@ -337,7 +338,7 @@ public class Autoservice {
 	public String getMasterCarriedOutOrder(int idOrder) {
 		try {
 			String result = "";
-			result = masterManager.getMasterCarriedOutCurrentOrder(idOrder);
+			result = masterManager.getMasterCarriedOutCurrentOrder(idOrder).toString();
 			if (!result.equals("")) {
 				return result;
 			} else {
@@ -381,7 +382,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			masterManager.exportToCSV();
+			masterManager.exportFromCSV();
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);
@@ -399,7 +400,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			garageManager.exportToCSV();
+			garageManager.exportFromCSV();
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);
@@ -417,7 +418,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			orderManager.exportToCSV();
+			orderManager.export
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);
@@ -435,7 +436,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			masterManager.importFromCSV();
+			masterManager.importToCSV();
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);
@@ -453,7 +454,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			garageManager.importFromCSV();
+			garageManager.importToCSV();
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);
@@ -471,7 +472,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			orderManager.importFromCSV();
+			orderManager.import
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);

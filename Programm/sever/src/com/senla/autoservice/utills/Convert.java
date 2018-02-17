@@ -6,8 +6,9 @@ import java.util.GregorianCalendar;
 
 import com.senla.autoservice.api.AEntity;
 import com.senla.autoservice.api.StatusOrder;
+import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Place;
-import com.sun.org.apache.regexp.internal.recompile;
+import com.senla.autoservice.bean.Work;
 
 public class Convert {
 	public final static StatusOrder fromStrToStatus(String status) {
@@ -40,35 +41,60 @@ public class Convert {
 		}
 		return message;
 	}
-	
+
 	public final static boolean fromIntToBooleanSQL(String str) {
-		if(str.equals("1")) {
+		if (str.equals("1")) {
 			return true;
-		}
-		else return false;
+		} else
+			return false;
+	}
+
+	public final static int fromBooleanToIntSQL(Boolean str) {
+		if (str == true) {
+			return 1;
+		} else
+			return 0;
 	}
 	
 	public final static Place fromStrToPlace(String line) {
-		String[] temp = line.split(";");
-		int id =Integer.parseInt(temp[0]);
-		Place place = new Place(id,temp[1]);
+		String[] temp = line.split(",");
+		int id = Integer.parseInt(temp[0]);
+		boolean isBusy = fromIntToBooleanSQL(temp[2]);
+		Place place = new Place(id, temp[1], isBusy);
 		return place;
 	}
+
+	public final static Work fromStrToWork(String line) {
+		String[] temp = line.split(",");
+		int id = Integer.parseInt(temp[0]);
+		double price = Double.parseDouble(temp[2]);
+		int idMaster = Integer.parseInt(temp[3]);
+		Work work = new Work(id, temp[1], price, idMaster);
+		return work;
+	}
+
+	public final static Master fromStrToMaster(String line) {
+		String[] temp = line.split(",");
+		int id = Integer.parseInt(temp[0]);
+		boolean isWork = fromIntToBooleanSQL(temp[2]);
+		Master master = new Master(id, temp[1], isWork);
+		return master;
+	}
 	
+	
+
 	public final static Date fromStrToDate(String line) {
-		String[] tempDate = line.split(".");
+		String[] tempDate = line.split("-");
 		GregorianCalendar grCal = new GregorianCalendar(Integer.parseInt(tempDate[0]), Integer.parseInt(tempDate[1]),
 				Integer.parseInt(tempDate[2]));
 		Date date = (Date) (grCal).getTime();
 		return date;
 	}
-	
+
 	public final static String fromDateToStr(Date date) {
 		@SuppressWarnings("deprecation")
-		String result = date.getYear()+","+ date.getMonth()+","+date.getDay();
+		String result = date.getYear() + "-" + date.getMonth() + "-" + date.getDay();
 		return result;
 	}
-		
-	
 
 }

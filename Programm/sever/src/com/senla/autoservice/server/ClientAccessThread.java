@@ -5,10 +5,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.facade.Autoservice;
 import com.senla.autoservice.utills.MethodGetter;
 import com.senla.autoservice.utills.request.Request;
