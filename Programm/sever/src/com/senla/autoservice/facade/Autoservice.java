@@ -7,12 +7,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.senla.autoservice.DBConnector.DBConnector;
-import com.senla.autoservice.api.IGarageManager;
-import com.senla.autoservice.api.IMasterManager;
-import com.senla.autoservice.api.IOrderManager;
-import com.senla.autoservice.api.IWorkManager;
 import com.senla.autoservice.api.StatusOrder;
-import com.senla.autoservice.api.constants.Constants;
+import com.senla.autoservice.api.manager.IGarageManager;
+import com.senla.autoservice.api.manager.IMasterManager;
+import com.senla.autoservice.api.manager.IOrderManager;
+import com.senla.autoservice.api.manager.IWorkManager;
 import com.senla.autoservice.manager.GarageManager;
 import com.senla.autoservice.manager.MasterManager;
 import com.senla.autoservice.manager.OrderManager;
@@ -20,6 +19,7 @@ import com.senla.autoservice.manager.WorkManager;
 import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.DependencyInjector;
+import com.senla.autoservice.utills.constants.Constants;
 
 public class Autoservice {
 
@@ -27,14 +27,13 @@ public class Autoservice {
 	private IMasterManager masterManager;
 	private IOrderManager orderManager;
 	private IWorkManager workManager;
-	private static final Logger logger =  LogManager.getRootLogger();
+	private final Logger logger =  LogManager.getLogger(getClass().getSimpleName());
 	DBConnector sqlConnection;
 
 	private static Autoservice instance;
 
 	private Autoservice() {
 		new Prop();
-		sqlConnection.getInstance();
 		orderManager = DependencyInjector.getInstance(OrderManager.class);
 		garageManager = DependencyInjector.getInstance(GarageManager.class);
 		masterManager = DependencyInjector.getInstance(MasterManager.class);
@@ -418,7 +417,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			orderManager.export
+			orderManager.exportFromCSV();
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);
@@ -472,7 +471,7 @@ public class Autoservice {
 
 		String message = "";
 		try {
-			orderManager.import
+			orderManager.importToCSV();
 			message = FacadeMessage.SUCCESS;
 		} catch (final IOException e) {
 			logger.error(FacadeMessage.LOGGER_MSG, e);

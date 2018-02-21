@@ -1,15 +1,11 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.annotations.CsvEntity;
-import com.senla.autoservice.annotations.CsvProperty;
-import com.senla.autoservice.annotations.PropertyType;
-import com.senla.autoservice.api.AEntity;
+import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.utills.Convert;
 
-@CsvEntity(filename = "masters.csv", valueSeparator = ";", entityId = "id")
+
 public class Master extends AEntity {
-	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 2)
 	private boolean isWork;
-	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber = 1)
 	private String name;
 
 	public Master(Integer id, String name, boolean isWork) {
@@ -34,15 +30,9 @@ public class Master extends AEntity {
 		return isWork;
 	}
 
-	public void update(AEntity master) {
-		this.name = ((Master) master).getName();
-		this.isWork = ((Master) master).getIsWork();
-	}
-
 	@Override
 	public String toString() {
-		String message;
-		message = getId() + "," + getName() + "," + getIsWork() + ",";
+		String message = getId() + "," + getName() + "," + Convert.fromBooleanToIntSQL(getIsWork());
 		return message;
 	}
 }

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.senla.autoservice.api.AEntity;
 import com.senla.autoservice.api.StatusOrder;
+import com.senla.autoservice.api.bean.AEntity;
 import com.senla.autoservice.bean.Master;
+import com.senla.autoservice.bean.Order;
 import com.senla.autoservice.bean.Place;
 import com.senla.autoservice.bean.Work;
 
 public class Convert {
+	
 	public final static StatusOrder fromStrToStatus(String status) {
 		if (status.equals("Broned")) {
 			return StatusOrder.Broned;
@@ -55,7 +57,7 @@ public class Convert {
 		} else
 			return 0;
 	}
-	
+
 	public final static Place fromStrToPlace(String line) {
 		String[] temp = line.split(",");
 		int id = Integer.parseInt(temp[0]);
@@ -69,7 +71,8 @@ public class Convert {
 		int id = Integer.parseInt(temp[0]);
 		double price = Double.parseDouble(temp[2]);
 		int idMaster = Integer.parseInt(temp[3]);
-		Work work = new Work(id, temp[1], price, idMaster);
+		Master master = new Master(idMaster, null, false);
+		Work work = new Work(id, temp[1], price, master);
 		return work;
 	}
 
@@ -81,7 +84,22 @@ public class Convert {
 		return master;
 	}
 	
-	
+	public final static Order fromStrToOrder(String line) {
+		String[] temp = line.split(",");
+		int id = Integer.parseInt(temp[0]);
+		int idService = Integer.parseInt(temp[1]);
+		int idMaster= Integer.parseInt(temp[2]);
+		int idPlace = Integer.parseInt(temp[3]);
+		StatusOrder st = fromStrToStatus(temp[4]) ;
+		Date ordDate = fromStrToDate(temp[5]);
+		Date startDate = fromStrToDate(temp[6]);
+		Date endDate = fromStrToDate(temp[7]);
+		Work work = new Work(idService,null,0,null);
+		Master master = new Master(idMaster,null,false);
+		Place place = new Place (idPlace,null,false);
+		Order order  = new Order(id,master,work,place,st,ordDate,startDate,endDate);
+		return order;
+	}
 
 	public final static Date fromStrToDate(String line) {
 		String[] tempDate = line.split("-");

@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.senla.autoservice.api.AEntity;
+import com.senla.autoservice.api.bean.AEntity;
 
 public class CsvExportImport<T extends AEntity> {
-	private static final Logger logger = LogManager.getRootLogger();
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
 
 	public void importToCsv(ArrayList<T> data, String path) throws IOException {
 

@@ -5,9 +5,10 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Logger;
 
-import com.senla.autoservice.facade.Autoservice;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.senla.autoservice.utills.MethodGetter;
 import com.senla.autoservice.utills.request.Request;
 import com.senla.autoservice.utills.response.Response;
@@ -17,7 +18,7 @@ public class ClientAccessThread extends Thread implements Closeable {
     private final Socket socket;
     private final ObjectInputStream input;
     private final ObjectOutputStream output;
-    private static final Logger logger = Logger.getLogger(Autoservice.class.getName());
+    private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
     
     public ClientAccessThread(final Socket socket) throws IOException {
         this.socket = socket;
@@ -38,9 +39,9 @@ public class ClientAccessThread extends Thread implements Closeable {
                 output.flush();
                 System.out.println(request.getMethod());
             } catch (IOException | ClassNotFoundException e) {
-            	//logger.log(Level.SEVERE, Constants.LOGGER_MSG, e);
-            } catch (NoSuchMethodException pE) {
-            	//logger.log(Level.SEVERE, Constants.LOGGER_MSG, pE);
+            	logger.error(e);
+            } catch (NoSuchMethodException e) {
+            	logger.error(e);
             }
 
         }

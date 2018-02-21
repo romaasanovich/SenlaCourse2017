@@ -1,11 +1,11 @@
-package com.senla.autoservice.api.constants;
+package com.senla.autoservice.utills.constants;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class Constants {
 	public static final String ERROR_THIS_ID_IS_NOT_FREE = "Error. This id is not free";
-	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy.MM.dd");
+	public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 	public static final String ERROR_NO_SUCH_RECORD = "Error. No such record";
 	public static final String ERROR_WRONG_INPUT = "Error.Wrong input!!";
 	public static final String PATH_TO_PROP = "..\\data\\Prop.txt";

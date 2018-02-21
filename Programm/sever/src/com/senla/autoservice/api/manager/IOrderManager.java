@@ -1,8 +1,9 @@
-package com.senla.autoservice.api;
+package com.senla.autoservice.api.manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.bean.Order;
 import com.senla.autoservice.dao.OrderDao;
 

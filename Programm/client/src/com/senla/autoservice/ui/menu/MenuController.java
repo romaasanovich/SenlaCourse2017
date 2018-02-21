@@ -2,11 +2,11 @@ package com.senla.autoservice.ui.menu;
 
 import java.io.IOException;
 
-import com.senla.autoservice.api.constants.Constants;
 import com.senla.autoservice.client.Client;
 import com.senla.autoservice.facade.Autoservice;
 import com.senla.autoservice.utills.Printer;
 import com.senla.autoservice.utills.Reader;
+import com.senla.autoservice.utills.constants.Constants;
 
 public class MenuController {
 
@@ -16,6 +16,7 @@ public class MenuController {
 	public MenuController() {
 		client = new Client(Constants.SERVER_ADDRESS, Constants.SERVER_PORT);
 		Autoservice.getInstance();
+		
 		builder = new Builder();
 		navigator = new Navigator(builder.buildMenu());
 	}

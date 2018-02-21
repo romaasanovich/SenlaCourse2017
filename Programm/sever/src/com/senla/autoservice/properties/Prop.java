@@ -3,13 +3,14 @@ package com.senla.autoservice.properties;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
-import com.senla.autoservice.api.constants.Constants;;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.senla.autoservice.utills.constants.Constants;;
 
 public class Prop {
-	private static final Logger logger = Logger.getLogger(Prop.class.getName());
+	private final Logger logger =LogManager.getLogger(getClass().getSimpleName());
 	private static java.util.Properties properties = new java.util.Properties();
 
 
@@ -17,9 +18,9 @@ public class Prop {
 		try (FileInputStream fis = new FileInputStream(Constants.PATH_TO_PROP)) {
 			properties.load(fis);
 		} catch (FileNotFoundException e) {
-			logger.log(Level.SEVERE, Constants.LOGGER_MSG, e);
+			logger.error(e);
 		} catch (IOException e) {
-			logger.log(Level.SEVERE, Constants.LOGGER_MSG, e);
+			logger.error(e);
 		}
 	}
 

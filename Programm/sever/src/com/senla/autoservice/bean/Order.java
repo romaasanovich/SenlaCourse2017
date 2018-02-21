@@ -3,8 +3,8 @@ package com.senla.autoservice.bean;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import com.senla.autoservice.api.AEntity;
 import com.senla.autoservice.api.StatusOrder;
+import com.senla.autoservice.api.bean.AEntity;
 
 public class Order extends AEntity {
 
@@ -101,6 +101,8 @@ public class Order extends AEntity {
 		strBuild.append(",");
 		strBuild.append(getService().getId());
 		strBuild.append(",");
+		strBuild.append(getMaster().getId());
+		strBuild.append(",");
 		strBuild.append(place.getId());
 		strBuild.append(",");
 		strBuild.append(status.toString());
@@ -112,16 +114,6 @@ public class Order extends AEntity {
 		strBuild.append(",");
 		strBuild.append(dateFormat.format(dateOfCompletion));
 		return strBuild.toString();
-	}
-
-	// @Override
-	public Order cloneOrder() throws CloneNotSupportedException {
-		return (Order) this.clone();
-	}
-
-	@Override
-	public void update(AEntity entity) {
-
 	}
 
 }

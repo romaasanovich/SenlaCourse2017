@@ -1,17 +1,17 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.api.AEntity;
+import com.senla.autoservice.api.bean.AEntity;
 
 public class Work extends AEntity {
 	private String nameOfService;
 	private double price;
-	private int masterID;
+	private Master master;
 
-	public Work(Integer id, String nameOfService, double price,int idMaster) {
+	public Work(Integer id, String nameOfService, double price, Master master) {
 		super(id);
 		this.nameOfService = nameOfService;
 		this.price = price;
-		this.masterID =idMaster;
+		this.setMaster(master);
 	}
 
 	public Work(String line) {
@@ -22,9 +22,6 @@ public class Work extends AEntity {
 		this.price = Double.valueOf(temp[3]);
 	}
 
-	public int getMasterID() {
-		return masterID;
-	}
 
 	public String getNameOfService() {
 		return nameOfService;
@@ -51,12 +48,17 @@ public class Work extends AEntity {
 		strBuild.append(getNameOfService());
 		strBuild.append(",");
 		strBuild.append(getPrice());
+		strBuild.append(",");
+		strBuild.append(getMaster().getId());
 		return strBuild.toString();
 	}
 
-	@Override
-	public void update(AEntity entity) {
+	public Master getMaster() {
+		return master;
+	}
 
+	public void setMaster(Master master) {
+		this.master = master;
 	}
 
 }

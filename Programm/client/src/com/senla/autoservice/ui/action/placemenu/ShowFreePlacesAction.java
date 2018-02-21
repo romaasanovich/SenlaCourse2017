@@ -1,9 +1,9 @@
 package com.senla.autoservice.ui.action.placemenu;
 
-import com.senla.autoservice.api.constants.MethodsName;
 import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Printer;
+import com.senla.autoservice.utills.constants.MethodsName;
 import com.senla.autoservice.utills.request.RequestBuilder;
 import com.senla.autoservice.utills.response.Response;
 

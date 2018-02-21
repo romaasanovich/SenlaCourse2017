@@ -1,4 +1,4 @@
-package com.senla.autoservice.api;
+package com.senla.autoservice.api.manager;
 
 public interface IManager  {
 

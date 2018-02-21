@@ -1,18 +1,11 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.annotations.CsvEntity;
-import com.senla.autoservice.annotations.CsvProperty;
-import com.senla.autoservice.annotations.PropertyType;
-import com.senla.autoservice.api.AEntity;
-
-@CsvEntity(filename="places.csv",valueSeparator=";",entityId="id")
+import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.utills.Convert;
 
 
 public class Place extends AEntity {
-	
-	@CsvProperty(propertyType = PropertyType.SimpleProperty, columnNumber=1)
 	private String name;
-	
 	private boolean isBusy;
 
 	public Place(Integer id, String name) {
@@ -27,19 +20,18 @@ public class Place extends AEntity {
 		this.isBusy = isBusy;
 	}
 
-	
 	public Place(String line) {
 		super(0);
-		String [] temp= line.split(",");
+		String[] temp = line.split(",");
 		setId(Integer.valueOf(temp[0]));
-		this.name=temp[1];
+		this.name = temp[1];
 		isBusy = false;
 	}
-	
-	public void  setName(String name) {
-		this.name=name;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	
+
 	public String getName() {
 		return this.name;
 	}
@@ -53,20 +45,14 @@ public class Place extends AEntity {
 	}
 
 	public void update(String line) {
-		String [] fields = line.split(",");
-		this.name=fields[1];
-	}
-	
-	@Override
-	public String toString() {
-		String s;
-		s=getId()+","+getName()+","+getIsBusy();
-		return s;
+		String[] fields = line.split(",");
+		this.name = fields[1];
 	}
 
 	@Override
-	public void update(AEntity entity) {	
-		this.name = ((Place) entity).getName();
+	public String toString() {
+		String s = getId() + "," + getName() + "," + Convert.fromBooleanToIntSQL(getIsBusy());
+		return s;
 	}
-	
+
 }

@@ -1,8 +1,6 @@
 package com.senla.autoservice.utills.response;
 
-import java.io.Serializable;
-
-public class Response implements Serializable {
+public class Response {
 
     private Status status;
 

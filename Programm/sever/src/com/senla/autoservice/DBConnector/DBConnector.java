@@ -2,57 +2,51 @@ package com.senla.autoservice.DBConnector;
 
 import java.io.Closeable;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.mysql.jdbc.Connection;
-import com.mysql.jdbc.Statement;
 
 public class DBConnector implements Closeable {
-	private static final Logger logger = LogManager.getRootLogger();
-
-
-	private static String url;
-	private static String user;
-	private static String password;
-
+	private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
+	
 	private static Connection con;
-	private static Statement stmt;
-	private static ResultSet rs;
-
 	private static DBConnector instance;
 
-	private DBConnector() {
+	private DBConnector() throws SQLException {
 		connect();
 	}
 
-	public static DBConnector getInstance() {
+	public static DBConnector getInstance() throws SQLException {
 		if (instance == null) {
 			instance = new DBConnector();
 		}
-		return (DBConnector) instance;
+		return instance;
 	}
 
-	private void connect() {
+	private void connect() throws SQLException {
 		new DBConfig();
+		String url;
+		String user;
+		String password;
 		try {
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.jdbc.Driver");			
 			url = DBConfig.getProp("url");
 			password = DBConfig.getProp("password");
 			user = DBConfig.getProp("user");
 			con = (Connection) DriverManager.getConnection(url, user, password);
-			stmt = (Statement) con.createStatement();
 		} catch (ClassNotFoundException | SQLException e) {
+			SQLException noCon = new SQLException("Connection failed");
 			logger.error(e);
+			throw noCon;
 		}
 	}
 
-	public Connection getConnnection(){
+	public Connection getConnnection() throws SQLException{
 		try {
-			if (con.isClosed()) {
+			if (con == null || con.isClosed()) {
 				connect();
 				return con;
 			}
@@ -62,20 +56,10 @@ public class DBConnector implements Closeable {
 		return con;
 	}
 	
-	/*public ResultSet executeQuery(String query) throws SQLException {
-		rs = stmt.executeQuery(query);
-		return rs;
-	}
-
-	public int executeUpdate(String query) throws SQLException {
-		int rs = stmt.executeUpdate(query);
-		return rs;
-	}*/
-
 	@Override
 	public void close() {
 		try {
-			if (!con.isClosed()) {
+			if (!con.isClosed() || con != null) {
 				con.close();
 			}
 		} catch (SQLException e) {

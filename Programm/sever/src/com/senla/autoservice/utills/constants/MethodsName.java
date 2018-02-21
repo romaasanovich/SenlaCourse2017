@@ -1,4 +1,4 @@
-package com.senla.autoservice.api.constants;
+package com.senla.autoservice.utills.constants;
 
 public class MethodsName {
 	public static final String  GET_CURR_ORDER= "getCurrentOrder";

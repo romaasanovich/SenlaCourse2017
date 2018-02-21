@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.senla.autoservice.api.constants.Constants;
+import com.senla.autoservice.utills.constants.Constants;
 
 public class Server {
 	

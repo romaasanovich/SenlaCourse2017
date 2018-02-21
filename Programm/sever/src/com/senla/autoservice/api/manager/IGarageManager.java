@@ -1,4 +1,4 @@
-package com.senla.autoservice.api;
+package com.senla.autoservice.api.manager;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
