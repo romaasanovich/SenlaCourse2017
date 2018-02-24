@@ -32,7 +32,6 @@ public class OrderDao extends GenericDao<Order>{
 	public static final String CHANGE_STATUS = "UPDATE `mydb`.`order` SET `status`='?' WHERE `id`='?'; ";
 	public static final String  GET_ORDER_BY_ID ="select mydb.order.* FROM mydb.order JOIN mydb.work JOIN  mydb.master ON mydb.order.idService = mydb.work.id AND mydb.order.idMaster= mydb.master.id AND mydb.order.id =";
 	
-	private CsvExportImport<Order> importExport;
 
 	public OrderDao() {
 	}
@@ -123,13 +122,6 @@ public class OrderDao extends GenericDao<Order>{
 		result = add(order,con);
 		st.close();
 		return result;
-	}
-
-
-	public void importOrdersToCSV(Connection con) throws SQLException, IOException {
-		ArrayList<Order> masters = getListOfOrders("id", con);
-		String path = Prop.getProp("orderCsvPath");
-		importExport.importToCsv(masters, path);
 	}
 
 	@Override
