@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="Api" />
+        <module name="Bean" />
+        <module name="Client" />
+        <module name="Csvimportexport" />
+        <module name="Dao" />
+        <module name="DBConnector" />
+        <module name="EntryPoint" />
+        <module name="Facade" />
+        <module name="Manager" />
+        <module name="Properties" />
+        <module name="ServerController" />
+        <module name="Utills" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="Api" target="1.5" />
+      <module name="Autoservice" target="1.5" />
+      <module name="Bean" target="1.5" />
+      <module name="Client" target="1.5" />
+      <module name="Csvimportexport" target="1.5" />
+      <module name="Dao" target="1.7" />
+      <module name="DBConnector" target="1.6" />
+      <module name="EntryPoint" target="1.7" />
+      <module name="Facade" target="1.5" />
+      <module name="Manager" target="1.5" />
+      <module name="Properties" target="1.7" />
+      <module name="Server" target="1.5" />
+      <module name="ServerController" target="1.5" />
+      <module name="Sever" target="1.5" />
+      <module name="Utills" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
