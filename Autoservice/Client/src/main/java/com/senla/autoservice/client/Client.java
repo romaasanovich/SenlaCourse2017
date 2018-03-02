@@ -13,52 +13,52 @@ import com.senla.autoservice.utills.response.Response;
 
 public class Client implements Closeable {
 
-	private Socket socket;
+    private Socket socket;
 
-	private ObjectInputStream input;
+    private ObjectInputStream input;
 
-	private ObjectOutputStream output;
+    private ObjectOutputStream output;
 
-	public Client(final String host, final int port) {
-		try {
-			socket = new Socket(host, port);
-			final InputStream inputStream = socket.getInputStream();
-			final OutputStream outputStream = socket.getOutputStream();
-			output = new ObjectOutputStream(outputStream);
-			input = new ObjectInputStream(inputStream);
-		} catch (final IOException ignored) {
-		}
-	}
+    public Client(final String host, final int port) {
+        try {
+            socket = new Socket(host, port);
+            final InputStream inputStream = socket.getInputStream();
+            final OutputStream outputStream = socket.getOutputStream();
+            output = new ObjectOutputStream(outputStream);
+            input = new ObjectInputStream(inputStream);
+        } catch (final IOException ignored) {
+        }
+    }
 
 
-	public Response getResponce() {
-		Response response;
-		try {
-			response = (Response) input.readObject();
-		} catch (IOException | ClassNotFoundException e) {
-			response = null;
-		}
-		return response;
-	}
+    public Response getResponce() {
+        Response response;
+        try {
+            response = (Response) input.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            response = null;
+        }
+        return response;
+    }
 
-	public void sendRequest(final Request request) {
-		try {
-			output.writeObject(request);
-			output.flush();
-		} catch (final IOException ignored) {
-		}
-	}
+    public void sendRequest(final Request request) {
+        try {
+            output.writeObject(request);
+            output.flush();
+        } catch (final IOException ignored) {
+        }
+    }
 
-	@Override
-	public void close() throws IOException {
-		if (input != null) {
-			input.close();
-		}
-		if (output != null) {
-			output.close();
-		}
-		if (socket != null) {
-			socket.close();
-		}
-	}
+    @Override
+    public void close() throws IOException {
+        if (input != null) {
+            input.close();
+        }
+        if (output != null) {
+            output.close();
+        }
+        if (socket != null) {
+            socket.close();
+        }
+    }
 }
