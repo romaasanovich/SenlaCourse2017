@@ -20,26 +20,21 @@ import java.util.Scanner;
 
 public class MasterManager implements IMasterManager {
 
-    public static final String ADD_MASTER = "INSERT INTO `mydb`.`master` (`nameMaster`, `isWork`) VALUES (?,?)";
-    public static final String UPDATE_MASTER = "UPDATE `mydb`.`master` SET `nameMaster`='?', `isWork	`='?' WHERE `id`='?'";
-
 
     private CsvExportImport<Master> importExport;
     private MasterDao masters;
 
-    public MasterManager() throws SQLException {
+    public MasterManager()  {
         masters = new MasterDao();
     }
 
-    public MasterDao getMasterDao() {
-        return masters;
-    }
 
     public Master getById(int id) throws Exception {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             session.beginTransaction();
-            return masters.getById(id, session);
+            Master master = masters.getById(id, session);
+            return master;
         } catch (Exception ex) {
             session.getTransaction().rollback();
             throw new Exception("Error!!!");
@@ -63,21 +58,6 @@ public class MasterManager implements IMasterManager {
         }
     }
 
-    public Master getMasterCarriedOutCurrentOrder(int idOrder) throws Exception {
-        OrderManager orderManager = new OrderManager();
-        Order order = orderManager.getById(idOrder);
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-        try {
-            session.beginTransaction();
-            Master master = masters.getMasterCarriedOutOrder(order, session);
-            return master;
-        } catch (Exception ex) {
-            session.getTransaction().rollback();
-            throw new Exception("Error!!!");
-        } finally {
-            session.close();
-        }
-    }
 
     public String add(String name) throws Exception {
         Master master = new Master(null, name, false);
@@ -128,10 +108,17 @@ public class MasterManager implements IMasterManager {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             ArrayList<Master> masterCSV = readFromCSV();
+            int count = getSortedMasters("id").size();
+            session.beginTransaction();
             for (Master master: masterCSV) {
-                session.saveOrUpdate(master);
-
+                if(master.getId()<=count) {
+                    session.update(master);
+                }
+                else{
+                    session.save(master);
+                }
             }
+            session.getTransaction().commit();
         } catch (Exception ex) {
             session.getTransaction().rollback();
             throw new Exception("Error!!!");

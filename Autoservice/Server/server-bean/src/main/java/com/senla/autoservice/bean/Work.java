@@ -5,9 +5,9 @@ import com.senla.autoservice.api.bean.AEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "work")
+@Table(name = "`work`")
 public class Work extends AEntity {
-	@Column(name = "placeName",length = 45)
+	@Column(name = "nameOfService",length = 45)
 	private String nameOfService;
 	@Column(name = "price")
 	private Double price;
@@ -28,6 +28,9 @@ public class Work extends AEntity {
 		setId(Integer.valueOf(temp[1]));
 		this.nameOfService = temp[2];
 		this.price = Double.valueOf(temp[3]);
+	}
+
+	public Work() {
 	}
 
 

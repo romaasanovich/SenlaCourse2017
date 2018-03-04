@@ -1,16 +1,17 @@
 package com.senla.autoservice.api.bean;
 
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+@MappedSuperclass
 public abstract class AEntity  implements IAEntity {
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    protected AEntity() {
+    }
 
     public AEntity(Integer id) {
         this.id = id;
@@ -20,7 +21,7 @@ public abstract class AEntity  implements IAEntity {
         this.id = i;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

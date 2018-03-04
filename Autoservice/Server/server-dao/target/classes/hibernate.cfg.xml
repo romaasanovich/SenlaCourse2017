@@ -16,6 +16,7 @@
     <mapping class="com.senla.autoservice.bean.Master"/>
     <mapping class="com.senla.autoservice.bean.Work"/>
     <mapping class="com.senla.autoservice.bean.Order"/>
+    <mapping class="com.senla.autoservice.api.bean.AEntity"/>
 
   </session-factory>
 </hibernate-configuration>

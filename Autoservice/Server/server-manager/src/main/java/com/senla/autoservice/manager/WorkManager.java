@@ -21,13 +21,11 @@ import java.util.Scanner;
 public class WorkManager implements IWorkManager {
 
 	private static final String WORK_WAS_SUCCESFUL_ADDED = "Work was succesful added";
-	public static final String ADD_WORK = "INSERT INTO `mydb`.`work` (`nameOfService`, `price`, `idMaster`) VALUES (?,?,?)";
-	public static final String UPDATE_WORK = "UPDATE `mydb`.`work` SET `nameOfService`='?', `price`='?', `idMaster`='?' WHERE `id`='?'";
 
 	private CsvExportImport<Work> importExport;
 	private WorkDao works;
 
-	public WorkManager() throws SQLException {
+	public WorkManager(){
 		works = new WorkDao();
 	}
 
@@ -46,6 +44,20 @@ public class WorkManager implements IWorkManager {
 			throw new Exception("Error!!!");
 		}
 		finally {
+			session.close();
+		}
+	}
+
+	public ArrayList<Work> getWorkList() throws Exception {
+		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+		try {
+			session.beginTransaction();
+			ArrayList<Work> work= works.getListOfWorks(session);
+			return work;
+		} catch (Exception ex) {
+			session.getTransaction().rollback();
+			throw new Exception("Error!!!");
+		} finally {
 			session.close();
 		}
 	}
@@ -88,10 +100,18 @@ public class WorkManager implements IWorkManager {
 		Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
 		try {
 			ArrayList<Work> workCSV = readFromCSV();
+			int count = getWorkList().size();
+			session.beginTransaction();
 			for (Work work: workCSV) {
-				session.saveOrUpdate(work);
-
+				if(work.getId()<=count) {
+					session.update(work);
+				}
+				else{
+					session.save(work);
+				}
 			}
+			session.getTransaction().commit();
+
 		} catch (Exception ex) {
 			session.getTransaction().rollback();
 			throw new Exception("Error!!!");

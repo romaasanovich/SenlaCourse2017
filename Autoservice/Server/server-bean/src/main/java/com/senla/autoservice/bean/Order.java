@@ -9,128 +9,129 @@ import com.senla.autoservice.api.bean.AEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order")
+@Table(name = "`order`")
 public class Order extends AEntity {
-	@OneToOne
-	@JoinColumn(name = "idMaster")
-	private Master master;
-	@OneToOne
-	@JoinColumn(name = "idService")
-	private Work service;
-	@OneToOne
-	@JoinColumn(name = "idPlace")
-	private Place place;
-	@Enumerated(EnumType.STRING)
-	@Column(name = "status",length = 45)
-	private StatusOrder status;
-	@Column(name= "orderDate")
-	@Temporal(value= TemporalType.DATE)
-	private Date dateOfOrder;
-	@Column(name= "plannedStartDate")
-	@Temporal(value=TemporalType.DATE)
-	private Date dateOfPlannedStart;
-	@Column(name= "completionDate")
-	@Temporal(value=TemporalType.DATE)
-	private Date dateOfCompletion;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idMaster")
+    private Master master;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idService")
+    private Work service;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "idPlace")
+    private Place place;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", length = 45)
+    private StatusOrder status;
+    @Column(name = "orderDate")
+    @Temporal(value = TemporalType.DATE)
+    private Date orderDate;
+    @Column(name = "plannedStartDate")
+    @Temporal(value = TemporalType.DATE)
+    private Date plannedStartDate;
+    @Column(name = "completionDate")
+    @Temporal(value = TemporalType.DATE)
+    private Date completionDate;
 
-	public Order(int id, Master master,  Work service, Place place, StatusOrder status,Date orderDate,Date plannedDate, Date dateOfCompl) {
-		super(id);
-		this.setMaster(master);
-		this.service = service;
-		this.place = place;
-		setStatus(status);
-		dateOfOrder = orderDate;
-		dateOfPlannedStart=plannedDate;
-		dateOfCompletion = dateOfCompl;
-	}
+    public Date getOrderDate() {
+        return orderDate;
+    }
 
-	public Order() {
-		super(0);
-	}
+    public void setOrderDate(Date orderDate) {
+        this.orderDate = orderDate;
+    }
 
-	public void setPlace(Place place) {
-		this.place = place;
-	}
+    public Date getPlannedStartDate() {
+        return plannedStartDate;
+    }
 
-	public Work getService() {
-		return service;
-	}
+    public void setPlannedStartDate(Date plannedStartDate) {
+        this.plannedStartDate = plannedStartDate;
+    }
 
-	public void setService(Work service) {
-		this.service = service;
-	}
+    public Date getCompletionDate() {
+        return completionDate;
+    }
 
-	public Place getPlace() {
-		return place;
-	}
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
+    }
 
-	public StatusOrder getStatus() {
-		return status;
-	}
+    public Order(int id, Master master, Work service, Place place, StatusOrder status, Date orderDate, Date plannedDate, Date dateOfCompl) {
+        super(id);
+        this.setMaster(master);
+        this.service = service;
+        this.place = place;
+        setStatus(status);
+        this.orderDate = orderDate;
+        this.plannedStartDate = plannedDate;
+        completionDate = dateOfCompl;
+    }
 
-	public void setStatus(StatusOrder status) {
-		this.status = status;
-		if (status == StatusOrder.Broned || status == StatusOrder.Deleted || status == StatusOrder.Canceled
-				|| status == StatusOrder.Closed) {
-			getPlace().setBusy(false);
-		} else if (status == StatusOrder.Opened) {
-			getPlace().setBusy(true);
-		}
-	}
+    public Order() {
+        super(0);
+    }
 
-	public Date getDateOfOrder() {
-		return dateOfOrder;
-	}
+    public void setPlace(Place place) {
+        this.place = place;
+    }
 
-	public void setDateOfOrder(Date dateOfOrder) {
-		this.dateOfOrder = dateOfOrder;
-	}
+    public Work getService() {
+        return service;
+    }
 
-	public Date getDateOfCompletion() {
-		return dateOfCompletion;
-	}
+    public void setService(Work service) {
+        this.service = service;
+    }
 
-	public void setDateOfCompletion(Date dateOfCompletion) {
-		this.dateOfCompletion = dateOfCompletion;
-	}
+    public Place getPlace() {
+        return place;
+    }
 
-	public Date getDateOfPlannedStart() {
-		return dateOfPlannedStart;
-	}
+    public StatusOrder getStatus() {
+        return status;
+    }
 
-	public void setDateOfPlannedStart(Date dateOfPlannedStart) {
-		this.dateOfPlannedStart = dateOfPlannedStart;
-	}
+    public void setStatus(StatusOrder status) {
+        this.status = status;
+        if (status == StatusOrder.Broned || status == StatusOrder.Deleted || status == StatusOrder.Canceled
+                || status == StatusOrder.Closed) {
+            getPlace().setIsBusy(false);
+        } else if (status == StatusOrder.Opened) {
+            getPlace().setIsBusy(true);
+        }
+    }
 
-	public Master getMaster() {
-		return master;
-	}
 
-	public void setMaster(Master master) {
-		this.master = master;
-	}
+    public Master getMaster() {
+        return master;
+    }
 
-	@Override
+    public void setMaster(Master master) {
+        this.master = master;
+    }
 
-	public String toString() {
-		StringBuilder strBuild = new StringBuilder();
-		strBuild.append(getId());
-		strBuild.append(",");
-		strBuild.append(getService().getId());
-		strBuild.append(",");
-		strBuild.append(getMaster().getId());
-		strBuild.append(",");
-		strBuild.append(place.getId());
-		strBuild.append(",");
-		strBuild.append(status.toString());
-		strBuild.append(",");
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		strBuild.append(dateFormat.format(dateOfOrder));
-		strBuild.append(",");
-		strBuild.append(dateFormat.format(dateOfPlannedStart));
-		strBuild.append(",");
-		strBuild.append(dateFormat.format(dateOfCompletion));
-		return strBuild.toString();
-	}
+    @Override
+
+    public String toString() {
+        StringBuilder strBuild = new StringBuilder();
+        strBuild.append(getId());
+        strBuild.append(",");
+        strBuild.append(getService().getId());
+        strBuild.append(",");
+        strBuild.append(getMaster().getId());
+        strBuild.append(",");
+        strBuild.append(place.getId());
+        strBuild.append(",");
+        strBuild.append(status.toString());
+        strBuild.append(",");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        strBuild.append(dateFormat.format(orderDate));
+        strBuild.append(",");
+        strBuild.append(dateFormat.format(plannedStartDate));
+        strBuild.append(",");
+        strBuild.append(dateFormat.format(completionDate));
+        return strBuild.toString();
+    }
 
 }

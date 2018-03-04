@@ -20,20 +20,14 @@ import org.hibernate.Session;
 
 public class GarageManager implements IGarageManager {
 
-    public static final String ADD_PLACE = "INSERT INTO `mydb`.`place` (`placeName`, `isBusy`) VALUES (?,?)";
-    public static final String UPDATE_PLACE = "UPDATE `mydb`.`place` SET `placeName`='?', `isBusy`='?' WHERE `id`='?'";
 
-    CsvExportImport<Place> importerExporterPlaces = new CsvExportImport<Place>();
     private GarageDao places;
-    private CsvExportImport<Place> importExport;
+    private CsvExportImport<Place> importExport = new CsvExportImport<Place>();
 
-    public GarageManager() throws SQLException {
+    public GarageManager() {
         places = new GarageDao();
     }
 
-    public GarageDao getPlaceDao() {
-        return places;
-    }
 
     public Place getById(int id) throws Exception {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
@@ -75,7 +69,9 @@ public class GarageManager implements IGarageManager {
         } finally {
             session.close();
         }
+
     }
+
 
     public String add(String name) throws Exception {
         Place place = new Place(null, name);
@@ -96,7 +92,7 @@ public class GarageManager implements IGarageManager {
     public String changeBusying(int id, Boolean busying) throws Exception {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         Place place = places.getById(id, session);
-        place.setBusy(busying);
+        place.setIsBusy(busying);
         try {
             session.beginTransaction();
             places.changeBusying(session, place);
@@ -114,10 +110,17 @@ public class GarageManager implements IGarageManager {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             ArrayList<Place> placesCSV = readFromCSV();
+           int count = getSortedPlaces("id").size();
+            session.beginTransaction();
             for (Place place : placesCSV) {
-                session.saveOrUpdate(place);
-
+                if(place.getId()<=count) {
+                    session.update(place);
+                }
+                else{
+                    session.save(place);
+                }
             }
+            session.getTransaction().commit();
         } catch (Exception ex) {
             session.getTransaction().rollback();
             throw new Exception("Error!!!");

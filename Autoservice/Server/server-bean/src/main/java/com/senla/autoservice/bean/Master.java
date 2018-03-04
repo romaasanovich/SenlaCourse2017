@@ -8,26 +8,30 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "master")
+@Table(name = "`master`")
 public class Master extends AEntity {
-@Column(name = "isWork",columnDefinition = "TINYINT")
-@Type(type = "org.hibernate.type.NumericBooleanType")
+
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Column(name = "isWork")
     private Boolean isWork;
-@Column(name = "nameMaster",length = 45)
-    private String name;
+    @Column(name = "nameMaster", length = 45)
+    private String nameMaster;
 
     public Master(Integer id, String name, boolean isWork) {
         super(id);
-        setName(name);
+        setNameMaster(name);
         this.isWork = isWork;
     }
 
-    public String getName() {
-        return name;
+    public Master() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getNameMaster() {
+        return nameMaster;
+    }
+
+    public void setNameMaster(String name) {
+        this.nameMaster = name;
     }
 
     public void setIsWork(boolean isWork) {
@@ -39,7 +43,7 @@ public class Master extends AEntity {
     }
 
     public String toString() {
-        String message = getId() + "," + getName() + "," + fromBooleanToIntSQL(getIsWork());
+        String message = getId() + "," + getNameMaster() + "," + fromBooleanToIntSQL(getIsWork());
         return message;
     }
 

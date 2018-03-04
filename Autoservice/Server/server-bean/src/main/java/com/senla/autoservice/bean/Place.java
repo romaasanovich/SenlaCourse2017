@@ -8,23 +8,33 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "place")
+@Table(name = "`place`")
 public class Place extends AEntity {
-    @Column(name = "placeName",length = 45)
-    private String name;
-    @Column(name = "isWork",columnDefinition = "TINYINT")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean isBusy;
+
+
+    @Column(name = "placeName", length = 45)
+    private String placeName;
+
+    public Boolean getIsBusy() {
+        return isBusy;
+    }
+
+    public void setIsBusy(Boolean busy) {
+        isBusy = busy;
+    }
+
+    @Column(name = "isBusy")
+    private Boolean isBusy;
 
     public Place(Integer id, String name) {
         super(id);
-        this.name = name;
+        this.placeName = name;
         isBusy = false;
     }
 
     public Place(Integer id, String name, boolean isBusy) {
         super(id);
-        this.name = name;
+        this.placeName = name;
         this.isBusy = isBusy;
     }
 
@@ -32,34 +42,30 @@ public class Place extends AEntity {
         super(0);
         String[] temp = line.split(",");
         setId(Integer.valueOf(temp[0]));
-        this.name = temp[1];
+        this.placeName = temp[1];
         isBusy = false;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Place() {
     }
 
-    public String getName() {
-        return this.name;
+    public String getPlaceName() {
+        return placeName;
     }
 
-    public boolean getIsBusy() {
-        return isBusy;
+    public void setPlaceName(String placeName) {
+        this.placeName = placeName;
     }
 
-    public void setBusy(boolean isBusy) {
-        this.isBusy = isBusy;
-    }
 
     public void update(String line) {
         String[] fields = line.split(",");
-        this.name = fields[1];
+        this.placeName = fields[1];
     }
 
     @Override
     public String toString() {
-        String s = getId() + "," + getName() + "," + fromBooleanToIntSQL(getIsBusy());
+        String s = getId() + "," + getPlaceName() + "," + fromBooleanToIntSQL(getIsBusy());
         return s;
     }
 

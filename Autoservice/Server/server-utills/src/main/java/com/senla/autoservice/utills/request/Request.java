@@ -1,8 +1,9 @@
 package com.senla.autoservice.utills.request;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Request{
+public class Request implements Serializable{
 
     private final List<Object> arguments;
     private String method;

@@ -9,13 +9,10 @@
     <packaging>pom</packaging>
     <version>1.0</version>
 
-
-
-
     <dependencies>
         <dependency>
             <groupId>com.senla.autoservice</groupId>
-            <artifactId>Utills</artifactId>
+            <artifactId>server-utills</artifactId>
             <version>1.0</version>
         </dependency>
     </dependencies>

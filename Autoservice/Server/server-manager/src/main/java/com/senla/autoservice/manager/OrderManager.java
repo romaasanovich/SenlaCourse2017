@@ -24,16 +24,13 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class OrderManager implements IOrderManager {
-    public static final String ADD_ORDER = "INSERT INTO `mydb`.`order` (`idService`, `idMaster`, `idPlace`, `status`, `orderDate`, `plannedStartDate`, `completionDate`) VALUES (?,?,?,?,?,?,?)";
-    public static final String UPDATE_ORDER = "UPDATE `mydb`.`order` SET `idService`=?, `idMaster`=?, `idPlace`=?, `status`=?, `orderDate`=?, `plannedStartDate`=?, `completionDate`=? WHERE `id`='?'";
 
     private OrderDao orders;
-    private CsvExportImport<
-            Order> importExport;
+    private CsvExportImport<Order> importExport;
 
     CsvExportImport<Order> importerExporterPlaces = new CsvExportImport<Order>();
 
-    public OrderManager() throws SQLException {
+    public OrderManager() {
         orders = new OrderDao();
     }
 
@@ -104,12 +101,27 @@ public class OrderManager implements IOrderManager {
 
     public Order getOrderCarriedOutCurrentMaster(int id) throws Exception {
         MasterManager masterManager = new MasterManager();
-        Master master = masterManager.getById(id);
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
+            Master master = (Master) masterManager.getById(id);
             session.beginTransaction();
             Order order = orders.getOrderCurrentMaster(master, session);
             return order;
+        } catch (Exception ex) {
+            session.getTransaction().rollback();
+            throw new Exception("Error!!!");
+        } finally {
+            session.close();
+        }
+    }
+
+    public Master getMasterCarriedOutCurrentOrder(int idOrder) throws Exception {
+        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        try {
+            Order order = getById(idOrder);
+            session.beginTransaction();
+            Master master = order.getMaster();
+            return master;
         } catch (Exception ex) {
             session.getTransaction().rollback();
             throw new Exception("Error!!!");
@@ -132,9 +144,10 @@ public class OrderManager implements IOrderManager {
         }
     }
 
-    public String getCountOfFreePlacesOnDate(String date) throws Exception {
+    public String getCountOfFreePlacesOnDate(String strdate) throws Exception {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
+            Date date = Convert.fromStrToDate(strdate);
             session.beginTransaction();
             int counBusyingPlaces = orders.getCountOfPlacesOnDate(date, session);
             int countPlaces = getSortedOrder("id").size();
@@ -154,7 +167,7 @@ public class OrderManager implements IOrderManager {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             Order order = getById(id);
-            orders.add(order,session);
+            orders.add(order, session);
             return Constants.SUCCESS;
         } catch (Exception ex) {
             session.getTransaction().rollback();
@@ -171,7 +184,7 @@ public class OrderManager implements IOrderManager {
             Master master = new MasterManager().getById(idMaster);
             master.setIsWork(true);
             Place place = new GarageManager().getById(idPlace);
-            place.setBusy(true);
+            place.setIsBusy(true);
             Work work = new WorkManager().getById(idService);
             Order order = new Order(0, master, work, place, status, orderDate, plannedStartDate, completionDate);
             session.beginTransaction();
@@ -203,10 +216,17 @@ public class OrderManager implements IOrderManager {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
             ArrayList<Order> orderCSV = readFromCSV();
-            for (Order order : orderCSV) {
-                session.saveOrUpdate(order);
-
+            int count = getSortedOrder("id").size();
+            session.beginTransaction();
+            for (Order order: orderCSV) {
+                if(order.getId()<=count) {
+                    session.update(order);
+                }
+                else{
+                    session.save(order);
+                }
             }
+            session.getTransaction().commit();
         } catch (Exception ex) {
             session.getTransaction().rollback();
             throw new Exception("Error!!!");
@@ -218,7 +238,7 @@ public class OrderManager implements IOrderManager {
     public void importToCSV() throws Exception {
         Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
         try {
-            ArrayList<Order> orderList = orders.getListOfOrders("id",session);
+            ArrayList<Order> orderList = orders.getListOfOrders("id", session);
             String path = Prop.getProp("orderCsvPath");
             importExport.importToCsv(orderList, path);
         } catch (Exception ex) {

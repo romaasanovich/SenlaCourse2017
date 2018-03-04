@@ -1,13 +1,13 @@
 toAddPlaces: true
 toDeleteOrders:false
-masterPath:Server/src/main/resources/masterSer.txt
-placePath:Server/src/main/resources/placeSer.txt
-orderPath:Server/src/main/resources/orderSer.txt
-masterCsvPath:Server/src/main/resources/masters.csv
-placeCsvPath:Server/src/main/resources/places.csv
-orderCsvPath:Server/src/main/resources/orders.csv
-workCsvPath:Server/src/main/resources/works.csv
-csvFolderPath:Server/src/main/resources/
+masterPath:src/main/resources/masterSer.txt
+placePath:src/main/resources/placeSer.txt
+orderPath:src/main/resources/orderSer.txt
+masterCsvPath:src/main/resources/masters.csv
+placeCsvPath:src/main/resources/places.csv
+orderCsvPath:src/main/resources/orders.csv
+workCsvPath:src/main/resources/works.csv
+csvFolderPath:src/main/resources/
 com.senla.autoservice.manager.GarageManager:com.senla.autoservice.manager.GarageManager
 com.senla.autoservice.manager.MasterManager:com.senla.autoservice.manager.MasterManager
 com.senla.autoservice.manager.OrderManager:com.senla.autoservice.manager.OrderManager

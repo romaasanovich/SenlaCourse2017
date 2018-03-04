@@ -343,7 +343,7 @@ public class Autoservice {
     public String getMasterCarriedOutOrder(int idOrder) {
         try {
             String result = "";
-            result = masterManager.getMasterCarriedOutCurrentOrder(idOrder).toString();
+            result = orderManager.getMasterCarriedOutCurrentOrder(idOrder).toString();
             if (!result.equals("")) {
                 return result;
             } else {
@@ -383,7 +383,7 @@ public class Autoservice {
         return FacadeMessage.EXIT;
     }
 
-    public synchronized String exportMasterCSV() throws Exception {
+    public synchronized String exportMasterCSV(){
 
         String message = "";
         try {
@@ -395,13 +395,13 @@ public class Autoservice {
         } catch (final NoSuchFieldException e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             message = FacadeMessage.ERROR_WRONG_FIELD;
-        } catch (final IllegalAccessException ignored) {
+        } catch (final Exception ignored) {
         }
         return message;
 
     }
 
-    public synchronized String exportPlaceCSV() throws Exception {
+    public synchronized String exportPlaceCSV() {
 
         String message = "";
         try {
@@ -413,7 +413,7 @@ public class Autoservice {
         } catch (final NoSuchFieldException e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             message = FacadeMessage.ERROR_WRONG_FIELD;
-        } catch (final IllegalAccessException ignored) {
+        } catch (final Exception ignored) {
         }
         return message;
 
@@ -431,13 +431,13 @@ public class Autoservice {
         } catch (final NoSuchFieldException e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             message = FacadeMessage.ERROR_WRONG_FIELD;
-        } catch (final IllegalAccessException ignored) {
+        } catch (final Exception ignored) {
         }
         return message;
 
     }
 
-    public synchronized String importMasterCSV() throws Exception {
+    public synchronized String importMasterCSV()  {
 
         String message = "";
         try {
@@ -449,13 +449,13 @@ public class Autoservice {
         } catch (final NoSuchFieldException e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             message = FacadeMessage.ERROR_WRONG_FIELD;
-        } catch (final IllegalAccessException ignored) {
+        } catch (final Exception ignored) {
         }
         return message;
 
     }
 
-    public synchronized String importPlaceCSV() throws Exception {
+    public synchronized String importPlaceCSV()  {
 
         String message = "";
         try {
@@ -467,13 +467,13 @@ public class Autoservice {
         } catch (final NoSuchFieldException e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             message = FacadeMessage.ERROR_WRONG_FIELD;
-        } catch (final IllegalAccessException ignored) {
+        } catch (final Exception ignored) {
         }
         return message;
 
     }
 
-    public synchronized String importOrderCSV() throws Exception {
+    public synchronized String importOrderCSV()  {
 
         String message = "";
         try {
@@ -485,7 +485,7 @@ public class Autoservice {
         } catch (final NoSuchFieldException e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             message = FacadeMessage.ERROR_WRONG_FIELD;
-        } catch (final IllegalAccessException ignored) {
+        } catch (final Exception ignored) {
         }
         return message;
 
