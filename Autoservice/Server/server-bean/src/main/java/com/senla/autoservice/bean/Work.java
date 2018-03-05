@@ -50,6 +50,14 @@ public class Work extends AEntity {
 		this.price = price;
 	}
 
+	public Master getMaster() {
+		return master;
+	}
+
+	public void setMaster(Master master) {
+		this.master = master;
+	}
+
 	@Override
 
 	public String toString() {
@@ -64,12 +72,5 @@ public class Work extends AEntity {
 		return strBuild.toString();
 	}
 
-	public Master getMaster() {
-		return master;
-	}
-
-	public void setMaster(Master master) {
-		this.master = master;
-	}
 
 }

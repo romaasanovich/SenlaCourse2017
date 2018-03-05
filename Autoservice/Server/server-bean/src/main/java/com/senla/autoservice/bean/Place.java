@@ -58,11 +58,6 @@ public class Place extends AEntity {
     }
 
 
-    public void update(String line) {
-        String[] fields = line.split(",");
-        this.placeName = fields[1];
-    }
-
     @Override
     public String toString() {
         String s = getId() + "," + getPlaceName() + "," + fromBooleanToIntSQL(getIsBusy());
