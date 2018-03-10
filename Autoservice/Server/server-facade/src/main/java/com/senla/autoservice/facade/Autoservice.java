@@ -1,12 +1,5 @@
 package com.senla.autoservice.facade;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.util.Date;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.manager.IGarageManager;
 import com.senla.autoservice.api.manager.IMasterManager;
@@ -20,6 +13,11 @@ import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.DependencyInjector;
 import com.senla.autoservice.utills.constants.Constants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
+import java.util.Date;
 
 public class Autoservice {
 
@@ -197,7 +195,7 @@ public class Autoservice {
     public String getOrdersByPrice() {
         try {
             String result = "";
-            result = Convert.getEntityStringFromArray(orderManager.getSortedOrder("price"));
+            result = Convert.getEntityStringFromArray(orderManager.getSortedOrder("service.price"));
             if (!result.equals("")) {
                 return result;
             } else {

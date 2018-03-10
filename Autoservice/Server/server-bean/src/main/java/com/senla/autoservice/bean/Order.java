@@ -1,23 +1,23 @@
 package com.senla.autoservice.bean;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.bean.AEntity;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 
 @Entity
 @Table(name = "`order`")
 public class Order extends AEntity {
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idMaster")
     private Master master;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idService")
     private Work service;
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idPlace")
     private Place place;
     @Enumerated(EnumType.STRING)

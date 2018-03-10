@@ -1,14 +1,13 @@
 package com.senla.autoservice.csvimportexport;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.io.FileWriter;
-import java.io.IOException;
-
+import com.senla.autoservice.api.bean.AEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.senla.autoservice.api.bean.AEntity;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class CsvExportImport<T extends AEntity> {
     private final Logger logger = LogManager.getLogger(getClass().getSimpleName());
@@ -18,7 +17,7 @@ public class CsvExportImport<T extends AEntity> {
         try {
 
             for (T t : data) {
-                fW.write(t.toString());
+                fW.write(t.toString()+"\n");
             }
         } catch (IOException ex) {
             logger.error(ex);

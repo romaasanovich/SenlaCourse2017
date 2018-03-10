@@ -1,7 +1,6 @@
 package com.senla.autoservice.bean;
 
 import com.senla.autoservice.api.bean.AEntity;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,19 +9,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "`place`")
 public class Place extends AEntity {
-
-
     @Column(name = "placeName", length = 45)
     private String placeName;
-
-    public Boolean getIsBusy() {
-        return isBusy;
-    }
-
-    public void setIsBusy(Boolean busy) {
-        isBusy = busy;
-    }
-
     @Column(name = "isBusy")
     private Boolean isBusy;
 
@@ -57,18 +45,17 @@ public class Place extends AEntity {
         this.placeName = placeName;
     }
 
+    public Boolean getIsBusy() {
+        return isBusy;
+    }
+
+    public void setIsBusy(Boolean busy) {
+        isBusy = busy;
+    }
 
     @Override
     public String toString() {
-        String s = getId() + "," + getPlaceName() + "," + fromBooleanToIntSQL(getIsBusy());
+        String s = getId() + "," + getPlaceName() + "," + getIsBusy();
         return s;
     }
-
-    private final int fromBooleanToIntSQL(Boolean str) {
-        if (str == true) {
-            return 1;
-        } else
-            return 0;
-    }
-
 }

@@ -43,14 +43,7 @@ public class Master extends AEntity {
     }
 
     public String toString() {
-        String message = getId() + "," + getNameMaster() + "," + fromBooleanToIntSQL(getIsWork());
+        String message = getId() + "," + getNameMaster() + "," + getIsWork();
         return message;
-    }
-
-    private final int fromBooleanToIntSQL(Boolean str) {
-        if (str == true) {
-            return 1;
-        } else
-            return 0;
     }
 }

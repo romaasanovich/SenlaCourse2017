@@ -2,17 +2,15 @@ package com.senla.autoservice.dao;
 
 import com.senla.autoservice.api.dao.IGarageDao;
 import com.senla.autoservice.bean.Place;
-import com.senla.autoservice.dao.abstractdao.AGenericDao;
 import com.senla.autoservice.dao.abstractdao.GenericDao;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-public class GarageDao extends AGenericDao<Place> implements IGarageDao {
+public class GarageDao extends GenericDao<Place> implements IGarageDao {
 
 
     public GarageDao() {
@@ -25,15 +23,15 @@ public class GarageDao extends AGenericDao<Place> implements IGarageDao {
 
 
 
-    public ArrayList<Place> getSortedPlaces(Session session,String comp) throws Exception{
+    public List<Place> getSortedPlaces(Session session,String comp) throws Exception{
         List<Place> places = session.createCriteria(Place.class).addOrder(Order.asc(comp)).list();
-        return (ArrayList<Place>) places;
+        return places;
     }
 
-    public ArrayList<Place> getFreePlaces(Session session) throws SQLException {
+    public List<Place> getFreePlaces(Session session) throws SQLException {
         List<Place> places = session.createCriteria(Place.class)
                 .add(Restrictions.eq("isBusy", false)).list();
-        return (ArrayList<Place>) places;
+        return places;
     }
 
 }

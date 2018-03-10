@@ -1,7 +1,5 @@
 package com.senla.autoservice.api.manager;
 
-import java.sql.SQLException;
-
 import com.senla.autoservice.api.bean.AEntity;
 import com.senla.autoservice.api.dao.IWorkDao;
 

@@ -1,12 +1,11 @@
 package com.senla.autoservice.api.manager;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
-
 import com.senla.autoservice.api.StatusOrder;
 import com.senla.autoservice.api.bean.AEntity;
 import com.senla.autoservice.api.dao.IOrderDao;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public interface IOrderManager <T extends  AEntity> extends IManager {
 

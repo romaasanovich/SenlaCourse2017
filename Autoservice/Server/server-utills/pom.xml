@@ -12,13 +12,7 @@
     <artifactId>server-utills</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>com.senla.autoservice</groupId>
-            <artifactId>server-api</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
+               <dependency>
             <groupId>com.senla.autoservice</groupId>
             <artifactId>server-bean</artifactId>
             <version>1.0</version>
@@ -29,12 +23,6 @@
             <artifactId>server-properties</artifactId>
             <version>1.0</version>
         </dependency>
-
-        <!--<dependency>-->
-            <!--<groupId>com.senla.autoservice</groupId>-->
-            <!--<artifactId>Facade</artifactId>-->
-            <!--<version>1.0</version>-->
-        <!--</dependency>-->
 
     </dependencies>
 

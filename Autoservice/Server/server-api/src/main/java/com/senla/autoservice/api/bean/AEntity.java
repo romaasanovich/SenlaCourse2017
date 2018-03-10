@@ -3,8 +3,10 @@ package com.senla.autoservice.api.bean;
 
 import javax.persistence.*;
 
+
+
 @MappedSuperclass
-public abstract class AEntity  implements IAEntity {
+public abstract class AEntity{
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

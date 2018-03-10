@@ -17,57 +17,59 @@ import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.dao.hibernate.HibernateUtil;
 import com.senla.autoservice.utills.constants.Constants;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 public class GarageManager implements IGarageManager {
 
-
     private GarageDao places;
     private CsvExportImport<Place> importExport = new CsvExportImport<Place>();
+
 
     public GarageManager() {
         places = new GarageDao();
     }
 
 
+    public GarageDao getPlaces() {
+        return places;
+    }
+
     public Place getById(int id) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
-            session.beginTransaction();
+            tr = session.beginTransaction();
             return places.getById(id, session);
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
     }
 
 
     public ArrayList<Place> getSortedPlaces(String comp) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
-            session.beginTransaction();
-            ArrayList<Place> place = places.getSortedPlaces(session, comp);
+            tr = session.beginTransaction();
+            ArrayList<Place> place = (ArrayList<Place>) places.getSortedPlaces(session, comp);
             return place;
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
     }
 
     public ArrayList<Place> getFreePlaces() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
-            session.beginTransaction();
-            ArrayList<Place> place = places.getFreePlaces(session);
+            tr = session.beginTransaction();
+            ArrayList<Place> place = (ArrayList<Place>) places.getFreePlaces(session);
             return place;
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
 
     }
@@ -75,57 +77,48 @@ public class GarageManager implements IGarageManager {
 
     public String add(String name) throws Exception {
         Place place = new Place(null, name);
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
-            session.beginTransaction();
+            tr = session.beginTransaction();
             places.add(place, session);
-            session.getTransaction().commit();
+            tr.commit();
             return Constants.SUCCESS;
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
     }
 
     public String changeBusying(int id, Boolean busying) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
-        Place place = places.getById(id, session);
-        place.setIsBusy(busying);
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
-            session.beginTransaction();
+            tr = session.beginTransaction();
+            Place place = places.getById(id, session);
+            place.setIsBusy(busying);
             places.changeBusying(session, place);
-            session.getTransaction().commit();
+            tr.commit();
             return Constants.SUCCESS;
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
     }
 
     public void exportFromCSV() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
+            tr = session.beginTransaction();
             ArrayList<Place> placesCSV = readFromCSV();
-           int count = getSortedPlaces("id").size();
-            session.beginTransaction();
             for (Place place : placesCSV) {
-                if(place.getId()<=count) {
-                    session.update(place);
-                }
-                else{
-                    session.save(place);
-                }
+                session.saveOrUpdate(place);
             }
-            session.getTransaction().commit();
+            tr.commit();
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
     }
 
@@ -142,16 +135,16 @@ public class GarageManager implements IGarageManager {
     }
 
     public void importToCSV() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().openSession();
+        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Transaction tr = null;
         try {
-            ArrayList<Place> placeList = places.getSortedPlaces(session, "id");
+            tr = session.beginTransaction();
+            ArrayList<Place> placeList = (ArrayList<Place>) places.getSortedPlaces(session, "id");
             String path = Prop.getProp("placeCsvPath");
             importExport.importToCsv(placeList, path);
         } catch (Exception ex) {
-            session.getTransaction().rollback();
+            tr.rollback();
             throw new Exception("Error!!!");
-        } finally {
-            session.close();
         }
     }
 }

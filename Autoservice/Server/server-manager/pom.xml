@@ -14,25 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.senla.autoservice</groupId>
-            <artifactId>DBConnector</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.senla.autoservice</groupId>
-            <artifactId>server-bean</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.senla.autoservice</groupId>
             <artifactId>server-dao</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.senla.autoservice</groupId>
-            <artifactId>server-api</artifactId>
             <version>1.0</version>
         </dependency>
 

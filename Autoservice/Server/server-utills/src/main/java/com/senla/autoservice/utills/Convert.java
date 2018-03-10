@@ -59,7 +59,7 @@ public class Convert {
     public final static Place fromStrToPlace(String line) {
         String[] temp = line.split(",");
         int id = Integer.parseInt(temp[0]);
-        boolean isBusy = fromIntToBooleanSQL(Integer.valueOf(temp[2]));
+        boolean isBusy = Boolean.valueOf(temp[2]);
         Place place = new Place(id, temp[1], isBusy);
         return place;
     }
@@ -77,7 +77,7 @@ public class Convert {
     public final static Master fromStrToMaster(String line) {
         String[] temp = line.split(",");
         int id = Integer.parseInt(temp[0]);
-        boolean isWork = fromIntToBooleanSQL(Integer.valueOf(temp[2]));
+        boolean isWork = Boolean.valueOf(temp[2]);
         Master master = new Master(id, temp[1], isWork);
         return master;
     }

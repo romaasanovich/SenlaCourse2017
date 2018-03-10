@@ -4,6 +4,7 @@ import com.senla.autoservice.api.bean.AEntity;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "`work`")
 public class Work extends AEntity {
@@ -11,7 +12,7 @@ public class Work extends AEntity {
 	private String nameOfService;
 	@Column(name = "price")
 	private Double price;
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "idMaster")
 	private Master master;
 

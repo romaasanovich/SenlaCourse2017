@@ -1,12 +1,12 @@
 package com.senla.autoservice.entrypoint;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-
 import com.senla.autoservice.facade.Autoservice;
 import com.senla.autoservice.servercontroller.ClientAccessThread;
 import com.senla.autoservice.utills.constants.Constants;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 
 public class Server {
 	
