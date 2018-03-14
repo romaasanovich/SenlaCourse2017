@@ -8,7 +8,9 @@ import com.senla.autoservice.dao.WorkDao;
 import com.senla.autoservice.dao.hibernate.HibernateUtil;
 import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.utills.Convert;
+import com.senla.autoservice.utills.constants.Constants;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.io.File;
@@ -23,6 +25,8 @@ public class WorkManager implements IWorkManager {
 
     private CsvExportImport<Work> importExport;
     private WorkDao works;
+    private SessionFactory sessionFactory = HibernateUtil.getInstance().getSessionFactory();
+
 
     public WorkManager() {
         works = new WorkDao();
@@ -33,29 +37,33 @@ public class WorkManager implements IWorkManager {
     }
 
     public Work getById(int id) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
-        Transaction tr =null;
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = null;
         try {
             tr = session.beginTransaction();
             return works.getById(id, session);
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
-        } finally {
-            session.close();
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
+            return null;
         }
     }
 
     public ArrayList<Work> getWorkList() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
-        Transaction tr =null;
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = null;
         try {
             tr = session.beginTransaction();
             ArrayList<Work> work = (ArrayList<Work>) works.getListOfWorks(session);
             return work;
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
+            return null;
         }
     }
 
@@ -64,16 +72,19 @@ public class WorkManager implements IWorkManager {
         Master master = new MasterManager().getById(idMaster);
         Work work = new Work(null, name, price, master);
         message = WORK_WAS_SUCCESFUL_ADDED;
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
-        Transaction tr =null;
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = null;
         try {
             tr = session.beginTransaction();
             works.add(work, session);
             tr.commit();
             return message;
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
+            return  Constants.ERROR;
         }
     }
 
@@ -90,8 +101,8 @@ public class WorkManager implements IWorkManager {
     }
 
     public void exportFromCSV() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
-        Transaction tr =null;
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = null;
         try {
             ArrayList<Work> workCSV = readFromCSV();
             tr = session.beginTransaction();
@@ -101,22 +112,26 @@ public class WorkManager implements IWorkManager {
             tr.commit();
 
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
         }
     }
 
     public void importToCSV() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
-        Transaction tr =null;
+        Session session = sessionFactory.getCurrentSession();
+        Transaction tr = null;
         try {
             tr = session.beginTransaction();
             ArrayList<Work> workList = (ArrayList<Work>) works.getListOfWorks(session);
             String path = Prop.getProp("workCsvPath");
             importExport.importToCsv(workList, path);
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
         }
     }
 

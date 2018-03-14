@@ -1,4 +1,4 @@
-package com.senla.autoservice.api.bean;
+package com.senla.autoservice.bean.aentity;
 
 
 import javax.persistence.*;

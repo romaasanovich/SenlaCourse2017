@@ -13,7 +13,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="server-utills" />
     <orderEntry type="module" module-name="server-bean" />
-    <orderEntry type="module" module-name="server-api" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-annotations:3.5.6-Final" level="project" />
     <orderEntry type="library" name="Maven: org.hibernate:hibernate-core:3.5.6-Final" level="project" />
     <orderEntry type="library" name="Maven: antlr:antlr:2.7.6" level="project" />

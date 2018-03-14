@@ -2,7 +2,7 @@ package com.senla.autoservice.utills;
 
 import java.util.List;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 
 public class Printer {
 		public static void printMessage(String line) {

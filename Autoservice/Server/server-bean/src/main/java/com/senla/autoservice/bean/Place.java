@@ -1,6 +1,6 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

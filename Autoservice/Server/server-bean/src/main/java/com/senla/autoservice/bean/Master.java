@@ -1,6 +1,6 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.Column;

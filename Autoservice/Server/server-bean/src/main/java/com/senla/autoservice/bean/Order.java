@@ -1,9 +1,21 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.api.StatusOrder;
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.StatusOrder.StatusOrder;
+import com.senla.autoservice.bean.aentity.AEntity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Column;
+import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
+import javax.persistence.CascadeType;
+import javax.persistence.Enumerated;
+import javax.persistence.EnumType;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

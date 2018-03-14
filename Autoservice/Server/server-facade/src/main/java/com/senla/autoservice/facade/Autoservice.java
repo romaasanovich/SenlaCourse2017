@@ -1,6 +1,6 @@
 package com.senla.autoservice.facade;
 
-import com.senla.autoservice.api.StatusOrder;
+import com.senla.autoservice.bean.StatusOrder.StatusOrder;
 import com.senla.autoservice.api.manager.IGarageManager;
 import com.senla.autoservice.api.manager.IMasterManager;
 import com.senla.autoservice.api.manager.IOrderManager;

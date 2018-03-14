@@ -1,6 +1,6 @@
 package com.senla.autoservice.api.dao;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 import org.hibernate.Session;
 
 import java.sql.SQLException;

@@ -1,6 +1,6 @@
 package com.senla.autoservice.csvimportexport;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

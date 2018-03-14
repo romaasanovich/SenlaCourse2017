@@ -1,6 +1,6 @@
 package com.senla.autoservice.dao.abstractdao;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 

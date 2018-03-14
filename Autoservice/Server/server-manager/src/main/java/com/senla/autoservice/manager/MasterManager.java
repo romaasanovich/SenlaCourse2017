@@ -2,7 +2,6 @@ package com.senla.autoservice.manager;
 
 import com.senla.autoservice.api.manager.IMasterManager;
 import com.senla.autoservice.bean.Master;
-import com.senla.autoservice.bean.Order;
 import com.senla.autoservice.csvimportexport.CsvExportImport;
 import com.senla.autoservice.dao.MasterDao;
 import com.senla.autoservice.dao.hibernate.HibernateUtil;
@@ -10,12 +9,12 @@ import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.utills.Convert;
 import com.senla.autoservice.utills.constants.Constants;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -24,6 +23,8 @@ public class MasterManager implements IMasterManager {
 
     private CsvExportImport<Master> importExport;
     private MasterDao masters;
+    private SessionFactory sessionFactory = HibernateUtil.getInstance().getSessionFactory();
+
 
     public MasterManager() {
         masters = new MasterDao();
@@ -34,36 +35,42 @@ public class MasterManager implements IMasterManager {
     }
 
     public Master getById(int id) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
             Master master = masters.getById(id, session);
             return master;
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
+            return null;
         }
-
     }
 
     public ArrayList<Master> getSortedMasters(String comp) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
             ArrayList<Master> master = (ArrayList<Master>) masters.getListOfMasters(comp, session);
             return master;
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
+            return null;
         }
+
     }
 
 
     public String add(String name) throws Exception {
         Master master = new Master(null, name, false);
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -71,13 +78,16 @@ public class MasterManager implements IMasterManager {
             tr.commit();
             return Constants.SUCCESS;
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
         }
+        return  Constants.ERROR;
     }
 
     public String changeBusying(int id, boolean busying) throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -87,9 +97,12 @@ public class MasterManager implements IMasterManager {
             tr.commit();
             return Constants.SUCCESS;
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
         }
+        return  Constants.ERROR;
     }
 
     private ArrayList<Master> readFromCSV() throws IOException {
@@ -105,7 +118,7 @@ public class MasterManager implements IMasterManager {
     }
 
     public void exportFromCSV() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = null;
         try {
             tr = session.beginTransaction();
@@ -115,13 +128,15 @@ public class MasterManager implements IMasterManager {
             }
             tr.commit();
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
         }
     }
 
     public void importToCSV() throws Exception {
-        Session session = HibernateUtil.getInstance().getSessionFactory().getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
         Transaction tr = null;
         try {
             tr = session.getTransaction();
@@ -129,8 +144,10 @@ public class MasterManager implements IMasterManager {
             String path = Prop.getProp("masterCsvPath");
             importExport.importToCsv(masterList, path);
         } catch (Exception ex) {
-            tr.rollback();
-            throw new Exception("Error!!!");
+            if (tr != null) {
+                tr.rollback();
+                throw new Exception("Error!!!");
+            }
         }
     }
 }

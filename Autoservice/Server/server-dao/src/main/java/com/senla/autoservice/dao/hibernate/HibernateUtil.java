@@ -1,6 +1,6 @@
 package com.senla.autoservice.dao.hibernate;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;
 import com.senla.autoservice.bean.Place;

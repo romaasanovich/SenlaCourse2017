@@ -1,6 +1,6 @@
 package com.senla.autoservice.api.manager;
 
-import com.senla.autoservice.api.bean.AEntity;
+import com.senla.autoservice.bean.aentity.AEntity;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package com.senla.autoservice.dao;
 
-import com.senla.autoservice.api.StatusOrder;
+import com.senla.autoservice.bean.StatusOrder.StatusOrder;
 import com.senla.autoservice.api.dao.IOrderDao;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;

@@ -12,16 +12,13 @@
     <artifactId>server-bean</artifactId>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
         <dependency>
-            <groupId>com.senla.autoservice</groupId>
-            <artifactId>server-api</artifactId>
-            <version>1.0</version>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-annotations</artifactId>
+            <version>3.5.6-Final</version>
         </dependency>
 
-
-
-
     </dependencies>
-
 
 </project>
