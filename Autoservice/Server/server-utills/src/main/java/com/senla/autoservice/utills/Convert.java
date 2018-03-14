@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-import com.senla.autoservice.bean.StatusOrder.StatusOrder;
+import com.senla.autoservice.bean.statusorder.StatusOrder;
 import com.senla.autoservice.bean.aentity.AEntity;
 import com.senla.autoservice.bean.*;
 

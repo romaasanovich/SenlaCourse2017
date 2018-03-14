@@ -2,7 +2,7 @@ package com.senla.autoservice.ui.action.ordermenu;
 
 import java.io.IOException;
 
-import com.senla.autoservice.bean.StatusOrder.StatusOrder;
+import com.senla.autoservice.bean.statusorder.StatusOrder;
 import com.senla.autoservice.client.Client;
 import com.senla.autoservice.ui.action.IAction;
 import com.senla.autoservice.utills.Convert;

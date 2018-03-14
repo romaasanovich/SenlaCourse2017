@@ -1,6 +1,6 @@
 package com.senla.autoservice.bean;
 
-import com.senla.autoservice.bean.StatusOrder.StatusOrder;
+import com.senla.autoservice.bean.statusorder.StatusOrder;
 import com.senla.autoservice.bean.aentity.AEntity;
 
 import javax.persistence.Entity;

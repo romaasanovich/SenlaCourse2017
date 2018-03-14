@@ -1,6 +1,6 @@
 package com.senla.autoservice.manager;
 
-import com.senla.autoservice.bean.StatusOrder.StatusOrder;
+import com.senla.autoservice.bean.statusorder.StatusOrder;
 import com.senla.autoservice.api.manager.IOrderManager;
 import com.senla.autoservice.bean.Master;
 import com.senla.autoservice.bean.Order;

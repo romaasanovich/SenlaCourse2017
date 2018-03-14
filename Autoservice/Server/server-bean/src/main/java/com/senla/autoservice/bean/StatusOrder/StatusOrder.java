@@ -1,4 +1,4 @@
-package com.senla.autoservice.bean.StatusOrder;
+package com.senla.autoservice.bean.statusorder;
 
 public enum StatusOrder {
 	Broned, Opened, Closed, Deleted, Canceled;
