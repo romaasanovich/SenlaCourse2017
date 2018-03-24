@@ -108,7 +108,6 @@ public class UserManager implements IUserManager {
 
     public Boolean isValidToken(final String token){
         final List<User> users = getAll("token", token);
-
         return users != null && !users.isEmpty();
     }
 }

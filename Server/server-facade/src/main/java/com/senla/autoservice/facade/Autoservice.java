@@ -5,10 +5,14 @@ import com.senla.autoservice.bean.statusorder.StatusOrder;
 import com.senla.autoservice.manager.*;
 import com.senla.autoservice.properties.Prop;
 import com.senla.autoservice.utills.Convert;
+import com.senla.autoservice.bean.User;
 import com.senla.autoservice.utills.constants.Constants;
+import com.senla.autoservice.utills.hashgenerator.TokenGenerator;
+import com.sun.org.apache.bcel.internal.generic.FADD;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.xml.ws.FaultAction;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -68,6 +72,16 @@ public class Autoservice {
         } catch (Exception e) {
             logger.error(FacadeMessage.LOGGER_MSG, e);
             return Constants.ERROR;
+        }
+
+    }
+
+    public synchronized void addUser(String login,String password) {
+        try {
+            String token = TokenGenerator.getMD5Hash(login+password);
+            userManager.add(new User(login,password,token));
+        } catch (Exception e) {
+            logger.error(FacadeMessage.LOGGER_MSG, e);
         }
 
     }
@@ -500,8 +514,11 @@ public class Autoservice {
         return userManager.isValidToken(token);
     }
 
-    public void auditRequest(User user, String url) {
-        auditLogManager.add(new AuditLog(user, url));
+    public void auditRequest(User user, String url,String method) {
+        String message = FacadeMessage.AUDIT_TEXT_1+user.getUsername()+ FacadeMessage.AUDIT_TEXT_2+method;
+        auditLogManager.add(new AuditLog(user, url,message));
     }
+
+
 
 }

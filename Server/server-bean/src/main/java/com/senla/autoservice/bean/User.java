@@ -1,7 +1,6 @@
 package com.senla.autoservice.bean;
 
 import com.senla.autoservice.bean.aentity.AEntity;
-import com.senla.autoservice.bean.hashgenerator.HashGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,20 +19,19 @@ public class User extends AEntity {
     private String password;
     @Column(name = "token")
     private String token;
-
     @Column(name = "expires_in")
     private Long expires;
 
     public User() {
     }
 
-    public User(final String username, final String password) {
+    public User(final String username, final String password,String token) {
         final Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DATE, EXPIRES_IN_DAYS);
 
         this.username = username;
         this.password = password;
-        token = HashGenerator.getMD5Hash(username + password);
+        this.token = token;
         expires = calendar.getTime().getTime();
     }
 

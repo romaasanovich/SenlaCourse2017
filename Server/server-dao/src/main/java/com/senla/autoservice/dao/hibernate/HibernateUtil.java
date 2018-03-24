@@ -2,6 +2,7 @@ package com.senla.autoservice.dao.hibernate;
 
 import com.senla.autoservice.bean.*;
 import com.senla.autoservice.bean.aentity.AEntity;
+import com.senla.autoservice.bean.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;

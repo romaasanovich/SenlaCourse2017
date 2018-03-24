@@ -1,9 +1,9 @@
-package com.senla.autoservice.bean.hashgenerator;
+package com.senla.autoservice.utills.hashgenerator;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class HashGenerator {
+public class TokenGenerator {
 
     public static String getMD5Hash(final String str) {
         final StringBuilder hash = new StringBuilder();

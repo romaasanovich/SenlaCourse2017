@@ -21,13 +21,17 @@ public class AuditLog extends AEntity {
     private String url;
     @Column(name = "time")
     private Long time;
+    @Column(name = "message")
+    private String message;
+
 
     public AuditLog() {
     }
 
-    public AuditLog(final User user, final String url) {
+    public AuditLog(final User user, final String url,String message) {
         this.user = user;
         this.url = url;
+        this.message = message;
         time = new Date().getTime();
     }
 
@@ -42,4 +46,11 @@ public class AuditLog extends AEntity {
     public Long getTime() {
         return time;
     }
+
+
+    public String getMessage() {
+        return message;
+    }
+
+
 }
