@@ -1,0 +1,21 @@
+<!--<app-master-detail [master]="selectedMaster"></app-master-detail>-->
+
+<div>
+  <label>Master name:
+    <input #masterName/>
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="addMaster(masterName.value); masterName.value=''">
+    add
+  </button>
+</div>
+
+<div>
+  <h2>My Masters</h2>
+  <ul>
+    <li *ngFor="let master of masters" (click)="onSelect(master)">
+      <span>{{master.id}} </span> -> {{master.nameMaster}}
+    </li>
+  </ul>
+</div>
+

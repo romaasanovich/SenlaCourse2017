@@ -1,0 +1,33 @@
+<div>
+  <label>Place name:
+    <input #placeName/>
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="addPlace(placeName.value); placeName.value=''">
+    add
+  </button>
+</div>
+
+<h2>My Places</h2>
+<ul>
+  <li *ngFor="let place of places" (click)="onSelect(place)">
+    <span>{{place.id}}</span>{{place.placeName}}, {{place.isBusy}}
+  </li>
+</ul>
+
+<!--<p-table [value]="places">-->
+  <!--<ng-template pTemplate="header">-->
+    <!--<tr>-->
+      <!--<th>ID</th>-->
+      <!--<th>Name</th>-->
+      <!--<th>Is Busy</th>-->
+    <!--</tr>-->
+  <!--</ng-template>-->
+  <!--<ng-template pTemplate="body" let-place>-->
+    <!--<tr>-->
+      <!--<td>{{place.id}}</td>-->
+      <!--<td>{{place.name}}</td>-->
+      <!--<td>{{place.isWork}}</td>-->
+    <!--</tr>-->
+  <!--</ng-template>-->
+<!--</p-table>-->

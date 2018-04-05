@@ -1,0 +1,13 @@
+<div>
+  <label>login:
+    <input [(ngModel)]="user.login" placeholder="login"/>
+  </label>
+  <label>login:
+    <input [(ngModel)]="user.password" placeholder="password"/>
+    <button (click)="signIn(user.login, user.password)">
+      Sign In
+    </button>
+    <!--<br>-->
+    <!--{{signIn()}}-->
+  </label>
+</div>
