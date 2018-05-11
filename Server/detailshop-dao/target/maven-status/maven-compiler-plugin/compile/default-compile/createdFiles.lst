@@ -1,0 +1,7 @@
+com\senla\detailshop\dao\CarDao.class
+com\senla\detailshop\dao\genericdao\GenericDao.class
+com\senla\detailshop\dao\UserDao.class
+com\senla\detailshop\dao\DetailDao.class
+com\senla\detailshop\dao\CartDao.class
+com\senla\detailshop\dao\OrderDao.class
+com\senla\detailshop\dao\SellerDao.class

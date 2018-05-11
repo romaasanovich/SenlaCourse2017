@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="bean" />
+        <module name="detailshop-api" />
+        <module name="detailshop-bean" />
+        <module name="detailshop-controller" />
+        <module name="detailshop-dao" />
+        <module name="detailshop-manager" />
+        <module name="detailshopdao" />
+        <module name="server-bean" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="bean" target="1.5" />
+      <module name="detailshop" target="1.8" />
+      <module name="detailshop-api" target="1.8" />
+      <module name="detailshop-bean" target="1.8" />
+      <module name="detailshop-controller" target="1.8" />
+      <module name="detailshop-dao" target="1.8" />
+      <module name="detailshop-manager" target="1.8" />
+      <module name="detailshopdao" target="1.5" />
+      <module name="detailshoptest" target="1.5" />
+      <module name="erver" target="1.5" />
+      <module name="final-project" target="1.5" />
+      <module name="server" target="1.5" />
+      <module name="server-bean" target="1.5" />
+      <module name="test" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/detailshop.iml" filepath="$PROJECT_DIR$/detailshop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/detailshop-api/detailshop-api.iml" filepath="$PROJECT_DIR$/detailshop-api/detailshop-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/detailshop-bean/detailshop-bean.iml" filepath="$PROJECT_DIR$/detailshop-bean/detailshop-bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/detailshop-controller/detailshop-controller.iml" filepath="$PROJECT_DIR$/detailshop-controller/detailshop-controller.iml" />
+      <module fileurl="file://$PROJECT_DIR$/detailshop-dao/detailshop-dao.iml" filepath="$PROJECT_DIR$/detailshop-dao/detailshop-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/detailshop-manager/detailshop-manager.iml" filepath="$PROJECT_DIR$/detailshop-manager/detailshop-manager.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="detailshop-controller:war">
+    <output-path>$PROJECT_DIR$/detailshop-controller/target</output-path>
+    <root id="archive" name="detailshop-controller-1.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="detailshop-controller:war exploded" />
+    </root>
+  </artifact>
+</component>

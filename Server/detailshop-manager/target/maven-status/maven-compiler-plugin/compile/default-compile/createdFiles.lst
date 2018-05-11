@@ -1,0 +1,6 @@
+com\senla\detailshop\manager\SellerManager.class
+com\senla\detailshop\manager\CarManager.class
+com\senla\detailshop\manager\DetailManager.class
+com\senla\detailshop\manager\OrderManager.class
+com\senla\detailshop\manager\UserManager.class
+com\senla\detailshop\manager\CartManager.class

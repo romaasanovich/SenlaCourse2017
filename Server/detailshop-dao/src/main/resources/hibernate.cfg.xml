@@ -1,0 +1,20 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <mapping class="com.senla.detailshop.entity.Provider" />
+        <mapping class="com.senla.detailshop.entity.Seller" />
+        <mapping class="com.senla.detailshop.entity.Car" />
+        <mapping class="com.senla.detailshop.entity.Brand" />
+        <mapping class="com.senla.detailshop.entity.Model" />
+        <mapping class="com.senla.detailshop.entity.Provider" />
+        <mapping class="com.senla.detailshop.entity.User" />
+        <mapping class="com.senla.detailshop.entity.Detail" />
+        <!--<mapping class="com.senla.detailshop.entity.Order" />-->
+        <!--<mapping class="com.senla.detailshop.entity.HistoryOrder" />-->
+        <!--<mapping class="com.senla.detailshop.entity.Cart" />-->
+    </session-factory>
+</hibernate-configuration>

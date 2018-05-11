@@ -1,0 +1,13 @@
+com\senla\detailshop\api\dao\ICarDao.class
+com\senla\detailshop\api\dao\ICartDao.class
+com\senla\detailshop\api\dao\IUserDao.class
+com\senla\detailshop\api\manager\ICarManager.class
+com\senla\detailshop\api\dao\genericdao\IGenericDao.class
+com\senla\detailshop\api\dao\IDetailDao.class
+com\senla\detailshop\api\dao\IOrderDao.class
+com\senla\detailshop\api\manager\ICartManager.class
+com\senla\detailshop\api\dao\ISellerDao.class
+com\senla\detailshop\api\manager\ISellerManager.class
+com\senla\detailshop\api\manager\IUserManager.class
+com\senla\detailshop\api\manager\IDetailManager.class
+com\senla\detailshop\api\manager\IOrderManager.class
